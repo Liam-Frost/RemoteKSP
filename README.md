@@ -49,6 +49,8 @@ locally against the certificate's public key before it is returned.
 - PIN protection: a wrong PIN, a locked token or an unrecognized error disables the
   certificate after a **single** attempt, so the token is never locked by retries
 - Secrets protected with DPAPI in a data directory restricted to SYSTEM and Administrators
+- Windows notification for new pairing requests, even when the server GUI is closed;
+  clicking it opens the Pairing requests page
 - Activity log, in-place upgrade, custom HTTPS port, TLS certificate regeneration
 
 **Client** (`RemoteKSP.Client.exe`)

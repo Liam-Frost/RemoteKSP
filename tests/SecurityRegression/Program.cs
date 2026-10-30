@@ -1474,6 +1474,78 @@ if (Environment.GetEnvironmentVariable("REMOTEKSP_SIGNTOOL_E2E") is { Length: > 
         "E2E: target file is signed by the selected certificate");
 }
 
+Console.WriteLine("\n--- Pairing notifications ---");
+// 新请求：事件不带凭据；一阵请求合并成一条通知，两条之间至少隔 MinInterval；已处理的不再提醒
+var toastClock = new ManualTimerClock();
+var toastPairing = new PairingManager(toastClock);
+PairingRequest? raised = null;
+toastPairing.RequestCreated += r => raised = r;
+var toasts = new List<PairingToastContent>();
+var tlsForToast = new string('a', 40);
+var notifier = new PairingNotifier(toastPairing, Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance, toastClock,
+    c => { toasts.Add(c); return 1; }, () => tlsForToast);
+await notifier.StartAsync(default);
+var firstPair = toastPairing.CreateRequest("pc-1", "10.0.0.1", "n1");
+Check(raised?.RequestId == firstPair.RequestId && raised.GeneratedSecret == null,
+    "pairing notification: a new request raises an event without credentials");
+Check(toasts.Count == 0, "pairing notification: not shown before the coalescing delay");
+toastClock.Advance(PairingNotifier.CoalesceDelay);
+Check(toasts.Count == 1 && toasts[0] is { Count: 1, MachineName: "pc-1", IpAddress: "10.0.0.1" } &&
+      toasts[0].VerificationCode == Protocol.VerificationCode(tlsForToast, "n1", firstPair.ServerNonce),
+    "pairing notification: shows machine, address and the verification code");
+toastPairing.CreateRequest("pc-2", "10.0.0.2", "n2");
+toastPairing.CreateRequest("pc-3", "10.0.0.3", "n3");
+toastClock.Advance(TimeSpan.FromSeconds(10));
+Check(toasts.Count == 1, "pairing notification: no second notification within the minimum interval");
+toastClock.Advance(notifier.MinInterval);
+Check(toasts.Count == 2 && toasts[1] is { Count: 3, MachineName: "pc-3" },
+    "pairing notification: a burst becomes one notification with the total and the latest request");
+toastPairing.CreateRequest("pc-4", "10.0.0.4", "n4");
+foreach (var r in toastPairing.GetPendingRequests())
+    toastPairing.Reject(r.RequestId);
+toastClock.Advance(notifier.MinInterval);
+Check(toasts.Count == 2, "pairing notification: requests handled before it is due are not shown");
+var failingNotifier = new PairingNotifier(toastPairing, Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance, toastClock,
+    _ => throw new InvalidOperationException("no desktop"), () => null);
+await failingNotifier.StartAsync(default);
+toastPairing.CreateRequest("pc-5", "10.0.0.5", "n5");
+toastClock.Advance(TimeSpan.FromMinutes(1));
+Check(toasts.Count == 3 && toastPairing.GetPendingRequests().Count == 1,
+    "pairing notification: a failing notifier affects neither pairing nor other subscribers");
+await failingNotifier.StopAsync(default);
+await notifier.StopAsync(default);
+
+// 机器名来自未认证的客户端：通知 XML 必须转义、去掉控制字符、截断
+var hostileName = "<script>&\"x\"\u0007" + new string('y', 100);
+var toastXml = System.Xml.Linq.XDocument.Parse(PairingToast.BuildXml(
+    new PairingToastContent(1, hostileName, "10.0.0.9", "123456", DateTime.UtcNow)));
+var toastTexts = toastXml.Descendants("text").Select(t => t.Value).ToList();
+Check(toastTexts.Count == 2 && toastTexts[1].Contains("<script>&\"x\"") && !toastTexts[1].Contains('\u0007') &&
+      !toastTexts[1].Contains(new string('y', 100)),
+    "pairing notification: the client's machine name is escaped and shortened");
+Check(toastXml.Root!.Attribute("launch")!.Value == "remoteksp-server:pairing" &&
+      toastXml.Root.Attribute("activationType")!.Value == "protocol",
+    "pairing notification: clicking it opens the pairing page link");
+Check(PairingToast.BuildXml(new PairingToastContent(4, "a", "b", "c", DateTime.UtcNow)).Contains("4 pairing requests"),
+    "pairing notification: several requests show the total");
+var toastPayload = new PairingToastContent(2, "名字 \"q\" --open", "::1", "654321", new DateTime(2026, 10, 30, 9, 0, 0, DateTimeKind.Utc));
+var encodedPayload = toastPayload.Encode();
+Check(encodedPayload.All(c => char.IsAsciiLetterOrDigit(c) || c is '-' or '_') &&
+      PairingToastContent.Decode(encodedPayload) == toastPayload,
+    "pairing notification: the payload survives the command line unchanged");
+Check(PairingToastContent.Decode("!!!") == null && PairingToastContent.Decode(null) == null &&
+      PairingToastContent.Decode(new PairingToastContent(0, "a", "b", "c", DateTime.UtcNow).Encode()) == null,
+    "pairing notification: malformed payloads are ignored");
+Check(UrlScheme.ParseOpenArgument("remoteksp-server:pairing") == UrlScheme.StartPage.PairingRequests &&
+      UrlScheme.ParseOpenArgument("REMOTEKSP-SERVER://pairing/") == UrlScheme.StartPage.PairingRequests &&
+      UrlScheme.ParseOpenArgument("remoteksp-server:../../evil") == UrlScheme.StartPage.Overview &&
+      UrlScheme.ParseOpenArgument("pairing\" --install-service") == UrlScheme.StartPage.Overview &&
+      UrlScheme.ParseOpenArgument(null) == UrlScheme.StartPage.Overview,
+    "pairing notification: the link only opens known pages");
+Check(UserSessionLauncher.WithRunAsInvoker(["Path=C:\\x", "__COMPAT_LAYER=Elevate", "=C:=C:\\", "A=1"]) ==
+      "=C:=C:\\\0A=1\0Path=C:\\x\0__COMPAT_LAYER=RunAsInvoker\0\0",
+    "pairing notification: the notifier process runs as the user, never elevated");
+
 Console.WriteLine("\n--- Localization ---");
 // 每个界面字符串都要有中文翻译，占位符一致；否则 string.Format 会在中文界面上抛异常或丢信息
 foreach (var (name, rm) in new[]
@@ -1587,6 +1659,45 @@ sealed class FakeETokenSource(FakeTokenState token, string thumbprint, string co
     protected override bool IsTokenPresent() => token.Present;
 
     public override byte[] GetCertificate() => token.CertDer;
+}
+
+/// <summary>时间和计时器都手动推进的时钟：Advance 到期时同步触发计时器</summary>
+sealed class ManualTimerClock : TimeProvider
+{
+    private DateTimeOffset _now = DateTimeOffset.FromUnixTimeSeconds(1_800_000_000);
+    private readonly List<ManualTimer> _timers = [];
+    public override DateTimeOffset GetUtcNow() => _now;
+
+    public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
+    {
+        var timer = new ManualTimer(this, callback, state, _now + dueTime);
+        lock (_timers) _timers.Add(timer);
+        return timer;
+    }
+
+    public void Advance(TimeSpan value)
+    {
+        _now += value;
+        List<ManualTimer> due;
+        lock (_timers)
+        {
+            due = _timers.Where(t => t.Due <= _now).ToList();
+            _timers.RemoveAll(due.Contains);
+        }
+        foreach (var timer in due)
+            timer.Fire();
+    }
+
+    private void Remove(ManualTimer timer) { lock (_timers) _timers.Remove(timer); }
+
+    private sealed class ManualTimer(ManualTimerClock clock, TimerCallback callback, object? state, DateTimeOffset due) : ITimer
+    {
+        public DateTimeOffset Due { get; } = due;
+        public void Fire() => callback(state);
+        public bool Change(TimeSpan dueTime, TimeSpan period) => false;
+        public void Dispose() => clock.Remove(this);
+        public ValueTask DisposeAsync() { Dispose(); return ValueTask.CompletedTask; }
+    }
 }
 
 sealed class TestClock : TimeProvider

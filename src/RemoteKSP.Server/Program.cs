@@ -13,6 +13,20 @@ public class Program
     {
         RemoteKSP.Shared.Localization.UiLanguage.Apply(RemoteKSP.Shared.Localization.UiLanguage.LoadPreference());
 
+        // 服务在用户会话里启动的通知进程：显示配对通知后立即退出，不打开 GUI
+        if (ArgumentAfter(args, "--notify-pairing") is { } encoded)
+        {
+            if (Services.PairingToastContent.Decode(encoded) is { } content)
+            {
+                try { Services.PairingToast.Show(content); }
+                catch (Exception) { /* 没有通知功能（如 Server Core）或被策略禁用：服务端 GUI 里仍能看到请求 */ }
+            }
+            return;
+        }
+
+        // remoteksp-server:pairing 链接（点击配对通知）：打开 GUI 后直接到「配对请求」页
+        App.StartPage = Services.UrlScheme.ParseOpenArgument(ArgumentAfter(args, "--open"));
+
         // Install service mode: install and exit
         if (args.Contains("--install-service"))
         {
@@ -90,6 +104,13 @@ public class Program
         app.Run(mainWindow);
     }
 
+    /// <summary>参数 <paramref name="name"/> 后面紧跟的值；没有时为 null</summary>
+    private static string? ArgumentAfter(string[] args, string name)
+    {
+        var i = Array.IndexOf(args, name);
+        return i >= 0 && i + 1 < args.Length ? args[i + 1] : null;
+    }
+
     private static Microsoft.Extensions.Hosting.IHostBuilder CreateHostBuilder(string[] args) =>
         Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
             .UseWindowsService(options => options.ServiceName = "RemoteKSP")
@@ -120,6 +141,12 @@ public class Program
                     sp.GetRequiredService<RemoteKSP.Server.Services.ActivityLogService>(),
                     sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<RemoteKSP.Server.Services.PinAlertService>>(),
                     RemoteKSP.Server.Services.SessionMessenger.Broadcast));
+                services.AddHostedService(sp => new RemoteKSP.Server.Services.PairingNotifier(
+                    sp.GetRequiredService<RemoteKSP.Server.Core.PairingManager>(),
+                    sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<RemoteKSP.Server.Services.PairingNotifier>>(),
+                    TimeProvider.System,
+                    RemoteKSP.Server.Services.UserSessionLauncher.NotifyPairing,
+                    () => RemoteKSP.Server.Core.ServerConfig.Load().TlsCertThumbprint));
                 services.AddHostedService<SigningHostedService>();
                 services.AddHostedService<RemoteKSP.Server.Services.PipeServer>();
                 services.AddHostedService(sp => new RemoteKSP.Server.Services.KeySourceRetryService(

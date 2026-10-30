@@ -46,6 +46,14 @@ public class ServiceManager
 
         // 防火墙规则失败不影响服务安装（可能由组策略管理）
         await UpdateFirewallRuleAsync(Core.ServerConfig.Load().Port);
+        RegisterUrlScheme();
+    }
+
+    /// <summary>点击配对通知时打开 GUI 的 remoteksp-server: 链接；登记失败只是通知点了没反应，不影响服务</summary>
+    private static void RegisterUrlScheme()
+    {
+        try { UrlScheme.Register(ServiceProgram.InstalledExe); }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or System.Security.SecurityException or System.IO.IOException) { }
     }
 
     /// <summary>
@@ -70,6 +78,7 @@ public class ServiceManager
 
         try { ServiceRecovery.Configure(ServiceName); }
         catch (System.ComponentModel.Win32Exception) { }
+        RegisterUrlScheme();
         if (wasRunning)
             await StartAndWaitAsync();
     }
@@ -89,6 +98,8 @@ public class ServiceManager
 
         await RunOrThrowAsync("sc.exe", $"delete {ServiceName}", Strings.Svc_UninstallFailed);
         await RunHiddenAsync("netsh", $"advfirewall firewall delete rule name=\"{FirewallRuleName}\"");
+        try { UrlScheme.Unregister(); }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or System.Security.SecurityException or System.IO.IOException) { }
 
         string? kept = null;
         if (removeProgram)

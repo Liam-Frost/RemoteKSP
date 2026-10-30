@@ -45,6 +45,7 @@ eToken · 证书存储 · PFX                  （真正的私钥）
 - 按客户端授权可用的证书，随时撤销
 - PIN 保护：PIN 错误、token 已锁或返回无法识别的错误时，**只试一次**就停用证书，不会把 token 试锁
 - PIN、PFX 密码等用 DPAPI 加密，数据目录只允许 SYSTEM 和 Administrators 访问
+- 收到配对请求时发 Windows 通知（服务端 GUI 没开也会提醒），点击直接打开「配对请求」页
 - 活动日志、原地升级、自定义 HTTPS 端口、重新生成 TLS 证书
 
 **客户端**（`RemoteKSP.Client.exe`）

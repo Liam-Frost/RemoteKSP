@@ -15,6 +15,9 @@ public static class App
     public static IServiceProvider Services => _serviceProvider
         ?? throw new InvalidOperationException("Services not initialized");
 
+    /// <summary>GUI 打开后先显示的页面（--open remoteksp-server:pairing）</summary>
+    public static UrlScheme.StartPage StartPage { get; set; }
+
     public static void InitializeServices()
     {
         var services = new ServiceCollection();

@@ -1129,6 +1129,24 @@ The data directory, certificates, PINs and client pairings are not affected; cli
   <data name="Tls_ReadFailed" xml:space="preserve">
     <value>Could not read the TLS certificate {0} ({1}). No new certificate was generated, because every client would have to pair again. Restart the service after fixing the problem; if you really want a new certificate, click "Regenerate TLS certificate" under Settings in the server GUI and pair every client again</value>
   </data>
+  <data name="Toast_AppName" xml:space="preserve">
+    <value>RemoteKSP Server</value>
+  </data>
+  <data name="Toast_PairingBody" xml:space="preserve">
+    <value>{0} ({1}) wants to pair. Verification code {2}; the request expires at {3}.</value>
+  </data>
+  <data name="Toast_PairingTitle" xml:space="preserve">
+    <value>New pairing request</value>
+  </data>
+  <data name="Toast_PairingsBody" xml:space="preserve">
+    <value>Latest: {0} ({1}). Open RemoteKSP Server to review them.</value>
+  </data>
+  <data name="Toast_PairingsTitle" xml:space="preserve">
+    <value>{0} pairing requests waiting</value>
+  </data>
+  <data name="Toast_Review" xml:space="preserve">
+    <value>Review</value>
+  </data>
   <data name="Type_Pfx" xml:space="preserve">
     <value>PFX file</value>
   </data>

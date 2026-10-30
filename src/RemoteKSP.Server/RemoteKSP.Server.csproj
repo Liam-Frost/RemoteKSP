@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>RemoteKSP.Server</AssemblyName>
-    <Version>2.2.0</Version>
+    <Version>2.2.1</Version>
     <!-- UI languages shipped: our own zh-Hans satellite, and no other package translations -->
     <SatelliteResourceLanguages>en;zh-Hans</SatelliteResourceLanguages>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -27,9 +27,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
+    <InternalsVisibleTo Include="SecurityRegression" />
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Windows 通知的图标：通知进程把它写到 %LOCALAPPDATA%\RemoteKSP 后登记给 AppUserModelID -->
+    <EmbeddedResource Include="..\Shared\LOGO\RemoteKSP_LOGO.png" LogicalName="RemoteKSP.Server.Notification.png" />
     <Resource Include="..\Shared\LOGO\RemoteKSP.ico">
       <Link>Assets\RemoteKSP.ico</Link>
     </Resource>
