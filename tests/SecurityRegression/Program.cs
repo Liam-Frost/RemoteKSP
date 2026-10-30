@@ -1542,6 +1542,13 @@ Check(UrlScheme.ParseOpenArgument("remoteksp-server:pairing") == UrlScheme.Start
       UrlScheme.ParseOpenArgument("pairing\" --install-service") == UrlScheme.StartPage.Overview &&
       UrlScheme.ParseOpenArgument(null) == UrlScheme.StartPage.Overview,
     "pairing notification: the link only opens known pages");
+// 链接里的引号可以注入参数：remoteksp-server:pairing" --uninstall-service --remove-data "
+Check(UrlScheme.LinkActivation(["--open", "remoteksp-server:pairing"]) == UrlScheme.StartPage.PairingRequests &&
+      UrlScheme.LinkActivation(["--open", "remoteksp-server:pairing", "--uninstall-service", "--remove-data", ""]) == UrlScheme.StartPage.Overview &&
+      UrlScheme.LinkActivation(["--install-service", "--open", "x"]) == UrlScheme.StartPage.Overview &&
+      UrlScheme.LinkActivation(["--OPEN"]) == UrlScheme.StartPage.Overview &&
+      UrlScheme.LinkActivation(["--uninstall-service"]) == null && UrlScheme.LinkActivation([]) == null,
+    "pairing notification: a link launch only opens the GUI, injected arguments are ignored");
 Check(UserSessionLauncher.WithRunAsInvoker(["Path=C:\\x", "__COMPAT_LAYER=Elevate", "=C:=C:\\", "A=1"]) ==
       "=C:=C:\\\0A=1\0Path=C:\\x\0__COMPAT_LAYER=RunAsInvoker\0\0",
     "pairing notification: the notifier process runs as the user, never elevated");

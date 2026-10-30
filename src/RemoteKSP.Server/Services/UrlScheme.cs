@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Win32;
 
 namespace RemoteKSP.Server.Services;
@@ -28,6 +29,19 @@ public static class UrlScheme
 
     /// <summary>GUI 启动后要打开的页面</summary>
     public enum StartPage { Overview, PairingRequests }
+
+    /// <summary>
+    /// 命令行里有 --open 就是链接启动，返回要打开的页面；否则为 null。登记的命令是 "exe" --open "%1"，
+    /// 正常只有这两个参数；多出来的参数只可能是链接里的引号注入的，这时连页面也不认，只打开概览页
+    /// </summary>
+    public static StartPage? LinkActivation(string[] args)
+    {
+        if (!args.Contains("--open", StringComparer.OrdinalIgnoreCase))
+            return null;
+        return args.Length == 2 && string.Equals(args[0], "--open", StringComparison.OrdinalIgnoreCase)
+            ? ParseOpenArgument(args[1])
+            : StartPage.Overview;
+    }
 
     /// <summary>解析 --open 的参数；不认识的一律回到概览页</summary>
     public static StartPage ParseOpenArgument(string? argument)

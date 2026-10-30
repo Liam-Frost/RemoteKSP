@@ -13,6 +13,15 @@ public class Program
     {
         RemoteKSP.Shared.Localization.UiLanguage.Apply(RemoteKSP.Shared.Localization.UiLanguage.LoadPreference());
 
+        // remoteksp-server: 链接（点击配对通知）。链接里的引号能注入额外参数（%1 加了引号也挡不住），
+        // 所以这是独占模式：只打开 GUI，其他参数一律不看，不会进入安装、卸载或服务分支
+        if (Services.UrlScheme.LinkActivation(args) is { } startPage)
+        {
+            App.StartPage = startPage;
+            RunGui();
+            return;
+        }
+
         // 服务在用户会话里启动的通知进程：显示配对通知后立即退出，不打开 GUI
         if (ArgumentAfter(args, "--notify-pairing") is { } encoded)
         {
@@ -23,9 +32,6 @@ public class Program
             }
             return;
         }
-
-        // remoteksp-server:pairing 链接（点击配对通知）：打开 GUI 后直接到「配对请求」页
-        App.StartPage = Services.UrlScheme.ParseOpenArgument(ArgumentAfter(args, "--open"));
 
         // Install service mode: install and exit
         if (args.Contains("--install-service"))
@@ -87,7 +93,12 @@ public class Program
             return;
         }
 
-        // GUI mode: run WPF application with WPF-UI
+        RunGui();
+    }
+
+    /// <summary>GUI mode: run WPF application with WPF-UI</summary>
+    private static void RunGui()
+    {
         App.InitializeServices();
 
         var app = new Application();
