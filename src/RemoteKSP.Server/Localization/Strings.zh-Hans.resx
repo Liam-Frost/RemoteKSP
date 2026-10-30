@@ -1129,6 +1129,24 @@
   <data name="Tls_ReadFailed" xml:space="preserve">
     <value>无法读取 TLS 证书 {0}（{1}）。没有自动生成新证书，因为换证书后所有客户端都要重新配对。排除问题后重启服务；确实要换证书时，在服务端 GUI「设置」里点「重新生成 TLS 证书」，然后让各客户端重新配对</value>
   </data>
+  <data name="Toast_AppName" xml:space="preserve">
+    <value>RemoteKSP 服务端</value>
+  </data>
+  <data name="Toast_PairingBody" xml:space="preserve">
+    <value>{0}（{1}）请求配对。验证码 {2}，{3} 前有效。</value>
+  </data>
+  <data name="Toast_PairingTitle" xml:space="preserve">
+    <value>新的配对请求</value>
+  </data>
+  <data name="Toast_PairingsBody" xml:space="preserve">
+    <value>最新：{0}（{1}）。打开 RemoteKSP 服务端处理。</value>
+  </data>
+  <data name="Toast_PairingsTitle" xml:space="preserve">
+    <value>{0} 个配对请求待处理</value>
+  </data>
+  <data name="Toast_Review" xml:space="preserve">
+    <value>查看</value>
+  </data>
   <data name="Type_Pfx" xml:space="preserve">
     <value>PFX 文件</value>
   </data>

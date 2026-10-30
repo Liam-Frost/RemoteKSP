@@ -3296,6 +3296,60 @@ namespace RemoteKSP.Server.Localization {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to RemoteKSP Server.
+        /// </summary>
+        public static string Toast_AppName {
+            get {
+                return ResourceManager.GetString("Toast_AppName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ({1}) wants to pair. Verification code {2}; the request expires at {3}..
+        /// </summary>
+        public static string Toast_PairingBody {
+            get {
+                return ResourceManager.GetString("Toast_PairingBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to New pairing request.
+        /// </summary>
+        public static string Toast_PairingTitle {
+            get {
+                return ResourceManager.GetString("Toast_PairingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Latest: {0} ({1}). Open RemoteKSP Server to review them..
+        /// </summary>
+        public static string Toast_PairingsBody {
+            get {
+                return ResourceManager.GetString("Toast_PairingsBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} pairing requests waiting.
+        /// </summary>
+        public static string Toast_PairingsTitle {
+            get {
+                return ResourceManager.GetString("Toast_PairingsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Review.
+        /// </summary>
+        public static string Toast_Review {
+            get {
+                return ResourceManager.GetString("Toast_Review", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to PFX file.
         /// </summary>
         public static string Type_Pfx {

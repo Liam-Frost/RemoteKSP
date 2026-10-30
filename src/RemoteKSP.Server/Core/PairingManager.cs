@@ -55,6 +55,7 @@ public class PairingManager
     /// <summary>创建配对请求</summary>
     public PairingRequest CreateRequest(string machineName, string ipAddress, string clientNonce)
     {
+        PairingRequest snapshot;
         lock (_lock)
         {
             // 清理过期请求
@@ -73,9 +74,15 @@ public class PairingManager
             };
 
             _pendingRequests.Add(request);
-            return Snapshot(request);
+            snapshot = Snapshot(request);
         }
+        // 锁外通知，订阅方（Windows 通知）可以回头查询待处理请求
+        RequestCreated?.Invoke(snapshot);
+        return snapshot;
     }
+
+    /// <summary>收到新的配对请求（参数是副本，不含凭据）</summary>
+    public event Action<PairingRequest>? RequestCreated;
 
     /// <summary>获取待处理请求</summary>
     public List<PairingRequest> GetPendingRequests()

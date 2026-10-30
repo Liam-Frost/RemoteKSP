@@ -10,6 +10,13 @@ section here before it is tagged.
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-10-30
+
+### Added
+- Windows notification when a client asks to pair, shown to signed-in administrators even
+  when the server GUI is closed. Clicking it opens the server on the **Pairing requests**
+  page. Bursts of requests are merged into one notification, at most one every 30 seconds.
+
 ### Changed
 - Until a language is picked under **Settings → Language**, the UI follows the Windows
   display language (Chinese Windows shows Chinese, anything else English) instead of
@@ -38,5 +45,6 @@ The first public release.
 - Built on .NET 10 (LTS); Microsoft.Extensions packages updated to 10.0.
   The executables stay self-contained, so no runtime install is needed.
 
-[Unreleased]: https://github.com/Liam-Frost/RemoteKSP/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/Liam-Frost/RemoteKSP/compare/v2.2.1...HEAD
+[2.2.1]: https://github.com/Liam-Frost/RemoteKSP/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/Liam-Frost/RemoteKSP/releases/tag/v2.2.0

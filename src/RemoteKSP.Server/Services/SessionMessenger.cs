@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace RemoteKSP.Server.Services;
@@ -40,29 +41,37 @@ internal static partial class SessionMessenger
     /// <summary>发给所有活动会话；返回送达的会话数（没人登录时为 0）</summary>
     public static int Broadcast(string title, string message)
     {
-        if (!WTSEnumerateSessionsW(IntPtr.Zero, 0, 1, out var sessions, out var count))
-            return 0;
-
         var sent = 0;
+        foreach (var sessionId in ActiveSessions())
+        {
+            if (WTSSendMessageW(IntPtr.Zero, sessionId,
+                    title, title.Length * sizeof(char), message, message.Length * sizeof(char),
+                    MB_OK | MB_ICONERROR | MB_SETFOREGROUND | MB_TOPMOST, 0, out _, false))
+                sent++;
+        }
+        return sent;
+    }
+
+    /// <summary>有用户登录的活动会话（控制台和 RDP）；session 0 是服务会话，没有用户桌面</summary>
+    public static List<int> ActiveSessions()
+    {
+        var result = new List<int>();
+        if (!WTSEnumerateSessionsW(IntPtr.Zero, 0, 1, out var sessions, out var count))
+            return result;
         try
         {
             var size = Marshal.SizeOf<WTS_SESSION_INFOW>();
             for (var i = 0; i < count; i++)
             {
                 var info = Marshal.PtrToStructure<WTS_SESSION_INFOW>(sessions + i * size);
-                // session 0 是服务会话，没有用户桌面
-                if (info.State != WTSActive || info.SessionId == 0)
-                    continue;
-                if (WTSSendMessageW(IntPtr.Zero, info.SessionId,
-                        title, title.Length * sizeof(char), message, message.Length * sizeof(char),
-                        MB_OK | MB_ICONERROR | MB_SETFOREGROUND | MB_TOPMOST, 0, out _, false))
-                    sent++;
+                if (info.State == WTSActive && info.SessionId != 0)
+                    result.Add(info.SessionId);
             }
         }
         finally
         {
             WTSFreeMemory(sessions);
         }
-        return sent;
+        return result;
     }
 }

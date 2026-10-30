@@ -33,7 +33,9 @@ public partial class MainWindow : FluentWindow
         // Navigate after page provider is set
         Loaded += (s, e) =>
         {
-            RootNavigation.Navigate(typeof(Pages.OverviewPage));
+            RootNavigation.Navigate(App.StartPage == Services.UrlScheme.StartPage.PairingRequests
+                ? typeof(Pages.PairingRequestsPage)
+                : typeof(Pages.OverviewPage));
             // 启动配对请求监控
             ViewModel.StartPairingRequestMonitoring();
         };

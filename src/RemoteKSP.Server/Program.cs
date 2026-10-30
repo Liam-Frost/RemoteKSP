@@ -13,6 +13,26 @@ public class Program
     {
         RemoteKSP.Shared.Localization.UiLanguage.Apply(RemoteKSP.Shared.Localization.UiLanguage.LoadPreference());
 
+        // remoteksp-server: 链接（点击配对通知）。链接里的引号能注入额外参数（%1 加了引号也挡不住），
+        // 所以这是独占模式：只打开 GUI，其他参数一律不看，不会进入安装、卸载或服务分支
+        if (Services.UrlScheme.LinkActivation(args) is { } startPage)
+        {
+            App.StartPage = startPage;
+            RunGui();
+            return;
+        }
+
+        // 服务在用户会话里启动的通知进程：显示配对通知后立即退出，不打开 GUI
+        if (ArgumentAfter(args, "--notify-pairing") is { } encoded)
+        {
+            if (Services.PairingToastContent.Decode(encoded) is { } content)
+            {
+                try { Services.PairingToast.Show(content); }
+                catch (Exception) { /* 没有通知功能（如 Server Core）或被策略禁用：服务端 GUI 里仍能看到请求 */ }
+            }
+            return;
+        }
+
         // Install service mode: install and exit
         if (args.Contains("--install-service"))
         {
@@ -73,7 +93,12 @@ public class Program
             return;
         }
 
-        // GUI mode: run WPF application with WPF-UI
+        RunGui();
+    }
+
+    /// <summary>GUI mode: run WPF application with WPF-UI</summary>
+    private static void RunGui()
+    {
         App.InitializeServices();
 
         var app = new Application();
@@ -88,6 +113,13 @@ public class Program
 
         var mainWindow = App.Services.GetRequiredService<Views.MainWindow>();
         app.Run(mainWindow);
+    }
+
+    /// <summary>参数 <paramref name="name"/> 后面紧跟的值；没有时为 null</summary>
+    private static string? ArgumentAfter(string[] args, string name)
+    {
+        var i = Array.IndexOf(args, name);
+        return i >= 0 && i + 1 < args.Length ? args[i + 1] : null;
     }
 
     private static Microsoft.Extensions.Hosting.IHostBuilder CreateHostBuilder(string[] args) =>
@@ -120,6 +152,12 @@ public class Program
                     sp.GetRequiredService<RemoteKSP.Server.Services.ActivityLogService>(),
                     sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<RemoteKSP.Server.Services.PinAlertService>>(),
                     RemoteKSP.Server.Services.SessionMessenger.Broadcast));
+                services.AddHostedService(sp => new RemoteKSP.Server.Services.PairingNotifier(
+                    sp.GetRequiredService<RemoteKSP.Server.Core.PairingManager>(),
+                    sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<RemoteKSP.Server.Services.PairingNotifier>>(),
+                    TimeProvider.System,
+                    RemoteKSP.Server.Services.UserSessionLauncher.NotifyPairing,
+                    () => RemoteKSP.Server.Core.ServerConfig.Load().TlsCertThumbprint));
                 services.AddHostedService<SigningHostedService>();
                 services.AddHostedService<RemoteKSP.Server.Services.PipeServer>();
                 services.AddHostedService(sp => new RemoteKSP.Server.Services.KeySourceRetryService(
