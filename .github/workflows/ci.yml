@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Build and run regression tests
+        shell: pwsh
+        run: ./publish-all.ps1 -Test
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: RemoteKSP-${{ github.sha }}
+          path: |
+            Publish/Client/RemoteKSP.Client.exe
+            Publish/Server/RemoteKSP.Server.exe
+            Publish/SHA256SUMS.txt
+          retention-days: 14
+          if-no-files-found: error

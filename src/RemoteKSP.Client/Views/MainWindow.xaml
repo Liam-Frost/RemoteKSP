@@ -1,0 +1,79 @@
+<ui:FluentWindow x:Class="RemoteKSP.Client.Views.MainWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                xmlns:sharedui="clr-namespace:RemoteKSP.Shared.Ui;assembly=RemoteKSP.Shared"
+                mc:Ignorable="d"
+                Title="{Binding ViewModel.ApplicationTitle, RelativeSource={RelativeSource Self}}"
+                Icon="pack://application:,,,/Assets/RemoteKSP.ico"
+                Width="1100"
+                Height="750"
+                MinWidth="900"
+                MinHeight="600"
+                d:DesignHeight="750"
+                d:DesignWidth="1100"
+                ExtendsContentIntoTitleBar="True"
+                WindowBackdropType="Mica"
+                WindowCornerPreference="Round"
+                WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar
+            Grid.Row="0"
+            Title="Remote KSP Client"
+            ShowMinimize="True"
+            ShowMaximize="True"
+            ShowClose="True">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/Assets/RemoteKSP.ico" Width="16" Height="16"
+                              RenderOptions.BitmapScalingMode="HighQuality"/>
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <ui:NavigationView
+            Grid.Row="1"
+            x:Name="RootNavigation"
+            MenuItemsSource="{Binding ViewModel.MenuItems, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+            FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+            PaneDisplayMode="Left"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleVisible="True"
+            OpenPaneLength="220"
+            sharedui:NavigationPaneLayout.CompactPaneHeader="True">
+            <ui:NavigationView.Header>
+                <!-- 页面标题行：左侧标题，右侧是当前页面通过 PageHeader.Actions 声明的操作按钮 -->
+                <Grid Height="48" Margin="24,4,24,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        TextTrimming="CharacterEllipsis"
+                        Text="{Binding ViewModel.CurrentPageTitle, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                        VerticalAlignment="Center" />
+                    <ContentPresenter x:Name="PageActionsHost" Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                </Grid>
+            </ui:NavigationView.Header>
+        </ui:NavigationView>
+
+        <!-- Hosts every ContentDialog shown through DialogService -->
+        <ui:ContentDialogHost x:Name="RootContentDialogHost" Grid.Row="0" Grid.RowSpan="2"/>
+
+        <!-- Snackbar host positioned in content area bottom-right, constrained width -->
+        <ui:SnackbarPresenter x:Name="RootSnackbarPresenter"
+                            Grid.Row="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            MaxWidth="420"
+                            Margin="0,0,24,24"/>
+    </Grid>
+</ui:FluentWindow>

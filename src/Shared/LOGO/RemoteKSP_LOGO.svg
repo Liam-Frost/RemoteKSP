@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="471" height="438" viewBox="0 0 471 438" fill="none">
+  <defs>
+    <linearGradient id="outline" x1="24" y1="136" x2="398" y2="370" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#21344F"/><stop offset="0.53" stop-color="#344D6F"/><stop offset="1" stop-color="#536C92"/>
+    </linearGradient>
+    <linearGradient id="wifi" x1="298" y1="19" x2="454" y2="177" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#64ADBD"/><stop offset="0.6" stop-color="#5395B0"/><stop offset="1" stop-color="#4E82A8"/>
+    </linearGradient>
+    <linearGradient id="paperLines" x1="94" y1="195" x2="246" y2="275" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9DB6D2"/><stop offset="1" stop-color="#A7BAD4"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="247" y1="246" x2="312" y2="426" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4C9CE5"/><stop offset="0.52" stop-color="#3776CC"/><stop offset="1" stop-color="#315EA8"/>
+    </linearGradient>
+  </defs>
+  <!-- Certificate outline: deliberately open at lower right of the bottom rule. -->
+  <path d="M282 140 H68 C52 140 41 152 41 168 V333 C41 350 52 361 68 361 H219" stroke="url(#outline)" stroke-width="33" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right-hand independent stem -->
+  <path d="M380 227 V334 C380 350 369 361 352 361 H338" stroke="url(#outline)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Certificate lines -->
+  <path d="M108 213 H235" stroke="url(#paperLines)" stroke-width="29" stroke-linecap="round"/>
+  <path d="M108 264 H188" stroke="url(#paperLines)" stroke-width="29" stroke-linecap="round"/>
+  <!-- Signal terminal and two Wi-Fi arcs (not three). -->
+  <circle cx="324" cy="187" r="28" fill="#4C739C"/>
+  <path d="M314 93 C359 92 393 128 393 167" stroke="url(#wifi)" stroke-width="29" stroke-linecap="round"/>
+  <path d="M314 35 C389 34 448 94 448 166" stroke="url(#wifi)" stroke-width="29" stroke-linecap="round"/>
+  <!-- Ribbon: two flat notched tails, behind the medallion -->
+  <path d="M243 326 H313 V422 C313 425 310 426 307 424 L278 401 L249 424 C246 426 243 425 243 422 Z" fill="url(#badge)"/>
+  <!-- Seal -->
+  <circle cx="278" cy="299" r="53" fill="url(#badge)"/>
+  <circle cx="278" cy="299" r="23" fill="#E3F1FA"/>
+</svg>

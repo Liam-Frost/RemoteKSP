@@ -1,0 +1,56 @@
+<UserControl x:Class="RemoteKSP.Shared.Ui.MetricCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:sharedui="clr-namespace:RemoteKSP.Shared.Ui"
+             x:Name="Root">
+    <!-- 首页状态卡片：图标（功能分类）+ 标题 + 主值（可带状态标记）+ 说明 + 操作。
+         IsWide=True 时操作放在右侧（全宽卡片），否则放在底部（多列卡片，底部对齐） -->
+    <!-- WPF-UI 的 Card 默认 VerticalAlignment=Center：必须拉伸，同一行的卡片才等高、底部操作才对齐 -->
+    <ui:Card Padding="20" VerticalAlignment="Stretch"
+             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+        <Grid x:Name="Layout">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 功能图标：所有卡片统一的强调色，不表示状态 -->
+            <Border Width="40" Height="40" CornerRadius="8" Margin="0,0,16,0" VerticalAlignment="Top"
+                    Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+                <ui:SymbolIcon Symbol="{Binding Symbol, ElementName=Root}" FontSize="20"
+                               Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"/>
+            </Border>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                <TextBlock Text="{Binding Title, ElementName=Root}" Style="{StaticResource MetricTitleTextStyle}"/>
+                <Grid Margin="0,2,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- 状态标记：只在 Status 不为 None 时出现 -->
+                    <Grid x:Name="StatusMark" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center">
+                        <ui:SymbolIcon x:Name="StatusIcon" FontSize="16" Filled="True"/>
+                        <ui:ProgressRing x:Name="StatusRing" IsIndeterminate="True" Width="14" Height="14"
+                                         Visibility="Collapsed"/>
+                    </Grid>
+                    <TextBlock Grid.Column="1" Text="{Binding Value, ElementName=Root}"
+                               Style="{StaticResource MetricValueTextStyle}"/>
+                </Grid>
+                <TextBlock Text="{Binding Detail, ElementName=Root}" Style="{StaticResource MetricDetailTextStyle}"
+                           Margin="0,4,0,0" ToolTipService.InitialShowDelay="400"
+                           ToolTip="{Binding DetailToolTip, ElementName=Root}"
+                           Visibility="{Binding Detail, ElementName=Root, Converter={StaticResource StringEmptyToVisibilityConverter}}"/>
+            </StackPanel>
+
+            <ContentPresenter x:Name="ActionsHost" Content="{Binding Actions, ElementName=Root}"/>
+        </Grid>
+    </ui:Card>
+</UserControl>

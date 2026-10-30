@@ -1,0 +1,168 @@
+name: Release
+
+# Push a tag such as v2.2.0 (or v2.2.0-rc.1 for a pre-release) to publish a GitHub Release.
+# The tag must match <Version> in both .csproj files and have a section in CHANGELOG.md.
+#
+# Actions → Release → Run workflow runs the same checks and build as a dry run:
+# nothing is attested or published, the release files are kept as a workflow artifact.
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to rehearse, e.g. 2.2.0 (dry run, nothing is published)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build, test and attest
+    runs-on: windows-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      id-token: write      # build provenance
+      attestations: write
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      version: ${{ steps.meta.outputs.version }}
+      prerelease: ${{ steps.meta.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Validate tag, project versions and changelog
+        id: meta
+        shell: pwsh
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          $tag = if ('${{ github.event_name }}' -eq 'push') { '${{ github.ref_name }}' } else { "v$env:INPUT_VERSION" }
+          if ($tag -notmatch '^v(\d+\.\d+\.\d+)(-[0-9A-Za-z.-]+)?$') { throw "Tag '$tag' is not vX.Y.Z[-suffix]" }
+          $version = $tag.Substring(1)
+          $base = $Matches[1]
+          foreach ($proj in 'src/RemoteKSP.Client/RemoteKSP.Client.csproj', 'src/RemoteKSP.Server/RemoteKSP.Server.csproj') {
+              $projVersion = ([xml](Get-Content $proj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1
+              if ($projVersion -ne $base) { throw "$proj has <Version>$projVersion</Version>, tag is $tag" }
+          }
+          if (-not (Select-String -Path CHANGELOG.md -Pattern "^## \[$([regex]::Escape($version))\]" -Quiet)) {
+              throw "CHANGELOG.md has no '## [$version]' section"
+          }
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "prerelease=$($version.Contains('-').ToString().ToLower())" >> $env:GITHUB_OUTPUT
+
+      - name: Build and run regression tests
+        shell: pwsh
+        run: ./publish-all.ps1 -Version ${{ steps.meta.outputs.version }} -Test
+
+      - name: Stage release files
+        shell: pwsh
+        run: |
+          $tag = '${{ steps.meta.outputs.tag }}'
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item Publish/Server/RemoteKSP.Server.exe "dist/RemoteKSP.Server-$tag.exe"
+          Copy-Item Publish/Client/RemoteKSP.Client.exe "dist/RemoteKSP.Client-$tag.exe"
+          Compress-Archive -Path native/ksp/RemoteKSP_x64.dll, native/ksp/RemoteKSP_x86.dll `
+              -DestinationPath "dist/RemoteKSP.NativeKSP-$tag.zip"
+          Push-Location dist
+          $sums = Get-ChildItem -File | Sort-Object Name | ForEach-Object {
+              "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
+          }
+          Set-Content SHA256SUMS.txt -Value $sums -Encoding ascii
+          Get-Content SHA256SUMS.txt
+          Pop-Location
+
+      - name: Attest build provenance
+        if: github.event_name == 'push'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/*.exe
+            dist/*.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    # Add required reviewers to this environment in Settings → Environments to gate publishing
+    environment: release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: release
+          path: dist
+
+      - name: Write release notes
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Section of CHANGELOG.md between "## [VERSION]" and the next "## ["
+          awk -v v="$VERSION" '
+            index($0, "## [" v "]") == 1 { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          size() {
+            awk -v b="$(stat -c %s "dist/$1")" \
+              'BEGIN { if (b >= 1048576) printf "%.0f MB", b / 1048576; else printf "%.0f KB", b / 1024 }'
+          }
+          cat >> notes.md <<EOF
+
+          ## Downloads
+
+          | File | Size | Description |
+          |------|------|-------------|
+          | \`RemoteKSP.Server-$TAG.exe\` | $(size "RemoteKSP.Server-$TAG.exe") | Server: key sources, pairing, signing service |
+          | \`RemoteKSP.Client-$TAG.exe\` | $(size "RemoteKSP.Client-$TAG.exe") | Client: pairing, certificate sync, KSP installer |
+          | \`RemoteKSP.NativeKSP-$TAG.zip\` | $(size "RemoteKSP.NativeKSP-$TAG.zip") | Native KSP DLLs (x64/x86), already embedded in the client |
+          | \`SHA256SUMS.txt\` | | SHA-256 checksums of the files above |
+
+          Both executables are self-contained (no .NET install needed) and must run as Administrator.
+          Upgrade the server, the client **and** the KSP DLL together.
+
+          ## Verify your download
+
+          The binaries are not Authenticode-signed. Check them before running:
+
+          \`\`\`powershell
+          Get-FileHash .\\RemoteKSP.Server-$TAG.exe -Algorithm SHA256   # compare with SHA256SUMS.txt
+          gh attestation verify .\\RemoteKSP.Server-$TAG.exe --repo $REPO
+          \`\`\`
+          EOF
+          cat notes.md
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          flags=(--verify-tag --title "RemoteKSP $TAG" --notes-file notes.md)
+          if [ "$PRERELEASE" = "true" ]; then flags+=(--prerelease); else flags+=(--latest); fi
+          gh release create "$TAG" "${flags[@]}" dist/*

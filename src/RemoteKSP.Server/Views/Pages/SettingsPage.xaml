@@ -1,0 +1,147 @@
+<Page x:Class="RemoteKSP.Server.Views.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800"
+      ScrollViewer.CanContentScroll="False">
+    <!-- 页面自己滚动。WPF-UI 导航时按页面的 CanContentScroll 决定外面要不要再包一层 DynamicScrollViewer
+         （True = 包，Page 默认是 True）。两层都在时外层给页面无限高度，里面这层永远滚不动却会吃掉鼠标滚轮 -->
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,0,24,24" MaxWidth="720">
+            <!-- Windows 服务管理 -->
+            <ui:Card Margin="0,0,0,16" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="Windows 服务" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
+
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="服务状态" Style="{StaticResource PropertyLabelTextStyle}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="{Binding ViewModel.ServiceStatus, RelativeSource={RelativeSource AncestorType=Page}}"
+                                       Style="{StaticResource PropertyValueTextStyle}" VerticalAlignment="Center"/>
+                            <ui:Button Content="刷新" Icon="{ui:SymbolIcon ArrowSync20}" Margin="16,0,0,0"
+                                       Command="{Binding ViewModel.RefreshServiceStatusCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- 服务程序：固定装在 Program Files\RemoteKSP，这里显示实际注册的位置和版本是否一致 -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="服务程序" Style="{StaticResource PropertyLabelTextStyle}"/>
+                        <TextBlock Grid.Column="1" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap" VerticalAlignment="Center"
+                                   Text="{Binding ViewModel.ProgramPath, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ServiceInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </Grid>
+                    <TextBlock Margin="90,0,0,16" TextWrapping="Wrap" Style="{StaticResource CaptionTextStyle}"
+                               Text="{Binding ViewModel.ProgramStatus, RelativeSource={RelativeSource AncestorType=Page}}"/>
+
+                    <WrapPanel IsEnabled="{Binding ViewModel.IsBusy, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource InverseBoolConverter}}">
+                        <ui:Button Content="安装服务" Icon="{ui:SymbolIcon Add24}" Appearance="Primary" Margin="0,0,8,8"
+                                   Command="{Binding ViewModel.InstallServiceCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ServiceInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowUpload24}" Appearance="Primary" Margin="0,0,8,8"
+                                   Content="{Binding ViewModel.ProgramActionText, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Command="{Binding ViewModel.UpdateProgramCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ProgramNeedsAction, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <ui:Button Content="启动服务" Icon="{ui:SymbolIcon Play24}" Margin="0,0,8,8"
+                                   Command="{Binding ViewModel.StartServiceCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ServiceInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                   IsEnabled="{Binding ViewModel.ServiceRunning, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource InverseBoolConverter}}"/>
+                        <ui:Button Content="停止服务" Icon="{ui:SymbolIcon Stop24}" Margin="0,0,8,8"
+                                   Command="{Binding ViewModel.StopServiceCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ServiceInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                   IsEnabled="{Binding ViewModel.ServiceRunning, RelativeSource={RelativeSource AncestorType=Page}}"/>
+                        <ui:Button Content="重新安装服务" Icon="{ui:SymbolIcon ArrowCounterclockwise24}" Margin="0,0,8,8"
+                                   Command="{Binding ViewModel.ReinstallServiceCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ServiceInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <ui:Button Content="卸载服务…" Icon="{ui:SymbolIcon Delete24}" Margin="0,0,8,8"
+                                   Command="{Binding ViewModel.UninstallServiceCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Visibility="{Binding ViewModel.ServiceInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </WrapPanel>
+
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Margin="0,4,0,0"
+                               Text="{Binding ViewModel.BusyText, RelativeSource={RelativeSource AncestorType=Page}}"
+                               Visibility="{Binding ViewModel.IsBusy, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Margin="0,8,0,0"
+                               Text="服务以 SYSTEM 身份运行，服务程序固定放在 Program Files\RemoteKSP（只有管理员能修改）。升级时用新版本打开本程序，点「更新服务程序」即可，数据和配对不受影响。"/>
+                </StackPanel>
+            </ui:Card>
+
+            <!-- HTTPS 端口 -->
+            <ui:Card Margin="0,0,0,16" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="HTTPS 端口" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                    <StackPanel Orientation="Horizontal"
+                                IsEnabled="{Binding ViewModel.IsBusy, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource InverseBoolConverter}}">
+                        <ui:TextBox Width="120" MaxLength="5" PlaceholderText="8443"
+                                    Text="{Binding ViewModel.HttpsPort, RelativeSource={RelativeSource AncestorType=Page}, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ui:Button Content="应用" Icon="{ui:SymbolIcon Checkmark24}" Margin="8,0,0,0"
+                                   Command="{Binding ViewModel.ApplyPortCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Margin="0,12,0,0"
+                               Text="客户端连接服务端用的端口（默认 8443）。修改后会更新防火墙规则并重启服务；已配对的客户端都要移除该服务端，再用新端口重新配对。"/>
+                </StackPanel>
+            </ui:Card>
+
+            <!-- HTTPS 使用的 TLS 证书（server.pfx） -->
+            <ui:Card Margin="0,0,0,16" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="TLS 证书" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="指纹" Style="{StaticResource PropertyLabelTextStyle}"/>
+                        <TextBlock Grid.Column="1" FontFamily="Consolas" TextWrapping="Wrap"
+                                   Text="{Binding ViewModel.TlsThumbprint, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Style="{StaticResource PropertyValueTextStyle}"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="有效期至" Style="{StaticResource PropertyLabelTextStyle}"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding ViewModel.TlsNotAfter, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Style="{StaticResource PropertyValueTextStyle}"/>
+                    </Grid>
+
+                    <ui:Button Content="重新生成 TLS 证书" Icon="{ui:SymbolIcon ShieldKeyhole24}" HorizontalAlignment="Left"
+                               Command="{Binding ViewModel.RegenerateTlsCertificateCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+
+                    <TextBlock Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Margin="0,12,0,0"
+                               Text="证书损坏或服务因证书无法启动时使用。重新生成后，所有已配对的客户端都要移除该服务端并重新配对；原 server.pfx 会备份到数据目录。"/>
+                </StackPanel>
+            </ui:Card>
+
+            <ui:Card Margin="0,0,0,16" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="关于" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                    <TextBlock Text="Remote KSP Server" FontSize="14" FontWeight="Medium"/>
+                    <TextBlock Text="{Binding ViewModel.Version, RelativeSource={RelativeSource AncestorType=Page}, StringFormat='版本 {0}'}"
+                               FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+            </ui:Card>
+
+            <ui:Card Padding="24">
+                <StackPanel>
+                    <TextBlock Text="数据目录" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                    <TextBlock Text="{Binding ViewModel.DataDirectory, RelativeSource={RelativeSource AncestorType=Page}}"
+                               FontFamily="Consolas" FontSize="12" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ui:Card>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

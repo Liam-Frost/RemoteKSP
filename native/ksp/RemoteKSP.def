@@ -1,0 +1,5 @@
+LIBRARY RemoteKSP
+EXPORTS
+    GetKeyStorageInterface
+    DllRegisterServer PRIVATE
+    DllUnregisterServer PRIVATE

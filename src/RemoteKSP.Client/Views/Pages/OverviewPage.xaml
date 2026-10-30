@@ -1,0 +1,74 @@
+<Page x:Class="RemoteKSP.Client.Views.Pages.OverviewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:net="clr-namespace:RemoteKSP.Shared.Networking;assembly=RemoteKSP.Shared"
+      xmlns:sharedui="clr-namespace:RemoteKSP.Shared.Ui;assembly=RemoteKSP.Shared"
+      mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800"
+      ScrollViewer.CanContentScroll="False">
+    <!-- 页面自己滚动，不让 NavigationView 再包一层 DynamicScrollViewer（原因见服务端 SettingsPage.xaml） -->
+
+    <!-- 页面标题「概览」由窗口标题行显示；「运行诊断」放在同一行右侧 -->
+    <sharedui:PageHeader.Actions>
+        <ui:Button Content="运行诊断" Icon="{ui:SymbolIcon CheckmarkStarburst24}" Appearance="Primary"
+                   Command="{Binding ViewModel.RunDiagnosticsCommand}"/>
+    </sharedui:PageHeader.Actions>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="{StaticResource OverviewPagePadding}">
+
+            <!-- 系统状态：宽时三列，较窄两列（第三张占满一行），更窄时单列 -->
+            <sharedui:ResponsiveColumnsPanel MaxColumns="3" MinColumnWidth="260"
+                                             ColumnSpacing="{StaticResource OverviewCardSpacing}"
+                                             RowSpacing="{StaticResource OverviewCardSpacing}"
+                                             Margin="{StaticResource OverviewSectionMargin}">
+                <sharedui:MetricCard Symbol="Desktop24" Title="Windows KSP"
+                                     Value="{Binding ViewModel.KspValue, RelativeSource={RelativeSource AncestorType=Page}}"
+                                     Detail="{Binding ViewModel.KspDetail, RelativeSource={RelativeSource AncestorType=Page}}"
+                                     Status="{Binding ViewModel.KspStatusKind, RelativeSource={RelativeSource AncestorType=Page}}">
+                    <sharedui:MetricCard.Actions>
+                        <StackPanel Orientation="Horizontal">
+                            <ui:Button Appearance="Primary" Margin="0,0,8,0"
+                                       Content="{Binding ViewModel.InstallKspText, RelativeSource={RelativeSource AncestorType=Page}}"
+                                       Command="{Binding ViewModel.InstallKspCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                       Visibility="{Binding ViewModel.KspNeedsInstall, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <!-- 卸载是低频破坏性操作：低强调样式，点击后仍有确认对话框 -->
+                            <ui:Button Content="卸载" Style="{StaticResource SubtleButtonStyle}"
+                                       Command="{Binding ViewModel.UninstallKspCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                       Visibility="{Binding ViewModel.KspInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </sharedui:MetricCard.Actions>
+                </sharedui:MetricCard>
+
+                <!-- 只表示已配对，不表示在线：目前没有实时在线检测 -->
+                <sharedui:MetricCard Symbol="Server24" Title="已配对服务端"
+                                     Value="{Binding ViewModel.ServersValue, RelativeSource={RelativeSource AncestorType=Page}}"
+                                     Detail="{Binding ViewModel.ServersDetail, RelativeSource={RelativeSource AncestorType=Page}}"
+                                     DetailToolTip="{Binding ViewModel.ServersToolTip, RelativeSource={RelativeSource AncestorType=Page}, TargetNullValue={x:Null}}">
+                    <sharedui:MetricCard.Actions>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowRight16}"
+                                   Content="{Binding ViewModel.ServersActionText, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Command="{Binding ViewModel.OpenServersCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+                    </sharedui:MetricCard.Actions>
+                </sharedui:MetricCard>
+
+                <!-- 只统计已绑定数量；证书是否过期、私钥能否调用属于各自独立的状态，这里不标成功 -->
+                <sharedui:MetricCard Symbol="Certificate24" Title="已绑定证书"
+                                     Value="{Binding ViewModel.CertificatesValue, RelativeSource={RelativeSource AncestorType=Page}}"
+                                     Detail="{Binding ViewModel.CertificatesDetail, RelativeSource={RelativeSource AncestorType=Page}}">
+                    <sharedui:MetricCard.Actions>
+                        <ui:Button Icon="{ui:SymbolIcon ArrowRight16}"
+                                   Content="{Binding ViewModel.CertificatesActionText, RelativeSource={RelativeSource AncestorType=Page}}"
+                                   Command="{Binding ViewModel.OpenCertificatesCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
+                    </sharedui:MetricCard.Actions>
+                </sharedui:MetricCard>
+            </sharedui:ResponsiveColumnsPanel>
+
+            <!-- 本机网络：独立一行 -->
+            <net:NetworkAddressesCard Title="本机网络"
+                                      DataContext="{Binding ViewModel.Network, RelativeSource={RelativeSource AncestorType=Page}}"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

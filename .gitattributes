@@ -1,0 +1,8 @@
+* text=auto
+
+# cmd.exe mis-parses labels and multi-line commands in LF batch files
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+*.png binary
+*.ico binary

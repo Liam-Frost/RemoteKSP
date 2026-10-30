@@ -1,0 +1,48 @@
+<UserControl x:Class="RemoteKSP.Client.Views.Dialogs.AddServerForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Width="520" MaxWidth="600" MinWidth="480">
+    <StackPanel>
+        <TextBlock Text="服务端名称（可选）" FontSize="13" Margin="0,0,0,4"/>
+        <ui:TextBox x:Name="NameBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                    PlaceholderText="例如: 公司签名服务器" Margin="0,0,0,16"/>
+
+        <TextBlock Text="服务器地址" FontSize="13" Margin="0,0,0,4"/>
+        <ui:TextBox x:Name="ServerAddressBox"
+                    Text="{Binding ServerAddress, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    PlaceholderText="例如: 192.168.1.100" Margin="0,0,0,2"/>
+        <TextBlock Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=ServerAddressBox}"
+                   Foreground="#DC2626" FontSize="12" Margin="0,2,0,0"
+                   Visibility="{Binding (Validation.HasError), ElementName=ServerAddressBox, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Border Height="14" Visibility="{Binding (Validation.HasError), ElementName=ServerAddressBox, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+
+        <TextBlock Text="端口" FontSize="13" Margin="0,0,0,4"/>
+        <ui:TextBox x:Name="PortBox"
+                    Text="{Binding Port, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                    PlaceholderText="8443" MaxWidth="120" HorizontalAlignment="Left" Margin="0,0,0,2"/>
+        <TextBlock Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=PortBox}"
+                   Foreground="#DC2626" FontSize="12" Margin="0,2,0,0"
+                   Visibility="{Binding (Validation.HasError), ElementName=PortBox, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Border Height="14" Visibility="{Binding (Validation.HasError), ElementName=PortBox, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+
+        <!-- 验证码显示 -->
+        <ui:Card Padding="16" Margin="0,0,0,16" Background="#FEF3C7"
+                 Visibility="{Binding ShowVerificationCode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <StackPanel>
+                <TextBlock Text="验证码" FontSize="13" FontWeight="SemiBold" Foreground="#92400E"/>
+                <TextBlock Text="{Binding VerificationCode}"
+                           FontFamily="Consolas, Cascadia Mono" FontSize="24" FontWeight="Bold"
+                           Foreground="#92400E" Margin="0,4,0,0"/>
+                <TextBlock Text="请核对服务端「配对请求」页显示的验证码是否一致" FontSize="12"
+                           Foreground="#92400E" Margin="0,8,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+        </ui:Card>
+
+        <!-- 配对状态 -->
+        <ui:InfoBar IsOpen="{Binding IsPairing}"
+                    Severity="Informational" IsClosable="False"
+                    Title="正在配对"
+                    Message="{Binding PairingStatus}"/>
+    </StackPanel>
+</UserControl>

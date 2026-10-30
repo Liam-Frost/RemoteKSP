@@ -1,0 +1,29 @@
+# Build outputs
+bin/
+obj/
+Publish/
+dist/
+*.dll
+*.exe
+*.obj
+*.lib
+*.exp
+*.pdb
+
+# Test files
+test.exe
+test.ps1
+*.cer
+*.pfx
+
+# Logs
+*.log
+
+# VS
+.vs/
+*.user
+*.suo
+
+# Temp
+*.tmp
+*.cache

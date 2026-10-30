@@ -1,0 +1,11 @@
+<UserControl x:Class="RemoteKSP.Client.Views.Dialogs.TextInputForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             Width="400">
+    <StackPanel>
+        <TextBlock x:Name="LabelText" FontSize="13" Margin="0,0,0,4"/>
+        <ui:TextBox x:Name="ValueBox"/>
+        <TextBlock x:Name="HintText" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,135 @@
+# Building, testing and releasing
+
+## Requirements
+
+- Windows 10 / 11 (x64)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) — the exact feature band is pinned in `global.json`
+- Visual Studio 2022 (Community is fine) or Build Tools with the **Desktop development with C++**
+  workload, for the native KSP DLL
+- PowerShell 7 (`pwsh`) is recommended; Windows PowerShell 5.1 also works
+
+## One-command build
+
+```powershell
+.\publish-all.ps1                  # native DLLs + Client + Server → Publish\
+.\publish-all.ps1 -Version 2.2.0   # stamp the version into the executables
+.\publish-all.ps1 -Test            # also run the regression tests
+```
+
+Output:
+
+| File | Size | Notes |
+|---|---|---|
+| `Publish\Client\RemoteKSP.Client.exe` | ~135 MB | Self-contained, embeds both KSP DLLs |
+| `Publish\Server\RemoteKSP.Server.exe` | ~161 MB | Self-contained, includes ASP.NET Core |
+| `Publish\SHA256SUMS.txt` | | Checksums of the two executables |
+| `native\ksp\RemoteKSP_x64.dll`, `RemoteKSP_x86.dll` | ~25 / 20 KB | Native KSP |
+
+The native DLLs are built with `/Brepro`, so unchanged sources produce byte-identical
+DLLs. The client compares the installed DLL with its embedded copy by content, so this
+keeps it from reporting a needless "update KSP".
+
+## Building the pieces separately
+
+```powershell
+native\ksp\build.cmd                                    # must run before building the client
+dotnet build RemoteKSP.sln -c Release
+```
+
+`RemoteKSP.Client` embeds `native\ksp\RemoteKSP_x64.dll` and `RemoteKSP_x86.dll` as
+resources; if they are missing the client build fails with a missing resource error.
+Run `native\ksp\build.cmd` first.
+
+## Tests
+
+`tests/SecurityRegression` is a console program with ~220 checks covering
+authentication, replay protection, pairing, real loopback HTTPS, the native HTTP
+client's TLS pinning, eToken PIN protection, data directory ACLs and service
+deployment. It uses synthetic credentials and temporary certificates; it does not
+install the KSP, write to HKLM or touch real keys.
+
+```powershell
+tests\native\build.cmd                                  # x64/x86 native HTTP probes
+dotnet run --project tests/SecurityRegression -c Release
+```
+
+It exits non-zero on the first failing check. Loopback networking must be allowed.
+Optional end-to-end signing with a real `signtool` and certificate:
+
+```powershell
+$env:REMOTEKSP_SIGNTOOL_E2E = '<path to signtool.exe>|<thumbprint>|<file to sign>'
+```
+
+Other dev-only projects (not part of releases):
+
+| Project | Purpose |
+|---|---|
+| `tests/ServiceRecoveryProbe` | Exercises service recovery settings against a throwaway service; needs elevation |
+| `src/LayoutProbe` | Renders pages with sample data to check layout |
+| `tools/IconGenerator` | Generates `RemoteKSP.ico` from the SVG logo |
+| `tools/Test-ETokenPinError.ps1` | Records the error codes a real eToken returns (see `docs/Archive/ETOKEN_PIN_ERROR_CHECK.md`) |
+
+## Project layout
+
+```
+RemoteKSP.sln
+├── src/
+│   ├── RemoteKSP.Server/     WPF GUI + Windows service + ASP.NET Core signing API
+│   ├── RemoteKSP.Client/     WPF GUI: pairing, certificate sync, KSP installer
+│   ├── Shared/               Protocol, UI components, theme, logo
+│   └── LayoutProbe/          dev-only
+├── native/ksp/               Native CNG Key Storage Provider (C++, WinHTTP)
+├── tests/                    SecurityRegression, ServiceRecoveryProbe, native probes
+├── tools/                    IconGenerator, eToken error-code script
+├── docs/
+└── publish-all.ps1
+```
+
+## Continuous integration
+
+`.github/workflows/ci.yml` runs `publish-all.ps1 -Test` on `windows-latest` for every
+push to `master` and every pull request, and uploads the executables as a workflow
+artifact (kept 14 days).
+
+## Making a release
+
+1. Update `<Version>` in `src/RemoteKSP.Client/RemoteKSP.Client.csproj` **and**
+   `src/RemoteKSP.Server/RemoteKSP.Server.csproj`.
+2. Move the `[Unreleased]` entries in `CHANGELOG.md` into a new
+   `## [x.y.z] - YYYY-MM-DD` section.
+3. Commit and push, then rehearse the release: **Actions → Release → Run workflow**
+   with the version (e.g. `2.2.0`). This runs the same checks, build and tests and keeps
+   the release files as a workflow artifact, but attests and publishes nothing.
+4. Tag and push:
+
+   ```powershell
+   git tag -a v2.2.0 -m "RemoteKSP 2.2.0"
+   git push origin v2.2.0
+   ```
+
+`.github/workflows/release.yml` then:
+
+1. Checks that the tag matches both project versions and that `CHANGELOG.md` has a
+   section for it — otherwise the release fails before anything is built.
+2. Builds and runs the full regression suite with the version stamped in.
+3. Stages `RemoteKSP.Server-vX.Y.Z.exe`, `RemoteKSP.Client-vX.Y.Z.exe`,
+   `RemoteKSP.NativeKSP-vX.Y.Z.zip` and `SHA256SUMS.txt`.
+4. Creates [build provenance attestations](https://docs.github.com/actions/security-for-github-actions/using-artifact-attestations)
+   for the binaries (`gh attestation verify <file> --repo Liam-Frost/RemoteKSP`).
+5. Waits for approval if the `release` environment has required reviewers
+   (Settings → Environments), then publishes the GitHub Release with the changelog section plus download and
+   verification instructions as the notes. Tags with a suffix (`v2.2.0-rc.1`) are
+   published as pre-releases and use the numeric part for the project-version check.
+
+The executables are not Authenticode-signed. If a code-signing certificate becomes
+available, add a signing step between steps 2 and 3 so the checksums and attestations
+cover the signed files.
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| `vswhere.exe not found` | Install Visual Studio 2022 or Build Tools with the C++ workload |
+| Client build: missing resource `RemoteKSP_x64.dll` | Run `native\ksp\build.cmd` first |
+| `Publish\Server\RemoteKSP.Server.exe is in use` | Close the server GUI, or `sc.exe stop RemoteKSP` if a service is running from `Publish\` |
+| Regression test fails at the HTTPS checks | Allow loopback connections (some firewalls / proxies block them) |
