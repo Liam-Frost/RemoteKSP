@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>RemoteKSP.Server</AssemblyName>
-    <Version>2.1.2</Version>
+    <Version>2.2.0</Version>
     <!-- UI languages shipped: our own zh-Hans satellite, and no other package translations -->
     <SatelliteResourceLanguages>en;zh-Hans</SatelliteResourceLanguages>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
