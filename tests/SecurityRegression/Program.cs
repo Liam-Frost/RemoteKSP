@@ -1503,6 +1503,8 @@ foreach (var (name, rm) in new[]
 Check(UiLanguage.Normalize("zh-CN") == UiLanguage.ChineseSimplified && UiLanguage.Normalize("en-US") == UiLanguage.English &&
       UiLanguage.Normalize("fr-FR") == null && UiLanguage.Normalize(null) == null,
     "localization: culture names map to the supported languages");
+Check(UiLanguage.Supported.Any(o => o.Code == UiLanguage.SystemLanguage),
+    "localization: the Windows display language maps to a supported language");
 
 Console.WriteLine($"\nAll {passed} checks passed (including feature tests).");
 

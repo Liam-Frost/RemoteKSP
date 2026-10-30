@@ -15,8 +15,9 @@ public sealed record UiLanguageOption(string Code, string DisplayName)
 
 /// <summary>
 /// UI language preference, shared by the server and client GUIs and kept per user in
-/// HKCU\Software\RemoteKSP. Only the UI culture is changed; dates and numbers keep the
-/// Windows regional format. A change takes effect the next time the app starts.
+/// HKCU\Software\RemoteKSP. Until the user picks one, the Windows display language is used.
+/// Only the UI culture is changed; dates and numbers keep the Windows regional format.
+/// A change takes effect the next time the app starts.
 /// </summary>
 public static class UiLanguage
 {
@@ -52,17 +53,23 @@ public static class UiLanguage
         return null;
     }
 
-    /// <summary>The saved preference, or <see cref="Default"/> when none is saved or it cannot be read.</summary>
+    /// <summary>
+    /// The Windows display language of this user, mapped to a supported language (English when it is
+    /// none of them). Captured before <see cref="Apply"/> first changes the UI culture of this process.
+    /// </summary>
+    public static string SystemLanguage { get; } = Normalize(CultureInfo.CurrentUICulture.Name) ?? Default;
+
+    /// <summary>The saved preference, or <see cref="SystemLanguage"/> when none is saved or it cannot be read.</summary>
     public static string LoadPreference()
     {
         try
         {
             using var key = Registry.CurrentUser.OpenSubKey(KeyPath, false);
-            return Normalize(key?.GetValue(ValueName) as string) ?? Default;
+            return Normalize(key?.GetValue(ValueName) as string) ?? SystemLanguage;
         }
         catch
         {
-            return Default;
+            return SystemLanguage;
         }
     }
 

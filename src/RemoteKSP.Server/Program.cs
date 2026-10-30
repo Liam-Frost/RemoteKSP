@@ -53,7 +53,7 @@ public class Program
         // Service mode: run as Windows Service
         if (args.Contains("--service"))
         {
-            RemoteKSP.Shared.Localization.UiLanguage.Apply(Core.ServerConfig.Load().Language ?? RemoteKSP.Shared.Localization.UiLanguage.Default);
+            RemoteKSP.Shared.Localization.UiLanguage.Apply(Core.ServerConfig.Load().Language ?? RemoteKSP.Shared.Localization.UiLanguage.SystemLanguage);
             var host = CreateHostBuilder(args).Build();
 
             // 数据目录里的 PIN、客户端密钥和 TLS 私钥用 DPAPI LocalMachine 加密，本机任何进程都能解密，

@@ -62,6 +62,7 @@ locally against the certificate's public key before it is returned.
 - Checks the server certificate fingerprint before any request header is sent
 
 Both apps are available in **English** and **Simplified Chinese** (Settings → Language).
+Until you pick one, they follow the Windows display language (English for any language other than Chinese).
 
 ## Requirements
 
