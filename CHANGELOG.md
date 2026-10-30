@@ -10,6 +10,11 @@ section here before it is tagged.
 
 ## [Unreleased]
 
+### Changed
+- Until a language is picked under **Settings → Language**, the UI follows the Windows
+  display language (Chinese Windows shows Chinese, anything else English) instead of
+  always starting in English.
+
 ## [2.2.0] - 2026-10-30
 
 The first public release.

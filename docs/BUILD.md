@@ -86,7 +86,8 @@ The regression suite fails if a translation is missing a string or its `{0}`
 placeholders differ from English.
 
 The chosen language is stored per user in `HKCU\Software\RemoteKSP\UILanguage`
-(default `en`) and applies after a restart. The service writes its own messages
+and applies after a restart; until the user picks one, the Windows display language is used
+(English when it is not a supported language). The service falls back to the system's display language. The service writes its own messages
 (activity log, Windows alerts) in the language last used by the server GUI, and answers
 each client in the language of its `Accept-Language` header.
 
