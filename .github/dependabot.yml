@@ -4,11 +4,21 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    groups:
+      github-actions:
+        patterns: ["*"]
 
   - package-ecosystem: nuget
     directory: /
     schedule:
       interval: monthly
+    ignore:
+      # Major versions of these follow the .NET major version; they are upgraded
+      # together with the target framework, not by Dependabot.
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "System.ServiceProcess.ServiceController"
+        update-types: ["version-update:semver-major"]
     groups:
       nuget:
         patterns: ["*"]
