@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_EnterAddress" xml:space="preserve">
+    <value>Enter the server address</value>
+  </data>
+  <data name="Add_EnterPort" xml:space="preserve">
+    <value>Enter the port</value>
+  </data>
+  <data name="Add_InvalidAddress" xml:space="preserve">
+    <value>Invalid server address</value>
+  </data>
+  <data name="Add_PortRange" xml:space="preserve">
+    <value>The port must be between 1 and 65535</value>
+  </data>
+  <data name="Api_EmptyResponse" xml:space="preserve">
+    <value>The server returned an empty response</value>
+  </data>
+  <data name="Api_Forbidden" xml:space="preserve">
+    <value>The server does not allow this client to use this certificate</value>
+  </data>
+  <data name="Api_HttpsRequired" xml:space="preserve">
+    <value>The server must use HTTPS.</value>
+  </data>
+  <data name="Api_NoTlsThumbprint" xml:space="preserve">
+    <value>This old pairing did not record the TLS certificate thumbprint; remove the server and pair again.</value>
+  </data>
+  <data name="Api_NotFound" xml:space="preserve">
+    <value>The server does not have this certificate</value>
+  </data>
+  <data name="Api_TlsMismatch" xml:space="preserve">
+    <value>The server TLS certificate ({0}) differs from the one recorded at pairing; this could be a man-in-the-middle attack. If you are sure the server was reinstalled, remove this server and pair again.</value>
+  </data>
+  <data name="Api_Unauthorized" xml:space="preserve">
+    <value>The server refused the request: the credentials may be revoked, the clocks differ by more than 5 minutes, the request was repeated, or client and server protocol versions differ</value>
+  </data>
+  <data name="Bind_KeyNotLinked" xml:space="preserve">
+    <value>not linked</value>
+  </data>
+  <data name="Bind_KeyProvidedBy" xml:space="preserve">
+    <value>provided by {0}</value>
+  </data>
+  <data name="Bind_LinkFailed" xml:space="preserve">
+    <value>Failed to bind the private key to {0} (Win32 error {1})</value>
+  </data>
+  <data name="Bind_NotManaged" xml:space="preserve">
+    <value>{0}\My already contains this certificate (private key {1}), not installed by Remote KSP, so it was skipped to avoid breaking it. This certificate does not need syncing when client and server are on the same computer</value>
+  </data>
+  <data name="Bind_WriteFailed" xml:space="preserve">
+    <value>Failed to write the certificate to {0}\My</value>
+  </data>
+  <data name="CState_Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="CState_Missing" xml:space="preserve">
+    <value>Missing locally</value>
+  </data>
+  <data name="CState_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CState_ServerDisabled" xml:space="preserve">
+    <value>Disabled by server</value>
+  </data>
+  <data name="CState_ServerRemoved" xml:space="preserve">
+    <value>Server removed</value>
+  </data>
+  <data name="CState_Test" xml:space="preserve">
+    <value>Test certificate</value>
+  </data>
+  <data name="Cert_DefaultName" xml:space="preserve">
+    <value>Signing certificate</value>
+  </data>
+  <data name="Certs_FailedWith" xml:space="preserve">
+    <value>Failed: {0}</value>
+  </data>
+  <data name="Certs_NotPaired" xml:space="preserve">
+    <value>Pair a server on the Servers page first.</value>
+  </data>
+  <data name="Certs_NotPairedTitle" xml:space="preserve">
+    <value>Not paired yet</value>
+  </data>
+  <data name="Certs_PartialSync" xml:space="preserve">
+    <value>{0} succeeded, {1} failed. Certificates bound from the failed servers are unchanged.</value>
+  </data>
+  <data name="Certs_PartialSyncTitle" xml:space="preserve">
+    <value>Some servers failed to sync</value>
+  </data>
+  <data name="Certs_RemovedParen" xml:space="preserve">
+    <value>(removed)</value>
+  </data>
+  <data name="Certs_ServerRemovedParen" xml:space="preserve">
+    <value>(server removed)</value>
+  </data>
+  <data name="Certs_Unbind" xml:space="preserve">
+    <value>Unbind</value>
+  </data>
+  <data name="Certs_UnbindFailed" xml:space="preserve">
+    <value>Unbind failed</value>
+  </data>
+  <data name="Certs_UnbindMessage" xml:space="preserve">
+    <value>Unbind certificate "{0}" from this computer?
+
+The certificate is deleted from LocalMachine\My and apps can no longer sign with it. The server's certificate is not affected; it is downloaded and bound again at the next "Update certificates".</value>
+  </data>
+  <data name="Certs_UnbindTitle" xml:space="preserve">
+    <value>Unbind certificate</value>
+  </data>
+  <data name="Common_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Checking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="Common_ClientId" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Common_ErrorMessage" xml:space="preserve">
+    <value>Error message</value>
+  </data>
+  <data name="Common_InstallFailed" xml:space="preserve">
+    <value>Installation failed</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="Common_Thumbprint" xml:space="preserve">
+    <value>Thumbprint</value>
+  </data>
+  <data name="Common_Uninstall" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="Common_UninstallFailed" xml:space="preserve">
+    <value>Uninstall failed</value>
+  </data>
+  <data name="Common_Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Diag_Done" xml:space="preserve">
+    <value>Done: {0} passed, {1} warnings, {2} failed</value>
+  </data>
+  <data name="Diag_Fail" xml:space="preserve">
+    <value>✗ Fail</value>
+  </data>
+  <data name="Diag_Failed" xml:space="preserve">
+    <value>Test failed: {0}</value>
+  </data>
+  <data name="Diag_Pass" xml:space="preserve">
+    <value>✓ Pass</value>
+  </data>
+  <data name="Diag_Skip" xml:space="preserve">
+    <value>○ Skipped</value>
+  </data>
+  <data name="Diag_SkippedPrereq" xml:space="preserve">
+    <value>Skipped because a previous test failed</value>
+  </data>
+  <data name="Diag_Testing" xml:space="preserve">
+    <value>Testing…</value>
+  </data>
+  <data name="Diag_Warn" xml:space="preserve">
+    <value>⚠ Warning</value>
+  </data>
+  <data name="Ksp_CheckFailed" xml:space="preserve">
+    <value>Check failed</value>
+  </data>
+  <data name="Ksp_CheckFailedDetail" xml:space="preserve">
+    <value>Could not read the KSP installation state</value>
+  </data>
+  <data name="Ksp_Installed" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="Ksp_InstalledDetail" xml:space="preserve">
+    <value>Registered with Windows; run Diagnostics to check that signing works</value>
+  </data>
+  <data name="Ksp_NeedsUpdate" xml:space="preserve">
+    <value>Needs update</value>
+  </data>
+  <data name="Ksp_NeedsUpdateDetail" xml:space="preserve">
+    <value>The installed KSP differs from this client version</value>
+  </data>
+  <data name="Ksp_NotInstalled" xml:space="preserve">
+    <value>Not installed</value>
+  </data>
+  <data name="Ksp_NotInstalledDetail" xml:space="preserve">
+    <value>Install it so SignTool and other apps can sign with remote certificates</value>
+  </data>
+  <data name="List_Separator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="Nav_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="Nav_Diagnostics" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Nav_Servers" xml:space="preserve">
+    <value>Servers</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Ov_CertificateCount" xml:space="preserve">
+    <value>{0} certificate(s)</value>
+  </data>
+  <data name="Ov_CertsFrom" xml:space="preserve">
+    <value>From {0} server(s), bound to Remote KSP</value>
+  </data>
+  <data name="Ov_GetCertificates" xml:space="preserve">
+    <value>Get certificates</value>
+  </data>
+  <data name="Ov_InstallKsp" xml:space="preserve">
+    <value>Install KSP</value>
+  </data>
+  <data name="Ov_ManageCertificates" xml:space="preserve">
+    <value>Manage certificates</value>
+  </data>
+  <data name="Ov_ManageServers" xml:space="preserve">
+    <value>Manage servers</value>
+  </data>
+  <data name="Ov_NetDetail" xml:space="preserve">
+    <value>These are the addresses of this computer's network adapters, for troubleshooting connections to servers.
+
+Behind NAT, a proxy or a VPN, the source address the server sees may differ from these.</value>
+  </data>
+  <data name="Ov_NetFootnote" xml:space="preserve">
+    <value>Local addresses for troubleshooting connections</value>
+  </data>
+  <data name="Ov_NoCertificates" xml:space="preserve">
+    <value>No bound certificates yet</value>
+  </data>
+  <data name="Ov_NoServers" xml:space="preserve">
+    <value>No server paired yet</value>
+  </data>
+  <data name="Ov_NoServersDetail" xml:space="preserve">
+    <value>Pair a server to sync the certificates it allows</value>
+  </data>
+  <data name="Ov_PairFirst" xml:space="preserve">
+    <value>Pair a server first, then sync certificates</value>
+  </data>
+  <data name="Ov_PairFirstMessage" xml:space="preserve">
+    <value>Pair at least one server on the Servers page, then run Diagnostics.</value>
+  </data>
+  <data name="Ov_PairFirstTitle" xml:space="preserve">
+    <value>Pair a server first</value>
+  </data>
+  <data name="Ov_PairServer" xml:space="preserve">
+    <value>Pair a server</value>
+  </data>
+  <data name="Ov_ServerCount" xml:space="preserve">
+    <value>{0} server(s)</value>
+  </data>
+  <data name="Ov_SyncInCertificates" xml:space="preserve">
+    <value>Sync the certificates the servers allow under Certificates</value>
+  </data>
+  <data name="Ov_UninstallMessage" xml:space="preserve">
+    <value>Uninstall Remote KSP?
+
+Remote signing will no longer work.</value>
+  </data>
+  <data name="Ov_UninstallTitle" xml:space="preserve">
+    <value>Confirm uninstall</value>
+  </data>
+  <data name="Ov_UpdateKsp" xml:space="preserve">
+    <value>Update KSP</value>
+  </data>
+  <data name="Pair_Connecting" xml:space="preserve">
+    <value>Connecting to the server…</value>
+  </data>
+  <data name="Pair_Expired" xml:space="preserve">
+    <value>The pairing request has expired or the credentials were already collected. Start pairing again.</value>
+  </data>
+  <data name="Pair_Failed" xml:space="preserve">
+    <value>Pairing could not be completed.</value>
+  </data>
+  <data name="Pair_FailedTitle" xml:space="preserve">
+    <value>Pairing failed</value>
+  </data>
+  <data name="Pair_FailedWith" xml:space="preserve">
+    <value>Pairing failed: {0}</value>
+  </data>
+  <data name="Pair_HttpsRequired" xml:space="preserve">
+    <value>Pairing must use HTTPS.</value>
+  </data>
+  <data name="Pair_NoTlsThumbprint" xml:space="preserve">
+    <value>Did not get the server TLS certificate</value>
+  </data>
+  <data name="Pair_Succeeded" xml:space="preserve">
+    <value>Paired</value>
+  </data>
+  <data name="Pair_SucceededFetching" xml:space="preserve">
+    <value>Paired, getting certificates…</value>
+  </data>
+  <data name="Pair_TimedOut" xml:space="preserve">
+    <value>Pairing timed out</value>
+  </data>
+  <data name="Pair_TimedOutMessage" xml:space="preserve">
+    <value>The server did not approve the pairing request in time; try again.</value>
+  </data>
+  <data name="Pair_WaitingAdmin" xml:space="preserve">
+    <value>Waiting for the server administrator to approve…</value>
+  </data>
+  <data name="Pair_WaitingApproval" xml:space="preserve">
+    <value>Waiting for the server to approve…</value>
+  </data>
+  <data name="Reg_ServerNotFound" xml:space="preserve">
+    <value>Server not found</value>
+  </data>
+  <data name="Reg_WriteFailed" xml:space="preserve">
+    <value>Cannot write to the registry (administrator rights required)</value>
+  </data>
+  <data name="Srv_AddTitle" xml:space="preserve">
+    <value>Add server</value>
+  </data>
+  <data name="Srv_Address" xml:space="preserve">
+    <value>Server address</value>
+  </data>
+  <data name="Srv_CertCount" xml:space="preserve">
+    <value>{0}</value>
+  </data>
+  <data name="Srv_MissingInfo" xml:space="preserve">
+    <value>Enter the server address and port.</value>
+  </data>
+  <data name="Srv_MissingInfoTitle" xml:space="preserve">
+    <value>Server information missing</value>
+  </data>
+  <data name="Srv_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Srv_NameHint" xml:space="preserve">
+    <value>Only used to tell servers apart on this computer</value>
+  </data>
+  <data name="Srv_NameRequired" xml:space="preserve">
+    <value>The name cannot be empty</value>
+  </data>
+  <data name="Srv_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Srv_RemoveFailed" xml:space="preserve">
+    <value>Remove failed</value>
+  </data>
+  <data name="Srv_RemoveMessage" xml:space="preserve">
+    <value>Remove server "{0}"?
+
+This computer deletes its pairing credentials for the server and unbinds the {1} certificate(s) it provides. You need to pair again to use it.</value>
+  </data>
+  <data name="Srv_RemoveTitle" xml:space="preserve">
+    <value>Remove server</value>
+  </data>
+  <data name="Srv_RemovedLocally" xml:space="preserve">
+    <value>Removed server "{0}" and unbound {1} certificate(s).
+
+But the server could not be notified (it may be offline), so it still lists this computer under its paired clients; the server administrator must revoke it manually.</value>
+  </data>
+  <data name="Srv_RemovedLocallyTitle" xml:space="preserve">
+    <value>Removed on this computer</value>
+  </data>
+  <data name="Srv_RenameTitle" xml:space="preserve">
+    <value>Rename server</value>
+  </data>
+  <data name="Srv_StartPairing" xml:space="preserve">
+    <value>Start pairing</value>
+  </data>
+  <data name="Srv_TlsNotRecorded" xml:space="preserve">
+    <value>Not recorded (old pairing)</value>
+  </data>
+  <data name="St_CannotStart" xml:space="preserve">
+    <value>Cannot start SignTool: {0}</value>
+  </data>
+  <data name="St_CertMissing" xml:space="preserve">
+    <value>The certificate is not installed on this computer, so no command can be generated. Update certificates under Certificates first.</value>
+  </data>
+  <data name="St_CertMissingPreview" xml:space="preserve">
+    <value># certificate missing</value>
+  </data>
+  <data name="St_CertNotInStore" xml:space="preserve">
+    <value>(not found in this computer's certificate store)</value>
+  </data>
+  <data name="St_ControlChars" xml:space="preserve">
+    <value>{0} contains a line break or control character</value>
+  </data>
+  <data name="St_Copied" xml:space="preserve">
+    <value>The SignTool command was copied to the clipboard; you can run it in a CMD terminal.</value>
+  </data>
+  <data name="St_CopiedTitle" xml:space="preserve">
+    <value>Command copied</value>
+  </data>
+  <data name="St_CopyCommand" xml:space="preserve">
+    <value>Copy command</value>
+  </data>
+  <data name="St_CopyFailed" xml:space="preserve">
+    <value>Copy failed: cannot write to the clipboard ({0})</value>
+  </data>
+  <data name="St_DialogTitle" xml:space="preserve">
+    <value>Generate SignTool command</value>
+  </data>
+  <data name="St_Failed" xml:space="preserve">
+    <value>Signing failed, SignTool exit code {0}</value>
+  </data>
+  <data name="St_FailedTestCert" xml:space="preserve">
+    <value>. This is a test certificate and the server refuses to sign with it; use a real certificate</value>
+  </data>
+  <data name="St_FixFieldsPreview" xml:space="preserve">
+    <value>(fix the fields marked in red above first)</value>
+  </data>
+  <data name="St_Found" xml:space="preserve">
+    <value>Found {0} SignTool(s)</value>
+  </data>
+  <data name="St_NoToolAtPath" xml:space="preserve">
+    <value>There is no signtool.exe at this path; check the path</value>
+  </data>
+  <data name="St_NoToolUseOther" xml:space="preserve">
+    <value>SignTool not found; use a custom path or the PATH command</value>
+  </data>
+  <data name="St_NonAsciiNote" xml:space="preserve">
+    <value>
+
+(Note: SignTool prints non-ASCII characters in paths as spaces; go by the exit code)</value>
+  </data>
+  <data name="St_NotFound" xml:space="preserve">
+    <value>SignTool not found. Install the Windows SDK, or use a custom path / PATH command.</value>
+  </data>
+  <data name="St_NotOnPath" xml:space="preserve">
+    <value>signtool.exe is not on this program's PATH; run the command in a terminal where SignTool is set up (such as Developer Command Prompt)</value>
+  </data>
+  <data name="St_PickTargetPreview" xml:space="preserve">
+    <value>(the full command appears after you select the file to sign)</value>
+  </data>
+  <data name="St_Run" xml:space="preserve">
+    <value>Sign now</value>
+  </data>
+  <data name="St_RunNoTarget" xml:space="preserve">
+    <value>Cannot run: the file to sign is not on this computer. The command can still be copied to the computer that has the file.</value>
+  </data>
+  <data name="St_RunNotOnPath" xml:space="preserve">
+    <value>Cannot run: signtool.exe is not on this program's PATH. Use "Auto-detect" or "Custom path", or copy the command to a terminal where SignTool is set up.</value>
+  </data>
+  <data name="St_SearchFailed" xml:space="preserve">
+    <value>Looking for SignTool failed: {0}</value>
+  </data>
+  <data name="St_Searching" xml:space="preserve">
+    <value>Looking for SignTool…</value>
+  </data>
+  <data name="St_SelectTarget" xml:space="preserve">
+    <value>Select or enter the file to sign</value>
+  </data>
+  <data name="St_SelectTool" xml:space="preserve">
+    <value>Select or enter the signtool.exe path</value>
+  </data>
+  <data name="St_Signing" xml:space="preserve">
+    <value>Signing… (contacts the signing server)</value>
+  </data>
+  <data name="St_SigningWithTimestamp" xml:space="preserve">
+    <value>Signing… (contacts the signing server and the timestamp server; this may take a while)</value>
+  </data>
+  <data name="St_StoreLabel" xml:space="preserve">
+    <value>Certificate store name</value>
+  </data>
+  <data name="St_StoreLocalMachine" xml:space="preserve">
+    <value>LocalMachine\My (the command uses /sm)</value>
+  </data>
+  <data name="St_StoreNotFound" xml:space="preserve">
+    <value>Not found in this computer's certificate store</value>
+  </data>
+  <data name="St_Succeeded" xml:space="preserve">
+    <value>Signed in {0} s</value>
+  </data>
+  <data name="St_TargetFilter" xml:space="preserve">
+    <value>Executable files|*.exe;*.dll;*.sys;*.ocx;*.msi;*.msix;*.appx;*.appxbundle|All files|*.*</value>
+  </data>
+  <data name="St_TargetFullPath" xml:space="preserve">
+    <value>Enter a full path, e.g. C:\Build\MyApp.exe</value>
+  </data>
+  <data name="St_TargetLabel" xml:space="preserve">
+    <value>File to sign path</value>
+  </data>
+  <data name="St_TargetMissing" xml:space="preserve">
+    <value>The file is not on this computer. The command can still be copied for another computer or a later build</value>
+  </data>
+  <data name="St_TargetPickTitle" xml:space="preserve">
+    <value>Select the file to sign</value>
+  </data>
+  <data name="St_ThumbprintFormat" xml:space="preserve">
+    <value>The certificate thumbprint must be 40 hexadecimal characters</value>
+  </data>
+  <data name="St_TimedOut" xml:space="preserve">
+    <value>Timed out ({0} minutes); the SignTool process was ended</value>
+  </data>
+  <data name="St_TimestampFormat" xml:space="preserve">
+    <value>The timestamp server must be a full URL starting with http:// or https://</value>
+  </data>
+  <data name="St_TimestampLabel" xml:space="preserve">
+    <value>Timestamp URL</value>
+  </data>
+  <data name="St_ToolFilter" xml:space="preserve">
+    <value>SignTool executable|signtool.exe|All files|*.*</value>
+  </data>
+  <data name="St_ToolFullPath" xml:space="preserve">
+    <value>Enter the full path of signtool.exe</value>
+  </data>
+  <data name="St_ToolGone" xml:space="preserve">
+    <value>The SignTool selected before no longer exists; select again</value>
+  </data>
+  <data name="St_ToolPathLabel" xml:space="preserve">
+    <value>SignTool path</value>
+  </data>
+  <data name="St_ToolPickTitle" xml:space="preserve">
+    <value>Select SignTool.exe</value>
+  </data>
+  <data name="St_TrailingBackslash" xml:space="preserve">
+    <value>{0} cannot end with a backslash</value>
+  </data>
+  <data name="St_UnsafeChar" xml:space="preserve">
+    <value>{0} contains the character "{1}", which cannot be escaped safely in a CMD command; use a path without it</value>
+  </data>
+  <data name="Status_CertError" xml:space="preserve">
+    <value>Certificate error</value>
+  </data>
+  <data name="Status_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="Status_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Status_Unauthorized" xml:space="preserve">
+    <value>Unauthorized</value>
+  </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Sync_AccessDenied" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+  <data name="Sync_AccessDeniedDetail" xml:space="preserve">
+    <value>This client is not allowed to get certificates.</value>
+  </data>
+  <data name="Sync_AlreadyLocal" xml:space="preserve">
+    <value>{0} (the same certificate is already on this computer)</value>
+  </data>
+  <data name="Sync_AuthFailed" xml:space="preserve">
+    <value>Authentication failed</value>
+  </data>
+  <data name="Sync_AuthFailedDetail" xml:space="preserve">
+    <value>The pairing may have expired; try pairing the server again.</value>
+  </data>
+  <data name="Sync_CannotConnect" xml:space="preserve">
+    <value>Cannot connect to the server</value>
+  </data>
+  <data name="Sync_CannotConnectDetail" xml:space="preserve">
+    <value>Check that the server address is correct and the server is running.</value>
+  </data>
+  <data name="Sync_CertThumbprint" xml:space="preserve">
+    <value>Certificate thumbprint</value>
+  </data>
+  <data name="Sync_ConflictMessage" xml:space="preserve">
+    <value>Certificate "{0}" is already bound to server "{1}".
+
+A certificate can only be signed by one server. Switch it to "{2}"? Cancel keeps the existing binding.</value>
+  </data>
+  <data name="Sync_ConflictTitle" xml:space="preserve">
+    <value>Certificate already bound to another server</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Sync_Explanation" xml:space="preserve">
+    <value>Explanation</value>
+  </data>
+  <data name="Sync_Failed" xml:space="preserve">
+    <value>Sync failed</value>
+  </data>
+  <data name="Sync_FailedMessage" xml:space="preserve">
+    <value>Could not sync certificates from server "{0}".</value>
+  </data>
+  <data name="Sync_FailedTitle" xml:space="preserve">
+    <value>Certificate sync failed</value>
+  </data>
+  <data name="Sync_HttpStatus" xml:space="preserve">
+    <value>HTTP status</value>
+  </data>
+  <data name="Sync_KeySourceNotReady" xml:space="preserve">
+    <value>The signing key source is not ready</value>
+  </data>
+  <data name="Sync_KeySourceNotReadyDetail" xml:space="preserve">
+    <value>The server's signing keys are not configured or loaded yet. Configure a key source on the server (certificate store, eToken or PFX file).</value>
+  </data>
+  <data name="Sync_RejectedMessage" xml:space="preserve">
+    <value>Server "{0}" rejected the request, so certificates were not updated. Possible causes:
+
+• The server administrator revoked this client's pairing
+• The clocks of this computer and the server differ by more than 5 minutes
+• The server's pairing records were lost or damaged (the pairing keeps working once the administrator restores them)
+
+If you are sure it was revoked, you can remove the server: this computer deletes its pairing credentials and unbinds the {1} certificate(s) it provides, and you need to pair again. Otherwise check the clock or contact the server administrator first and keep the pairing.</value>
+  </data>
+  <data name="Sync_RejectedTitle" xml:space="preserve">
+    <value>The server rejected this client's credentials</value>
+  </data>
+  <data name="Sync_ServerError" xml:space="preserve">
+    <value>Server error</value>
+  </data>
+  <data name="Sync_ServerErrorDetail" xml:space="preserve">
+    <value>The server failed to handle the request; check the server log.</value>
+  </data>
+  <data name="Sync_ServerRemoved" xml:space="preserve">
+    <value>Removed server "{0}" and unbound {1} certificate(s). Pair again to keep using it.</value>
+  </data>
+  <data name="Sync_ServerRemovedTitle" xml:space="preserve">
+    <value>Server removed</value>
+  </data>
+  <data name="Sync_ServerReturned" xml:space="preserve">
+    <value>Server response</value>
+  </data>
+  <data name="Sync_Skipped" xml:space="preserve">
+    <value>, {0} skipped ({1})</value>
+  </data>
+  <data name="Sync_Summary" xml:space="preserve">
+    <value>{0} added, {1} updated, {2} unbound</value>
+  </data>
+  <data name="Sync_SwitchServer" xml:space="preserve">
+    <value>Use the new server</value>
+  </data>
+  <data name="Sync_TechnicalDetail" xml:space="preserve">
+    <value>Technical details</value>
+  </data>
+  <data name="Test_CannotConnect" xml:space="preserve">
+    <value>Cannot connect: {0}</value>
+  </data>
+  <data name="Test_CertGone" xml:space="preserve">
+    <value>The server no longer has this certificate; click "Update certificates" to sync</value>
+  </data>
+  <data name="Test_Connectivity" xml:space="preserve">
+    <value>Connectivity (HTTPS /info)</value>
+  </data>
+  <data name="Test_CredentialsRejected" xml:space="preserve">
+    <value>Credentials rejected: possibly revoked by the server, or the two computers' clocks differ by more than 5 minutes</value>
+  </data>
+  <data name="Test_CredentialsValid" xml:space="preserve">
+    <value>Credentials valid</value>
+  </data>
+  <data name="Test_DisabledLocked" xml:space="preserve">
+    <value>The server disabled this certificate: the eToken is locked (no PIN retries left). Contact the server administrator</value>
+  </data>
+  <data name="Test_DisabledWrongPin" xml:space="preserve">
+    <value>The server disabled this certificate: the PIN saved on the server is wrong. Contact the server administrator</value>
+  </data>
+  <data name="Test_Hmac" xml:space="preserve">
+    <value>HMAC authentication (/auth/check)</value>
+  </data>
+  <data name="Test_KspSigned" xml:space="preserve">
+    <value>Signed through Remote KSP</value>
+  </data>
+  <data name="Test_LegacyServer" xml:space="preserve">
+    <value>old server (single certificate)</value>
+  </data>
+  <data name="Test_LocalKsp" xml:space="preserve">
+    <value>Local KSP (native)</value>
+  </data>
+  <data name="Test_MultiCert" xml:space="preserve">
+    <value>supports multiple certificates</value>
+  </data>
+  <data name="Test_NoCertificate" xml:space="preserve">
+    <value>No certificate selected</value>
+  </data>
+  <data name="Test_NoKeyBound" xml:space="preserve">
+    <value>The certificate has no private key bound</value>
+  </data>
+  <data name="Test_NotAllowed" xml:space="preserve">
+    <value>The server does not allow this client to use this certificate; click "Update certificates" to sync</value>
+  </data>
+  <data name="Test_NotInStore" xml:space="preserve">
+    <value>This certificate is not in LocalMachine\My; click "Update certificates"</value>
+  </data>
+  <data name="Test_NotReady" xml:space="preserve">
+    <value>Device not ready (PIN not verified on the server, eToken not plugged in or certificate unavailable)</value>
+  </data>
+  <data name="Test_RemoteSign" xml:space="preserve">
+    <value>Remote signing (/sign)</value>
+  </data>
+  <data name="Test_ServerRefused" xml:space="preserve">
+    <value>Refused by the server: invalid credentials or not allowed to use this certificate</value>
+  </data>
+  <data name="Test_ServerSignFailed" xml:space="preserve">
+    <value>Server signing failed: {0}</value>
+  </data>
+  <data name="Test_ServiceVersion" xml:space="preserve">
+    <value>Service version {0}, {1}</value>
+  </data>
+  <data name="Test_SignedNotInstalled" xml:space="preserve">
+    <value>Signing succeeded, but the certificate is not installed locally so it cannot be verified</value>
+  </data>
+  <data name="Test_SignedVerified" xml:space="preserve">
+    <value>Signing succeeded and verified</value>
+  </data>
+  <data name="Test_TestCertNoSign" xml:space="preserve">
+    <value>This is a test certificate; the server did not really sign (the connection works)</value>
+  </data>
+  <data name="Test_TestCertNotReady" xml:space="preserve">
+    <value>Test certificate: the native KSP reported device not ready (the connection works)</value>
+  </data>
+  <data name="Test_VerifyFailed" xml:space="preserve">
+    <value>Signature verification failed</value>
+  </data>
+  <data name="Test_VerifyFailedMismatch" xml:space="preserve">
+    <value>Signature verification failed (certificate and key do not match)</value>
+  </data>
+  <data name="X_AddressPlaceholder" xml:space="preserve">
+    <value>e.g. 192.168.1.100</value>
+  </data>
+  <data name="X_AutoDetect" xml:space="preserve">
+    <value>Auto-detect (recommended)</value>
+  </data>
+  <data name="X_BoundCertificates" xml:space="preserve">
+    <value>Bound certificates</value>
+  </data>
+  <data name="X_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="X_BrowseFile" xml:space="preserve">
+    <value>Browse file</value>
+  </data>
+  <data name="X_Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="X_CertificateCount" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="X_CheckCode" xml:space="preserve">
+    <value>Check that it matches the code shown on the server's Pairing requests page</value>
+  </data>
+  <data name="X_CommandPreview" xml:space="preserve">
+    <value>Command preview</value>
+  </data>
+  <data name="X_CommandPreviewCmd" xml:space="preserve">
+    <value>Command preview (Windows CMD)</value>
+  </data>
+  <data name="X_CustomPath" xml:space="preserve">
+    <value>Custom path</value>
+  </data>
+  <data name="X_DiagHint" xml:space="preserve">
+    <value>Select a server and certificate, then click "Run tests" to start</value>
+  </data>
+  <data name="X_DiagHint2" xml:space="preserve">
+    <value>The tests check the HTTPS connection, HMAC authentication, signing and the local KSP</value>
+  </data>
+  <data name="X_DigestSha256" xml:space="preserve">
+    <value>File digest algorithm: SHA256 (/fd SHA256)</value>
+  </data>
+  <data name="X_DisabledReason" xml:space="preserve">
+    <value>Reason disabled</value>
+  </data>
+  <data name="X_FileToSign" xml:space="preserve">
+    <value>File to sign</value>
+  </data>
+  <data name="X_GenerateCommand" xml:space="preserve">
+    <value>Generate signing command</value>
+  </data>
+  <data name="X_Issuer" xml:space="preserve">
+    <value>Issuer</value>
+  </data>
+  <data name="X_LocalNetwork" xml:space="preserve">
+    <value>Local network</value>
+  </data>
+  <data name="X_NoCertificates" xml:space="preserve">
+    <value>No bound certificates</value>
+  </data>
+  <data name="X_NoCertificatesHint" xml:space="preserve">
+    <value>After pairing a server, click "Update certificates" to get the signing certificates it allows</value>
+  </data>
+  <data name="X_NoServers" xml:space="preserve">
+    <value>No server paired yet</value>
+  </data>
+  <data name="X_NoServersHint" xml:space="preserve">
+    <value>Click "Add server" to start pairing; one client can connect to several servers</value>
+  </data>
+  <data name="X_PairedServers" xml:space="preserve">
+    <value>Paired servers</value>
+  </data>
+  <data name="X_Pairing" xml:space="preserve">
+    <value>Pairing</value>
+  </data>
+  <data name="X_PathNote" xml:space="preserve">
+    <value>The command starts with signtool and is resolved through the PATH of where it runs (e.g. Developer Command Prompt).</value>
+  </data>
+  <data name="X_Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="X_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="X_Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="X_RunDiagnostics" xml:space="preserve">
+    <value>Run diagnostics</value>
+  </data>
+  <data name="X_RunTests" xml:space="preserve">
+    <value>Run tests</value>
+  </data>
+  <data name="X_ServerAddress" xml:space="preserve">
+    <value>Server address</value>
+  </data>
+  <data name="X_ServerNameOptional" xml:space="preserve">
+    <value>Server name (optional)</value>
+  </data>
+  <data name="X_ServerNamePlaceholder" xml:space="preserve">
+    <value>e.g. Corp signing server</value>
+  </data>
+  <data name="X_SignToolOutput" xml:space="preserve">
+    <value>SignTool output</value>
+  </data>
+  <data name="X_SigningCertificate" xml:space="preserve">
+    <value>Signing certificate</value>
+  </data>
+  <data name="X_SigningOptions" xml:space="preserve">
+    <value>Signing options</value>
+  </data>
+  <data name="X_SingleFileNote" xml:space="preserve">
+    <value>Only a single file. SignTool must support the file type (e.g. .exe, .dll, .sys, .msi, .msix, .cab, .cat).</value>
+  </data>
+  <data name="X_SomeDisabled" xml:space="preserve">
+    <value>The server disabled some certificates; signing with them fails</value>
+  </data>
+  <data name="X_StIntro" xml:space="preserve">
+    <value>Configure the signing tool and target file to generate a SignTool command for this certificate. The command is meant for a Windows CMD terminal; it does not sign anything by itself.</value>
+  </data>
+  <data name="X_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="X_StoreLocation" xml:space="preserve">
+    <value>Store location</value>
+  </data>
+  <data name="X_Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="X_Syncing" xml:space="preserve">
+    <value>Syncing certificates</value>
+  </data>
+  <data name="X_SyncingMessage" xml:space="preserve">
+    <value>Getting the latest certificates from paired servers…</value>
+  </data>
+  <data name="X_TargetPlaceholder" xml:space="preserve">
+    <value>e.g. C:\Build\Release\MyApp.exe</value>
+  </data>
+  <data name="X_Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="X_TestCertWarning" xml:space="preserve">
+    <value>This is a test certificate: it only checks pairing and certificate distribution; the server refuses signing requests, so signing fails.</value>
+  </data>
+  <data name="X_Testing" xml:space="preserve">
+    <value>Testing</value>
+  </data>
+  <data name="X_ToolPathPlaceholder" xml:space="preserve">
+    <value>e.g. C:\Program Files (x86)\Windows Kits\10\bin\...\signtool.exe</value>
+  </data>
+  <data name="X_UpdateAll" xml:space="preserve">
+    <value>Update all certificates</value>
+  </data>
+  <data name="X_UpdateCertificates" xml:space="preserve">
+    <value>Update certificates</value>
+  </data>
+  <data name="X_UsePath" xml:space="preserve">
+    <value>Use the PATH command</value>
+  </data>
+  <data name="X_UseTimestamp" xml:space="preserve">
+    <value>Use an RFC 3161 timestamp (/tr … /td SHA256)</value>
+  </data>
+  <data name="X_ValidUntil" xml:space="preserve">
+    <value>Valid until</value>
+  </data>
+  <data name="X_Validity" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="X_Verbose" xml:space="preserve">
+    <value>Verbose output (/v)</value>
+  </data>
+  <data name="X_VerificationCode" xml:space="preserve">
+    <value>Verification code</value>
+  </data>
+</root>

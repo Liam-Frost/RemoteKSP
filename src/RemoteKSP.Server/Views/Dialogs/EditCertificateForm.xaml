@@ -1,14 +1,15 @@
 <UserControl x:Class="RemoteKSP.Server.Views.Dialogs.EditCertificateForm"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:RemoteKSP.Server.Localization"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Width="480" MaxWidth="560" MinWidth="420">
     <StackPanel>
-        <TextBlock Text="名称" FontSize="13" Margin="0,0,0,4"/>
+        <TextBlock Text="{x:Static loc:Strings.Common_Name}" FontSize="13" Margin="0,0,0,4"/>
         <ui:TextBox x:Name="NameBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,16"/>
 
-        <CheckBox Content="分享给客户端" IsChecked="{Binding IsShared}"/>
-        <TextBlock Text="取消分享后，所有客户端都无法再获取或使用这张证书；客户端下次更新证书时会自动解绑。"
+        <CheckBox Content="{x:Static loc:Strings.X_ShareWithClients}" IsChecked="{Binding IsShared}"/>
+        <TextBlock Text="{x:Static loc:Strings.X_UnshareNote}"
                    Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" Margin="28,4,0,0"/>
     </StackPanel>
 </UserControl>

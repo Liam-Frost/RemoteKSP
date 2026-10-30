@@ -31,7 +31,7 @@ public partial class ClientsViewModel : ViewModelBase
     private bool _hasClients;
 
     [ObservableProperty]
-    private string _emptyText = "暂无已配对客户端";
+    private string _emptyText = Strings.Clients_Empty;
 
     public ClientsViewModel(PipeClient pipeClient, DialogService dialogService)
     {
@@ -86,13 +86,13 @@ public partial class ClientsViewModel : ViewModelBase
                 }
             }
             HasClients = Clients.Any();
-            EmptyText = "暂无已配对客户端";
+            EmptyText = Strings.Clients_Empty;
         }
         catch
         {
             Clients.Clear();
             HasClients = false;
-            EmptyText = "服务未运行，无法加载客户端列表";
+            EmptyText = Strings.Clients_ServiceNotRunning;
         }
         finally
         {
@@ -106,25 +106,25 @@ public partial class ClientsViewModel : ViewModelBase
 
         var client = SelectedClient; // Capture before dialog
         var confirmed = await _dialogService.ConfirmAsync(
-            "撤销客户端授权",
-            $"确定要撤销客户端的授权吗？\n\n撤销后，该客户端将无法继续使用远程签名功能。",
-            "撤销",
+            Strings.Clients_RevokeTitle,
+            Strings.Clients_RevokeMessage,
+            Strings.Clients_Revoke,
             destructive: true,
-            new DialogField("机器名", client.MachineName, Monospace: false),
-            new DialogField("客户端 ID", client.Id),
-            new DialogField("IP 地址", client.IpAddress, Monospace: false));
+            new DialogField(Strings.Common_MachineName, client.MachineName, Monospace: false),
+            new DialogField(Strings.Common_ClientId, client.Id),
+            new DialogField(Strings.Common_IpAddress, client.IpAddress, Monospace: false));
 
         if (!confirmed) return;
 
         try
         {
             await _pipeClient.SendCommandAsync<object>("RevokeClient", new { ClientId = client.Id });
-            await _dialogService.SuccessAsync("撤销成功", $"已撤销客户端 {client.MachineName} 的授权");
+            await _dialogService.SuccessAsync(Strings.Clients_RevokedTitle, string.Format(Strings.Clients_Revoked, client.MachineName));
             await RefreshAsync();
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("撤销失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Clients_RevokeFailed, ex.Message);
         }
     }
 
@@ -141,15 +141,15 @@ public partial class ClientsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("加载证书失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Clients_LoadCertsFailed, ex.Message);
             return;
         }
 
         var form = new ClientPermissionsForm(
-            $"选择客户端 {client.MachineName} 可以使用的证书。客户端下次更新证书时，未授权的证书会自动解绑。",
+            string.Format(Strings.Clients_PermissionsPrompt, client.MachineName),
             certs.Select(c => new CertificateItem(c)), client.AllowedCertIds);
 
-        var saved = await _dialogService.ShowFormAsync("管理证书权限", form, "保存", async () =>
+        var saved = await _dialogService.ShowFormAsync(Strings.Clients_PermissionsTitle, form, Strings.Common_Save, async () =>
         {
             await _pipeClient.SendCommandAsync<object>("SetClientPermissions",
                 new { ClientId = client.Id, AllowedCertIds = form.Result });
@@ -180,8 +180,8 @@ public class ClientModel
     public List<string>? AllowedCertIds { get; set; }
     public string PermissionText => AllowedCertIds switch
     {
-        null => "全部分享证书",
-        { Count: 0 } => "全部禁止",
-        var ids => $"{ids.Count} 个证书"
+        null => Strings.Clients_AllShared,
+        { Count: 0 } => Strings.Clients_NoneAllowed,
+        var ids => string.Format(Strings.Clients_CertCount, ids.Count)
     };
 }

@@ -45,7 +45,7 @@ public class DialogService
         // Simple messages use a more compact width
         if (fields.Length == 0)
             dialog.DialogMaxWidth = 480;
-        dialog.CloseButtonText = "确定";
+        dialog.CloseButtonText = SharedStrings.Dialog_OK;
         dialog.CloseButtonAppearance = ControlAppearance.Primary;
         dialog.DefaultButton = ContentDialogButton.Close;
         await _contentDialogService.ShowAsync(dialog, default);
@@ -68,7 +68,7 @@ public class DialogService
             dialog.DialogMaxWidth = 480;
         dialog.PrimaryButtonText = confirmText;
         dialog.PrimaryButtonAppearance = destructive ? ControlAppearance.Danger : ControlAppearance.Primary;
-        dialog.CloseButtonText = "取消";
+        dialog.CloseButtonText = SharedStrings.Dialog_Cancel;
         dialog.DefaultButton = destructive ? ContentDialogButton.Close : ContentDialogButton.Primary;
         var result = await _contentDialogService.ShowAsync(dialog, default);
         return result == ContentDialogResult.Primary;
@@ -91,7 +91,7 @@ public class DialogService
         dialog.DialogMaxWidth = 520;
         dialog.PrimaryButtonText = confirmText;
         dialog.PrimaryButtonAppearance = destructive ? ControlAppearance.Danger : ControlAppearance.Primary;
-        dialog.CloseButtonText = "取消";
+        dialog.CloseButtonText = SharedStrings.Dialog_Cancel;
         dialog.DefaultButton = destructive ? ContentDialogButton.Close : ContentDialogButton.Primary;
         var result = await _contentDialogService.ShowAsync(dialog, default);
         return result == ContentDialogResult.Primary ? option.IsChecked == true : null;
@@ -106,7 +106,7 @@ public class DialogService
         Func<Task<string?>> submit, double maxWidth = 560)
     {
         var error = new InfoBar { Severity = InfoBarSeverity.Error, IsClosable = false, IsOpen = false,
-            Title = "操作失败", Margin = new Thickness(0, 12, 0, 0) };
+            Title = SharedStrings.Dialog_OperationFailed, Margin = new Thickness(0, 12, 0, 0) };
         var body = new StackPanel();
         body.Children.Add(form);
         body.Children.Add(error);
@@ -115,7 +115,7 @@ public class DialogService
         dialog.DialogMaxWidth = maxWidth;
         dialog.PrimaryButtonText = primaryText;
         dialog.PrimaryButtonAppearance = ControlAppearance.Primary;
-        dialog.CloseButtonText = "取消";
+        dialog.CloseButtonText = SharedStrings.Dialog_Cancel;
         dialog.DefaultButton = ContentDialogButton.Primary;
 
         var succeeded = false;

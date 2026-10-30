@@ -96,7 +96,7 @@ public static class SigningEndpoints
                 return Results.Unauthorized();
 
             _clientStore!.Revoke(client.Id);
-            _activityLog!.Info("配对", $"客户端「{client.MachineName}」主动解除配对");
+            _activityLog!.Info(Strings.LogCat_Pairing, string.Format(Strings.Api_ClientUnpaired, client.MachineName));
             return Results.Ok(new { Success = true });
         });
 
@@ -123,7 +123,7 @@ public static class SigningEndpoints
                     var (subject, notAfter) = _keySources.GetCertificateInfo(c.Thumbprint);
                     var failure = _keySources.GetPinFailure(c.Thumbprint);
                     return new RemoteCertificateInfo(c.Thumbprint, c.Name, subject, notAfter, c.SourceType == "test",
-                        failure == null ? null : $"{failure.Reason}，请联系服务端管理员");
+                        failure == null ? null : string.Format(Strings.Api_ContactAdmin, failure.Reason));
                 })
                 .ToList();
             return Results.Ok(new RemoteCertificateList(certs));
@@ -167,10 +167,10 @@ public static class SigningEndpoints
             var cert = _keySources.Find(thumbprint);
             if (cert == null)
                 return Results.Problem(statusCode: 404, title: "Unknown Key",
-                    detail: "服务端没有这张证书，请在客户端点击\"更新证书\"");
+                    detail: Strings.Api_CertUnknown);
             if (!client.CanUse(cert))
                 return Results.Problem(statusCode: 403, title: "Forbidden",
-                    detail: "服务端未授权该客户端使用这张证书");
+                    detail: Strings.Api_CertNotAllowed);
 
             try
             {
@@ -180,16 +180,16 @@ public static class SigningEndpoints
                 var hashAlgorithm = Protocol.NormalizeHashAlgorithm(request.Headers[Protocol.HeaderHashAlgorithm].ToString())
                     ?? "SHA256";
                 if (hash.Length != Protocol.HashLength(hashAlgorithm))
-                    return Results.BadRequest($"哈希长度与算法 {hashAlgorithm} 不匹配");
+                    return Results.BadRequest(string.Format(Strings.Api_HashLengthMismatch, hashAlgorithm));
 
                 var signature = _keySources.SignHash(cert.Thumbprint, hash, hashAlgorithm);
-                _activityLog?.Info("签名", $"{client.MachineName} 使用证书签名", $"{cert.Name} ({hashAlgorithm})");
+                _activityLog?.Info(Strings.LogCat_Signing, string.Format(Strings.Api_Signed, client.MachineName), $"{cert.Name} ({hashAlgorithm})");
                 return Results.Bytes(signature, "application/octet-stream");
             }
             catch (TestModeException ex)
             {
                 // title 是客户端识别测试模式的依据（detail 中文会被 JSON 转义）
-                _activityLog?.Warning("签名", $"{client.MachineName} 尝试用测试证书签名", cert.Name);
+                _activityLog?.Warning(Strings.LogCat_Signing, string.Format(Strings.Api_TestCertAttempt, client.MachineName), cert.Name);
                 return Results.Problem(statusCode: 503, title: "Test Mode", detail: ex.Message);
             }
             catch (PinRejectedException ex)
@@ -197,18 +197,19 @@ public static class SigningEndpoints
                 // 证书已停用：本次请求之外不会再访问 token。错误码放在 ASCII 头和 title 里，原生 KSP/客户端据此识别
                 // 无法识别的错误不带 X-RemoteKSP-Error：原生 KSP 返回"设备未就绪"，不冒充 PIN 错误
                 var kind = ex.Failure.Kind;
-                _activityLog?.Error("签名", $"{client.MachineName} 签名被拒绝：证书已停用",
-                    $"{cert.Name}: {ex.Failure.Reason}" + (ex.InnerException is { } inner ? $"（原始错误 0x{inner.HResult:X8}: {inner.Message}）" : ""));
+                _activityLog?.Error(Strings.LogCat_Signing, string.Format(Strings.Api_SignRefusedDisabled, client.MachineName),
+                    $"{cert.Name}: {ex.Failure.Reason}" + (ex.InnerException is { } inner
+                        ? string.Format(Strings.Api_OriginalError, inner.HResult.ToString("X8"), inner.Message) : ""));
                 if (kind != PinFailureKind.Unrecognized)
                     request.HttpContext.Response.Headers[Protocol.HeaderError] =
                         kind == PinFailureKind.Locked ? Protocol.ErrorPinLocked : Protocol.ErrorPinWrong;
                 return Results.Problem(statusCode: 503,
                     title: kind switch { PinFailureKind.Locked => "PIN Locked", PinFailureKind.Wrong => "PIN Wrong", _ => "Disabled" },
-                    detail: $"服务端证书「{cert.Name}」已停用：{ex.Failure.Reason}。请联系服务端管理员处理。");
+                    detail: string.Format(Strings.Api_CertDisabled, cert.Name, ex.Failure.Reason));
             }
             catch (Exception ex)
             {
-                _activityLog?.Error("签名", $"{client.MachineName} 签名失败", $"{cert.Name}: {ex.Message}");
+                _activityLog?.Error(Strings.LogCat_Signing, string.Format(Strings.Api_SignFailed, client.MachineName), $"{cert.Name}: {ex.Message}");
                 return Results.Problem(statusCode: 503, title: "Sign Failed", detail: ex.Message);
             }
         });

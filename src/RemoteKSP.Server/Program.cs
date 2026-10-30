@@ -11,6 +11,8 @@ public class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        RemoteKSP.Shared.Localization.UiLanguage.Apply(RemoteKSP.Shared.Localization.UiLanguage.LoadPreference());
+
         // Install service mode: install and exit
         if (args.Contains("--install-service"))
         {
@@ -22,7 +24,7 @@ public class Program
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"安装服务失败: {ex.Message}");
+                Console.Error.WriteLine(string.Format(Strings.Cli_InstallFailed, ex.Message));
                 Environment.Exit(1);
             }
             return;
@@ -37,12 +39,12 @@ public class Program
                 var mgr = new Services.ServiceManager();
                 var result = mgr.UninstallAsync(removeData: args.Contains("--remove-data")).GetAwaiter().GetResult();
                 if (result.ProgramKeptAt != null)
-                    Console.WriteLine($"服务已卸载。{result.ProgramKeptAt} 正在运行，未删除，可在退出后手动删除。");
+                    Console.WriteLine(string.Format(Strings.Cli_Uninstalled_ProgramKept, result.ProgramKeptAt));
                 Environment.Exit(0);
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"卸载服务失败: {ex.Message}");
+                Console.Error.WriteLine(string.Format(Strings.Cli_UninstallFailed, ex.Message));
                 Environment.Exit(1);
             }
             return;
@@ -51,6 +53,7 @@ public class Program
         // Service mode: run as Windows Service
         if (args.Contains("--service"))
         {
+            RemoteKSP.Shared.Localization.UiLanguage.Apply(Core.ServerConfig.Load().Language ?? RemoteKSP.Shared.Localization.UiLanguage.Default);
             var host = CreateHostBuilder(args).Build();
 
             // 数据目录里的 PIN、客户端密钥和 TLS 私钥用 DPAPI LocalMachine 加密，本机任何进程都能解密，
@@ -97,14 +100,14 @@ public class Program
                 {
                     var store = new RemoteKSP.Server.Core.ClientStore(RemoteKSP.Server.Core.ServerPaths.DataDir);
                     if (store.LoadError is { } error)
-                        sp.GetRequiredService<RemoteKSP.Server.Services.ActivityLogService>().Error("配置", error);
+                        sp.GetRequiredService<RemoteKSP.Server.Services.ActivityLogService>().Error(Strings.LogCat_Config, error);
                     return store;
                 });
                 services.AddSingleton(sp =>
                 {
                     var registry = new RemoteKSP.Server.Core.CertificateRegistry(RemoteKSP.Server.Core.ServerPaths.DataDir);
                     if (registry.LoadError is { } error)
-                        sp.GetRequiredService<RemoteKSP.Server.Services.ActivityLogService>().Error("配置", error);
+                        sp.GetRequiredService<RemoteKSP.Server.Services.ActivityLogService>().Error(Strings.LogCat_Config, error);
                     return registry;
                 });
                 services.AddSingleton<RemoteKSP.Server.Core.KeySourceManager>();

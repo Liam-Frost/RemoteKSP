@@ -25,21 +25,21 @@ public partial class OverviewViewModel : ViewModelBase
 
     [ObservableProperty] private bool _kspInstalled;
     [ObservableProperty] private bool _kspNeedsInstall;
-    [ObservableProperty] private string _kspValue = "检查中…";
+    [ObservableProperty] private string _kspValue = Strings.Common_Checking;
     [ObservableProperty] private string _kspDetail = "";
     [ObservableProperty] private StatusKind _kspStatusKind = StatusKind.Busy;
-    [ObservableProperty] private string _installKspText = "安装 KSP";
+    [ObservableProperty] private string _installKspText = Strings.Ov_InstallKsp;
 
     [ObservableProperty] private int _serverCount;
-    [ObservableProperty] private string _serversValue = "检查中…";
+    [ObservableProperty] private string _serversValue = Strings.Common_Checking;
     [ObservableProperty] private string _serversDetail = "";
     [ObservableProperty] private string? _serversToolTip;
-    [ObservableProperty] private string _serversActionText = "服务端管理";
+    [ObservableProperty] private string _serversActionText = Strings.Nav_Servers;
 
     [ObservableProperty] private int _certificateCount;
-    [ObservableProperty] private string _certificatesValue = "检查中…";
+    [ObservableProperty] private string _certificatesValue = Strings.Common_Checking;
     [ObservableProperty] private string _certificatesDetail = "";
-    [ObservableProperty] private string _certificatesActionText = "证书管理";
+    [ObservableProperty] private string _certificatesActionText = Strings.Nav_Certificates;
 
     [ObservableProperty] private bool _isLoading = true;
 
@@ -52,9 +52,8 @@ public partial class OverviewViewModel : ViewModelBase
         _notificationService = notificationService;
         _navigate = navigate;
         Network = new NetworkAddressesViewModel(dialogService, getPort: null,
-            "用于排查连接问题的本机地址",
-            "这里列出本机网卡上的地址，用于排查与服务端的连接问题。\n\n" +
-            "经过 NAT、代理或 VPN 时，服务端看到的来源地址可能与这里不同。");
+            Strings.Ov_NetFootnote,
+            Strings.Ov_NetDetail);
     }
 
     public async Task InitializeAsync()
@@ -107,29 +106,29 @@ public partial class OverviewViewModel : ViewModelBase
     {
         KspInstalled = s.Ksp is KspInstallState.Installed or KspInstallState.NeedsUpdate;
         KspNeedsInstall = s.Ksp is KspInstallState.NotInstalled or KspInstallState.NeedsUpdate;
-        InstallKspText = s.Ksp == KspInstallState.NeedsUpdate ? "更新 KSP" : "安装 KSP";
+        InstallKspText = s.Ksp == KspInstallState.NeedsUpdate ? Strings.Ov_UpdateKsp : Strings.Ov_InstallKsp;
         (KspValue, KspDetail, KspStatusKind) = s.Ksp switch
         {
-            KspInstallState.Installed => ("已安装", "已注册到 Windows；签名是否可用请运行诊断", StatusKind.Success),
-            KspInstallState.NeedsUpdate => ("需要更新", "已安装的 KSP 与当前客户端版本不一致", StatusKind.Caution),
-            KspInstallState.NotInstalled => ("未安装", "安装后 SignTool 等应用才能使用远程证书签名", StatusKind.Caution),
-            KspInstallState.CheckFailed => ("检查失败", s.KspError ?? "无法读取 KSP 安装状态", StatusKind.Critical),
-            _ => ("检查中…", "", StatusKind.Busy)
+            KspInstallState.Installed => (Strings.Ksp_Installed, Strings.Ksp_InstalledDetail, StatusKind.Success),
+            KspInstallState.NeedsUpdate => (Strings.Ksp_NeedsUpdate, Strings.Ksp_NeedsUpdateDetail, StatusKind.Caution),
+            KspInstallState.NotInstalled => (Strings.Ksp_NotInstalled, Strings.Ksp_NotInstalledDetail, StatusKind.Caution),
+            KspInstallState.CheckFailed => (Strings.Ksp_CheckFailed, s.KspError ?? Strings.Ksp_CheckFailedDetail, StatusKind.Critical),
+            _ => (Strings.Common_Checking, "", StatusKind.Busy)
         };
 
         ServerCount = s.ServerNames.Count;
-        ServersValue = ServerCount == 0 ? "尚未配对服务端" : $"{ServerCount} 台";
-        ServersDetail = ServerCount == 0 ? "配对后才能同步服务端授权的证书" : TextSummary.Names(s.ServerNames);
+        ServersValue = ServerCount == 0 ? Strings.Ov_NoServers : string.Format(Strings.Ov_ServerCount, ServerCount);
+        ServersDetail = ServerCount == 0 ? Strings.Ov_NoServersDetail : TextSummary.Names(s.ServerNames);
         // 空字符串的 ToolTip 也会弹出空白框；没有服务端时不显示
         ServersToolTip = ServerCount == 0 ? null : string.Join("\n", s.ServerNames);
-        ServersActionText = ServerCount == 0 ? "配对服务端" : "管理服务端";
+        ServersActionText = ServerCount == 0 ? Strings.Ov_PairServer : Strings.Ov_ManageServers;
 
         CertificateCount = s.CertificateCount;
-        CertificatesValue = CertificateCount == 0 ? "尚无已绑定证书" : $"{CertificateCount} 张";
+        CertificatesValue = CertificateCount == 0 ? Strings.Ov_NoCertificates : string.Format(Strings.Ov_CertificateCount, CertificateCount);
         CertificatesDetail = CertificateCount > 0
-            ? $"来自 {s.CertificateServerCount} 台服务端，已绑定到 Remote KSP"
-            : ServerCount == 0 ? "先配对服务端，再同步证书" : "在证书管理中同步服务端授权的证书";
-        CertificatesActionText = CertificateCount == 0 ? "获取证书" : "管理证书";
+            ? string.Format(Strings.Ov_CertsFrom, s.CertificateServerCount)
+            : ServerCount == 0 ? Strings.Ov_PairFirst : Strings.Ov_SyncInCertificates;
+        CertificatesActionText = CertificateCount == 0 ? Strings.Ov_GetCertificates : Strings.Ov_ManageCertificates;
     }
 
     // 安装/卸载要复制文件并等待 regsvr32，放到后台线程；AsyncRelayCommand 执行期间按钮自动禁用，避免重复提交
@@ -142,7 +141,7 @@ public partial class OverviewViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _notificationService.ShowErrorAsync("安装失败", ex.Message);
+            await _notificationService.ShowErrorAsync(Strings.Common_InstallFailed, ex.Message);
         }
         // 成功后不另弹通知：卡片状态会更新
         await RefreshAsync();
@@ -152,9 +151,9 @@ public partial class OverviewViewModel : ViewModelBase
     private async Task UninstallKspAsync()
     {
         var confirmed = await _notificationService.ConfirmAsync(
-            "确认卸载",
-            "确定要卸载 Remote KSP 吗？\n\n卸载后将无法使用远程签名功能。",
-            "卸载",
+            Strings.Ov_UninstallTitle,
+            Strings.Ov_UninstallMessage,
+            Strings.Common_Uninstall,
             destructive: true);
 
         if (!confirmed) return;
@@ -165,7 +164,7 @@ public partial class OverviewViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _notificationService.ShowErrorAsync("卸载失败", ex.Message);
+            await _notificationService.ShowErrorAsync(Strings.Common_UninstallFailed, ex.Message);
         }
         await RefreshAsync();
     }
@@ -176,8 +175,8 @@ public partial class OverviewViewModel : ViewModelBase
         // 诊断需要选择服务端
         if (ServerCount == 0)
         {
-            await _notificationService.ShowInfoDialogAsync("需要先配对服务端",
-                "请先在「服务端管理」页面配对至少一台服务端，然后再运行诊断。");
+            await _notificationService.ShowInfoDialogAsync(Strings.Ov_PairFirstTitle,
+                Strings.Ov_PairFirstMessage);
             return;
         }
 

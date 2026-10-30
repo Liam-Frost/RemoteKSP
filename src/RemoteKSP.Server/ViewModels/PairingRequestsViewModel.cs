@@ -27,7 +27,7 @@ public partial class PairingRequestsViewModel : ViewModelBase
     private bool _hasRequests;
 
     [ObservableProperty]
-    private string _emptyText = "暂无待处理的配对请求";
+    private string _emptyText = Strings.Pairing_Empty;
 
     public PairingRequestsViewModel(PipeClient pipeClient, DialogService dialogService)
     {
@@ -65,13 +65,13 @@ public partial class PairingRequestsViewModel : ViewModelBase
                 }
             }
             HasRequests = Requests.Any();
-            EmptyText = "暂无待处理的配对请求";
+            EmptyText = Strings.Pairing_Empty;
         }
         catch
         {
             Requests.Clear();
             HasRequests = false;
-            EmptyText = "服务未运行，无法加载配对请求";
+            EmptyText = Strings.Pairing_ServiceNotRunning;
         }
         finally
         {
@@ -87,13 +87,13 @@ public partial class PairingRequestsViewModel : ViewModelBase
         try
         {
             await _pipeClient.SendCommandAsync<object>("ApprovePairing", new { SelectedRequest.RequestId });
-            await _dialogService.SuccessAsync("批准成功",
-                $"已批准来自 {SelectedRequest.MachineName} ({SelectedRequest.IpAddress}) 的配对请求");
+            await _dialogService.SuccessAsync(Strings.Pairing_ApprovedTitle,
+                string.Format(Strings.Pairing_ApprovedFrom, SelectedRequest.MachineName, SelectedRequest.IpAddress));
             await RefreshAsync();
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("批准失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Pairing_ApproveFailed, ex.Message);
         }
     }
 
@@ -105,13 +105,13 @@ public partial class PairingRequestsViewModel : ViewModelBase
         try
         {
             await _pipeClient.SendCommandAsync<object>("RejectPairing", new { SelectedRequest.RequestId });
-            await _dialogService.InfoAsync("已拒绝",
-                $"已拒绝来自 {SelectedRequest.MachineName} ({SelectedRequest.IpAddress}) 的配对请求");
+            await _dialogService.InfoAsync(Strings.Pairing_RejectedTitle,
+                string.Format(Strings.Pairing_RejectedFrom, SelectedRequest.MachineName, SelectedRequest.IpAddress));
             await RefreshAsync();
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("拒绝失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Pairing_RejectFailed, ex.Message);
         }
     }
 

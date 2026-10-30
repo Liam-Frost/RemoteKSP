@@ -28,12 +28,12 @@ public partial class PairingApprovalDialogViewModel : ObservableObject
         {
             var remaining = RemainingTime;
             if (remaining.TotalSeconds < 0)
-                return "已过期";
+                return Strings.State_Expired;
 
             if (remaining.TotalMinutes >= 1)
-                return $"{(int)remaining.TotalMinutes} 分钟";
+                return string.Format(Strings.Pairing_Minutes, (int)remaining.TotalMinutes);
 
-            return $"{(int)remaining.TotalSeconds} 秒";
+            return string.Format(Strings.Pairing_Seconds, (int)remaining.TotalSeconds);
         }
     }
 

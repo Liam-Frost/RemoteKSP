@@ -39,5 +39,5 @@ public class TestKeySource : IKeySource
 
 public class TestModeException : Exception
 {
-    public TestModeException() : base("这是测试证书，服务端不会用它执行真实签名") { }
+    public TestModeException() : base(Strings.Test_SigningRefused) { }
 }

@@ -1,0 +1,1432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_ContainersFound" xml:space="preserve">
+    <value>{0} key container(s) found</value>
+  </data>
+  <data name="Add_DetectFailed" xml:space="preserve">
+    <value>Detection failed: {0}</value>
+  </data>
+  <data name="Add_Detecting" xml:space="preserve">
+    <value>Detecting…</value>
+  </data>
+  <data name="Add_GenerateFailed" xml:space="preserve">
+    <value>Generation failed: {0}</value>
+  </data>
+  <data name="Add_NeedCertificate" xml:space="preserve">
+    <value>Select a certificate</value>
+  </data>
+  <data name="Add_NeedContainerAndThumbprint" xml:space="preserve">
+    <value>Enter the key container name and certificate thumbprint</value>
+  </data>
+  <data name="Add_NeedPfx" xml:space="preserve">
+    <value>Select a PFX file</value>
+  </data>
+  <data name="Add_NoEToken" xml:space="preserve">
+    <value>No eToken detected (not plugged in or driver not installed)</value>
+  </data>
+  <data name="Add_NoResult" xml:space="preserve">
+    <value>The service returned no result</value>
+  </data>
+  <data name="Add_PfxCopied" xml:space="preserve">
+    <value>The service copies the file into the data directory when adding it; moving or deleting the original later does not affect signing</value>
+  </data>
+  <data name="Add_PfxFilter" xml:space="preserve">
+    <value>PFX files|*.pfx;*.p12|All files|*.*</value>
+  </data>
+  <data name="Add_PfxGenerated" xml:space="preserve">
+    <value>Self-signed PFX generated, thumbprint {0}; the password was filled in</value>
+  </data>
+  <data name="Add_PfxPickTitle" xml:space="preserve">
+    <value>Select a PFX file</value>
+  </data>
+  <data name="Add_ReadingStore" xml:space="preserve">
+    <value>Reading the certificate store…</value>
+  </data>
+  <data name="Add_StoreEmpty" xml:space="preserve">
+    <value>No certificate with a private key in {0}\My</value>
+  </data>
+  <data name="Alert_LogDisabled" xml:space="preserve">
+    <value>Certificate "{0}" disabled: {1}</value>
+  </data>
+  <data name="Alert_LogDisabledDetail" xml:space="preserve">
+    <value>The saved PIN was deleted; further signing requests are refused without accessing the eToken. {0}</value>
+  </data>
+  <data name="Alert_Message" xml:space="preserve">
+    <value>This message comes from the RemoteKSP remote signing service on this computer (Windows service name: RemoteKSP). It uses the eToken plugged into this computer to provide code signing for other computers.
+
+Problem: {0}
+Certificate: {1}
+Thumbprint: {2}
+Time: {3}
+
+To avoid using up the eToken's PIN retries, RemoteKSP disabled this certificate and deleted the saved PIN, and will not use it to access the eToken again. Until this is fixed, signing through RemoteKSP fails on every other computer.
+
+What to do:
+{4}
+
+If you are not responsible for RemoteKSP, please forward this message to whoever handles code signing.</value>
+  </data>
+  <data name="Alert_Open" xml:space="preserve">
+    <value>Open the "RemoteKSP Server" program as Administrator</value>
+  </data>
+  <data name="Alert_OpenPath" xml:space="preserve">
+    <value>Open the "RemoteKSP Server" program as Administrator:
+    {0}</value>
+  </data>
+  <data name="Alert_ProblemLocked" xml:space="preserve">
+    <value>The eToken is locked (no PIN retries left)</value>
+  </data>
+  <data name="Alert_ProblemUnrecognized" xml:space="preserve">
+    <value>The eToken is plugged in, but signing returned an unrecognized error (possibly a wrong PIN)</value>
+  </data>
+  <data name="Alert_ProblemWrong" xml:space="preserve">
+    <value>The eToken PIN saved by RemoteKSP is wrong (someone may have changed the eToken PIN)</value>
+  </data>
+  <data name="Alert_StepsLocked" xml:space="preserve">
+    <value>1. Unlock this eToken with SafeNet Authentication Client
+2. {0}
+3. Go to Certificates, select this certificate, click "Verify PIN" and enter the correct PIN</value>
+  </data>
+  <data name="Alert_StepsUnrecognized" xml:space="preserve">
+    <value>1. Check with SafeNet Authentication Client that this eToken can log in
+2. {0}, and look up the original error in the Activity log
+3. Go to Certificates, select this certificate, click "Verify PIN" and enter the correct PIN</value>
+  </data>
+  <data name="Alert_StepsWrong" xml:space="preserve">
+    <value>1. {0}
+2. Go to Certificates, select this certificate, click "Verify PIN" and enter the correct PIN</value>
+  </data>
+  <data name="Alert_Title" xml:space="preserve">
+    <value>RemoteKSP remote signing service: eToken certificate disabled</value>
+  </data>
+  <data name="Api_CertDisabled" xml:space="preserve">
+    <value>Server certificate "{0}" is disabled: {1}. Contact the server administrator.</value>
+  </data>
+  <data name="Api_CertNotAllowed" xml:space="preserve">
+    <value>This client is not allowed to use this certificate</value>
+  </data>
+  <data name="Api_CertUnknown" xml:space="preserve">
+    <value>The server does not have this certificate. Click "Update certificates" on the client</value>
+  </data>
+  <data name="Api_ClientUnpaired" xml:space="preserve">
+    <value>Client "{0}" removed its pairing</value>
+  </data>
+  <data name="Api_ContactAdmin" xml:space="preserve">
+    <value>{0}; contact the server administrator</value>
+  </data>
+  <data name="Api_HashLengthMismatch" xml:space="preserve">
+    <value>The hash length does not match algorithm {0}</value>
+  </data>
+  <data name="Api_OriginalError" xml:space="preserve">
+    <value> (original error 0x{0}: {1})</value>
+  </data>
+  <data name="Api_SignFailed" xml:space="preserve">
+    <value>{0}: signing failed</value>
+  </data>
+  <data name="Api_SignRefusedDisabled" xml:space="preserve">
+    <value>{0}: signing refused, the certificate is disabled</value>
+  </data>
+  <data name="Api_Signed" xml:space="preserve">
+    <value>{0} signed with a certificate</value>
+  </data>
+  <data name="Api_TestCertAttempt" xml:space="preserve">
+    <value>{0} tried to sign with the test certificate</value>
+  </data>
+  <data name="Cert_AlreadyRegistered" xml:space="preserve">
+    <value>This certificate is already registered as "{0}"</value>
+  </data>
+  <data name="Cert_DefaultName_EToken" xml:space="preserve">
+    <value>eToken signing certificate</value>
+  </data>
+  <data name="Cert_DefaultName_Migrated" xml:space="preserve">
+    <value>Migrated signing certificate</value>
+  </data>
+  <data name="Cert_DefaultName_Pfx" xml:space="preserve">
+    <value>Test PFX certificate</value>
+  </data>
+  <data name="Cert_DefaultName_Store" xml:space="preserve">
+    <value>Certificate store signing certificate</value>
+  </data>
+  <data name="Cert_DefaultName_Test" xml:space="preserve">
+    <value>Test certificate</value>
+  </data>
+  <data name="Cert_NotFound" xml:space="preserve">
+    <value>Certificate not found</value>
+  </data>
+  <data name="Cert_RegistryCorrupt" xml:space="preserve">
+    <value>certificates.json could not be parsed ({0}), {1}; the certificate list is empty</value>
+  </data>
+  <data name="Certs_AddTitle" xml:space="preserve">
+    <value>Add certificate</value>
+  </data>
+  <data name="Certs_DeleteMessage" xml:space="preserve">
+    <value>Delete this certificate from the server?
+
+Clients can no longer sign with it and unbind it at their next certificate update. The certificate itself (on the eToken or in the certificate store) is not deleted.</value>
+  </data>
+  <data name="Certs_DeleteTitle" xml:space="preserve">
+    <value>Delete certificate</value>
+  </data>
+  <data name="Certs_EditTitle" xml:space="preserve">
+    <value>Edit certificate</value>
+  </data>
+  <data name="Certs_Empty" xml:space="preserve">
+    <value>No certificates</value>
+  </data>
+  <data name="Certs_EnterPin" xml:space="preserve">
+    <value>Enter the PIN</value>
+  </data>
+  <data name="Certs_NameRequired" xml:space="preserve">
+    <value>The name cannot be empty</value>
+  </data>
+  <data name="Certs_PartlyUnavailable" xml:space="preserve">
+    <value>Reloaded {0} certificate(s); {1} still unavailable.</value>
+  </data>
+  <data name="Certs_PartlyUnavailableTitle" xml:space="preserve">
+    <value>Some certificates are still unavailable</value>
+  </data>
+  <data name="Certs_PinPrompt" xml:space="preserve">
+    <value>Enter the PIN of the eToken holding certificate "{0}". After {1} failures in a row you must wait {2} minutes before trying again.</value>
+  </data>
+  <data name="Certs_PinSaved" xml:space="preserve">
+    <value>Test signing succeeded. The PIN was saved encrypted and is used for signing right away.</value>
+  </data>
+  <data name="Certs_PinSavedTitle" xml:space="preserve">
+    <value>PIN saved</value>
+  </data>
+  <data name="Certs_ReloadFailed" xml:space="preserve">
+    <value>Could not make the service reload the key sources.</value>
+  </data>
+  <data name="Certs_ReloadFailedTitle" xml:space="preserve">
+    <value>Reload failed</value>
+  </data>
+  <data name="Certs_Reloaded" xml:space="preserve">
+    <value>Reloaded the key sources of {0} certificate(s).</value>
+  </data>
+  <data name="Certs_ReloadedTitle" xml:space="preserve">
+    <value>Reloaded</value>
+  </data>
+  <data name="Certs_ServiceNotRunning" xml:space="preserve">
+    <value>The service is not running; cannot load the certificate list</value>
+  </data>
+  <data name="Certs_VerifyAndSave" xml:space="preserve">
+    <value>Verify and save</value>
+  </data>
+  <data name="Certs_VerifyPinTitle" xml:space="preserve">
+    <value>Verify PIN</value>
+  </data>
+  <data name="Cl_Count" xml:space="preserve">
+    <value>{0} client(s)</value>
+  </data>
+  <data name="Cl_CountDetail" xml:space="preserve">
+    <value>Paired clients holding valid credentials</value>
+  </data>
+  <data name="Cl_None" xml:space="preserve">
+    <value>No authorized clients</value>
+  </data>
+  <data name="Cl_NoneDetail" xml:space="preserve">
+    <value>Clients appear here after pairing</value>
+  </data>
+  <data name="Cl_QueryFailedDetail" xml:space="preserve">
+    <value>The service failed to handle the query; hover for details</value>
+  </data>
+  <data name="Cl_ShownWhenRunning" xml:space="preserve">
+    <value>Shown when the service is running</value>
+  </data>
+  <data name="Cl_Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="Cli_InstallFailed" xml:space="preserve">
+    <value>Failed to install the service: {0}</value>
+  </data>
+  <data name="Cli_UninstallFailed" xml:space="preserve">
+    <value>Failed to uninstall the service: {0}</value>
+  </data>
+  <data name="Cli_Uninstalled_ProgramKept" xml:space="preserve">
+    <value>Service uninstalled. {0} is running and was not deleted; delete it manually after it exits.</value>
+  </data>
+  <data name="Client_NotFound" xml:space="preserve">
+    <value>The client does not exist or has been revoked</value>
+  </data>
+  <data name="Client_StoreCorrupt" xml:space="preserve">
+    <value>clients.json could not be parsed ({0}), {1}; all clients must pair again</value>
+  </data>
+  <data name="Clients_AllShared" xml:space="preserve">
+    <value>All shared certificates</value>
+  </data>
+  <data name="Clients_CertCount" xml:space="preserve">
+    <value>{0} certificate(s)</value>
+  </data>
+  <data name="Clients_Empty" xml:space="preserve">
+    <value>No paired clients</value>
+  </data>
+  <data name="Clients_LoadCertsFailed" xml:space="preserve">
+    <value>Failed to load certificates</value>
+  </data>
+  <data name="Clients_NoneAllowed" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="Clients_PermissionsPrompt" xml:space="preserve">
+    <value>Select the certificates client {0} may use. Certificates it is not allowed to use are unbound at its next certificate update.</value>
+  </data>
+  <data name="Clients_PermissionsTitle" xml:space="preserve">
+    <value>Certificate permissions</value>
+  </data>
+  <data name="Clients_Revoke" xml:space="preserve">
+    <value>Revoke</value>
+  </data>
+  <data name="Clients_RevokeFailed" xml:space="preserve">
+    <value>Revoke failed</value>
+  </data>
+  <data name="Clients_RevokeMessage" xml:space="preserve">
+    <value>Revoke this client?
+
+It will no longer be able to use remote signing.</value>
+  </data>
+  <data name="Clients_RevokeTitle" xml:space="preserve">
+    <value>Revoke client</value>
+  </data>
+  <data name="Clients_Revoked" xml:space="preserve">
+    <value>Revoked client {0}</value>
+  </data>
+  <data name="Clients_RevokedTitle" xml:space="preserve">
+    <value>Revoked</value>
+  </data>
+  <data name="Clients_ServiceNotRunning" xml:space="preserve">
+    <value>The service is not running; cannot load the client list</value>
+  </data>
+  <data name="Common_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Common_Checking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="Common_CheckingDots" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="Common_ClientId" xml:space="preserve">
+    <value>Client ID</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Common_DeleteFailed" xml:space="preserve">
+    <value>Delete failed</value>
+  </data>
+  <data name="Common_ErrorMessage" xml:space="preserve">
+    <value>Error message</value>
+  </data>
+  <data name="Common_InstallFailed" xml:space="preserve">
+    <value>Installation failed</value>
+  </data>
+  <data name="Common_Installing" xml:space="preserve">
+    <value>Installing…</value>
+  </data>
+  <data name="Common_IpAddress" xml:space="preserve">
+    <value>IP address</value>
+  </data>
+  <data name="Common_MachineName" xml:space="preserve">
+    <value>Machine name</value>
+  </data>
+  <data name="Common_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Common_QueryFailed" xml:space="preserve">
+    <value>Query failed</value>
+  </data>
+  <data name="Common_Reading" xml:space="preserve">
+    <value>Reading…</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common_SetFailed" xml:space="preserve">
+    <value>Setting failed</value>
+  </data>
+  <data name="Common_StartFailed" xml:space="preserve">
+    <value>Start failed</value>
+  </data>
+  <data name="Common_StopFailed" xml:space="preserve">
+    <value>Stop failed</value>
+  </data>
+  <data name="Common_Thumbprint" xml:space="preserve">
+    <value>Thumbprint</value>
+  </data>
+  <data name="Common_UninstallFailed" xml:space="preserve">
+    <value>Uninstall failed</value>
+  </data>
+  <data name="Common_Uninstalling" xml:space="preserve">
+    <value>Uninstalling…</value>
+  </data>
+  <data name="Common_Unknown" xml:space="preserve">
+    <value>unknown</value>
+  </data>
+  <data name="Common_Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Config_SaveRefused" xml:space="preserve">
+    <value>{0} could not be read; the configuration was not saved to avoid overwriting it with defaults</value>
+  </data>
+  <data name="EToken_NotDetectedRetry" xml:space="preserve">
+    <value>No eToken detected (not plugged in or driver not ready). Plug it in and try again</value>
+  </data>
+  <data name="EToken_Unavailable" xml:space="preserve">
+    <value>eToken is temporarily unavailable ({0}). Try again later</value>
+  </data>
+  <data name="KeySrc_CertDetail" xml:space="preserve">
+    <value>Certificate "{0}": {1}</value>
+  </data>
+  <data name="KeySrc_DefaultCert" xml:space="preserve">
+    <value>{0}. Default certificate "{1}": {2}</value>
+  </data>
+  <data name="KeySrc_NoContainer" xml:space="preserve">
+    <value>No key container specified</value>
+  </data>
+  <data name="KeySrc_NoPfx" xml:space="preserve">
+    <value>No PFX file specified</value>
+  </data>
+  <data name="KeySrc_NoShared" xml:space="preserve">
+    <value>{0}. No certificate is shared, clients cannot get any</value>
+  </data>
+  <data name="KeySrc_NoSuchThumbprint" xml:space="preserve">
+    <value>The server has no certificate with thumbprint {0}</value>
+  </data>
+  <data name="KeySrc_NotInLocalMachineMy" xml:space="preserve">
+    <value>Certificate {0} is not in LocalMachine\My</value>
+  </data>
+  <data name="KeySrc_PinNotVerified" xml:space="preserve">
+    <value>PIN not verified yet, signing will fail</value>
+  </data>
+  <data name="KeySrc_Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="KeySrc_RetryStopped" xml:space="preserve">
+    <value> (still failing after {0} automatic retries; retrying stopped. Restart the service after fixing the problem)</value>
+  </data>
+  <data name="KeySrc_Retrying" xml:space="preserve">
+    <value> (retrying automatically {0}/{1})</value>
+  </data>
+  <data name="KeySrc_Summary" xml:space="preserve">
+    <value>{0} certificate(s), {1} shared</value>
+  </data>
+  <data name="KeySrc_TestDataMissing" xml:space="preserve">
+    <value>Test certificate data is missing</value>
+  </data>
+  <data name="KeySrc_TestDetail" xml:space="preserve">
+    <value>Test certificate: pairing and distribution can be checked, signing is refused</value>
+  </data>
+  <data name="KeySrc_TokenAbsent" xml:space="preserve">
+    <value>No eToken detected (not plugged in or driver not ready). Signing requests use it as soon as it is plugged in; no service restart needed</value>
+  </data>
+  <data name="KeySrc_UnavailableDetail" xml:space="preserve">
+    <value>Unavailable: {0}</value>
+  </data>
+  <data name="KeySrc_UnknownType" xml:space="preserve">
+    <value>Unknown key source type {0}</value>
+  </data>
+  <data name="Ks_ChannelAccessDenied" xml:space="preserve">
+    <value>No access to the management channel; run as Administrator</value>
+  </data>
+  <data name="Ks_ChannelUnavailable" xml:space="preserve">
+    <value>The management channel cannot be reached right now; refresh later</value>
+  </data>
+  <data name="Ks_NotConfigured" xml:space="preserve">
+    <value>Not configured</value>
+  </data>
+  <data name="Ks_NotConfiguredDetail" xml:space="preserve">
+    <value>No certificate is shared with clients; add one under Certificates</value>
+  </data>
+  <data name="Ks_NotReady" xml:space="preserve">
+    <value>Not ready</value>
+  </data>
+  <data name="Ks_QueryFailedDetail" xml:space="preserve">
+    <value>The service failed to handle the status query; hover for details</value>
+  </data>
+  <data name="Ks_Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Ks_ServiceNotRunning" xml:space="preserve">
+    <value>Service not running</value>
+  </data>
+  <data name="Ks_ServiceNotRunningDetail" xml:space="preserve">
+    <value>Start the Windows service to query the key sources</value>
+  </data>
+  <data name="Ks_StatusUnavailable" xml:space="preserve">
+    <value>Key source status unavailable</value>
+  </data>
+  <data name="Ks_WaitingForService" xml:space="preserve">
+    <value>Waiting for service</value>
+  </data>
+  <data name="Ks_WaitingForServiceDetail" xml:space="preserve">
+    <value>Queried again once the service status changes</value>
+  </data>
+  <data name="List_Separator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="LogCat_CertStore" xml:space="preserve">
+    <value>Certificate store</value>
+  </data>
+  <data name="LogCat_Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="LogCat_Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="LogCat_Config" xml:space="preserve">
+    <value>Config</value>
+  </data>
+  <data name="LogCat_Pairing" xml:space="preserve">
+    <value>Pairing</value>
+  </data>
+  <data name="LogCat_Pipe" xml:space="preserve">
+    <value>Pipe</value>
+  </data>
+  <data name="LogCat_Signing" xml:space="preserve">
+    <value>Signing</value>
+  </data>
+  <data name="LogCat_System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Log_FilterAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Log_HttpsStarted" xml:space="preserve">
+    <value>HTTPS service started on port {0}</value>
+  </data>
+  <data name="Log_LevelError" xml:space="preserve">
+    <value>❌ Error</value>
+  </data>
+  <data name="Log_LevelInfo" xml:space="preserve">
+    <value>ℹ️ Info</value>
+  </data>
+  <data name="Log_LevelWarn" xml:space="preserve">
+    <value>⚠️ Warning</value>
+  </data>
+  <data name="Log_Loaded" xml:space="preserve">
+    <value>Activity log loaded</value>
+  </data>
+  <data name="Nav_ActivityLog" xml:space="preserve">
+    <value>Activity log</value>
+  </data>
+  <data name="Nav_Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="Nav_Clients" xml:space="preserve">
+    <value>Paired clients</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Nav_PairingRequests" xml:space="preserve">
+    <value>Pairing requests</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Ov_Installed" xml:space="preserve">
+    <value>The Remote KSP service was installed</value>
+  </data>
+  <data name="Ov_InstalledTitle" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="Ov_ManageClients" xml:space="preserve">
+    <value>Manage clients</value>
+  </data>
+  <data name="Ov_NetDetail" xml:space="preserve">
+    <value>These are the addresses of this computer's network adapters, plus https connection URLs built from the service port.
+
+• Whether a client can connect depends on the service listening, network routing and the firewall; copying a URL does not prove it is reachable remotely.
+• The server TLS certificate is self-signed and contains no IP; clients check the certificate thumbprint recorded at pairing, not the address.
+• Loopback addresses only work on this computer; link-local IPv6 addresses include this computer's interface number, so their URLs cannot be copied.</value>
+  </data>
+  <data name="Ov_NetFootnote" xml:space="preserve">
+    <value>Clients can try these addresses to reach this computer</value>
+  </data>
+  <data name="Ov_StartTimeout" xml:space="preserve">
+    <value>The start command was sent but the status did not update in time; refresh later</value>
+  </data>
+  <data name="Ov_StartTimeoutTitle" xml:space="preserve">
+    <value>Start timed out</value>
+  </data>
+  <data name="Ov_StopTimeout" xml:space="preserve">
+    <value>The stop command was sent but the status did not update in time; refresh later</value>
+  </data>
+  <data name="Ov_StopTimeoutTitle" xml:space="preserve">
+    <value>Stop timed out</value>
+  </data>
+  <data name="Ov_ViewPairingRequests" xml:space="preserve">
+    <value>View pairing requests</value>
+  </data>
+  <data name="Pairing_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Pairing_ApproveFailed" xml:space="preserve">
+    <value>Approve failed</value>
+  </data>
+  <data name="Pairing_ApprovedFrom" xml:space="preserve">
+    <value>Approved the pairing request from {0} ({1})</value>
+  </data>
+  <data name="Pairing_ApprovedTitle" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Pairing_Empty" xml:space="preserve">
+    <value>No pending pairing requests</value>
+  </data>
+  <data name="Pairing_Expired" xml:space="preserve">
+    <value>The pairing request has expired or was already handled. Start pairing again.</value>
+  </data>
+  <data name="Pairing_ExpiredShort" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="Pairing_Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Pairing_Minutes" xml:space="preserve">
+    <value>{0} min</value>
+  </data>
+  <data name="Pairing_NewRequestTitle" xml:space="preserve">
+    <value>New client pairing request</value>
+  </data>
+  <data name="Pairing_Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="Pairing_RejectFailed" xml:space="preserve">
+    <value>Reject failed</value>
+  </data>
+  <data name="Pairing_RejectedFrom" xml:space="preserve">
+    <value>Rejected the pairing request from {0} ({1})</value>
+  </data>
+  <data name="Pairing_RejectedTitle" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="Pairing_Seconds" xml:space="preserve">
+    <value>{0} s</value>
+  </data>
+  <data name="Pairing_ServiceNotRunning" xml:space="preserve">
+    <value>The service is not running; cannot load pairing requests</value>
+  </data>
+  <data name="Pairing_Success" xml:space="preserve">
+    <value>Approved the pairing request of client "{0}".</value>
+  </data>
+  <data name="Pairing_SuccessTitle" xml:space="preserve">
+    <value>Paired</value>
+  </data>
+  <data name="Perm_NotShared" xml:space="preserve">
+    <value>not shared</value>
+  </data>
+  <data name="Pin_CertDisabled" xml:space="preserve">
+    <value>Certificate disabled: {0}. {1}</value>
+  </data>
+  <data name="Pin_DisabledDetail" xml:space="preserve">
+    <value>Disabled: {0} ({1}). {2}</value>
+  </data>
+  <data name="Pin_Locked" xml:space="preserve">
+    <value>eToken is locked (no PIN retries left)</value>
+  </data>
+  <data name="Pin_LockedAction" xml:space="preserve">
+    <value>Unlock the eToken with SafeNet Authentication Client, then verify the PIN again in the server GUI</value>
+  </data>
+  <data name="Pin_Unrecognized" xml:space="preserve">
+    <value>eToken returned an unrecognized error (possibly a wrong PIN)</value>
+  </data>
+  <data name="Pin_UnrecognizedAction" xml:space="preserve">
+    <value>To avoid locking the eToken, the saved PIN is no longer used. Check that the eToken works (can you log in with SafeNet Authentication Client?), then verify the PIN again under Certificates in the server GUI; the activity log has the original error</value>
+  </data>
+  <data name="Pin_Wrong" xml:space="preserve">
+    <value>The PIN saved on the server is wrong</value>
+  </data>
+  <data name="Pin_WrongAction" xml:space="preserve">
+    <value>Verify the PIN again under Certificates in the server GUI</value>
+  </data>
+  <data name="Pipe_AccessDenied" xml:space="preserve">
+    <value>No access to the service pipe</value>
+  </data>
+  <data name="Pipe_AccessDeniedFull" xml:space="preserve">
+    <value>No access to the service pipe (the GUI must run as Administrator)</value>
+  </data>
+  <data name="Pipe_CertAdded" xml:space="preserve">
+    <value>Added certificate: {0} ({1})</value>
+  </data>
+  <data name="Pipe_CertRemoved" xml:space="preserve">
+    <value>Removed certificate: {0}</value>
+  </data>
+  <data name="Pipe_CertUnavailable" xml:space="preserve">
+    <value>Certificate unavailable: {0}</value>
+  </data>
+  <data name="Pipe_CertUpdated" xml:space="preserve">
+    <value>Updated certificate: {0} (shared={1})</value>
+  </data>
+  <data name="Pipe_ClientRevoked" xml:space="preserve">
+    <value>Revoked client {0}</value>
+  </data>
+  <data name="Pipe_CommandFailed" xml:space="preserve">
+    <value>Command failed: {0}</value>
+  </data>
+  <data name="Pipe_CommandSucceeded" xml:space="preserve">
+    <value>Command succeeded: {0}</value>
+  </data>
+  <data name="Pipe_DefaultNotShared" xml:space="preserve">
+    <value>A certificate that is not shared cannot be the default</value>
+  </data>
+  <data name="Pipe_DefaultSet" xml:space="preserve">
+    <value>Default certificate set: {0}</value>
+  </data>
+  <data name="Pipe_Missing" xml:space="preserve">
+    <value>Missing {0}</value>
+  </data>
+  <data name="Pipe_NeedsAdmin" xml:space="preserve">
+    <value>The GUI must run as Administrator</value>
+  </data>
+  <data name="Pipe_NoOriginalFile" xml:space="preserve">
+    <value>(there was no file)</value>
+  </data>
+  <data name="Pipe_NoResponse" xml:space="preserve">
+    <value>The service did not respond</value>
+  </data>
+  <data name="Pipe_NotRunning" xml:space="preserve">
+    <value>The service is not running or cannot be reached</value>
+  </data>
+  <data name="Pipe_NotRunningFull" xml:space="preserve">
+    <value>The service is not running or cannot be reached: {0}</value>
+  </data>
+  <data name="Pipe_PairingApproved" xml:space="preserve">
+    <value>Approved pairing request {0}...</value>
+  </data>
+  <data name="Pipe_PairingRejected" xml:space="preserve">
+    <value>Rejected pairing request {0}...</value>
+  </data>
+  <data name="Pipe_PinLocked" xml:space="preserve">
+    <value>The eToken is locked (no PIN retries left); unlock it with SafeNet Authentication Client first</value>
+  </data>
+  <data name="Pipe_PinLockout" xml:space="preserve">
+    <value>PIN verification failed {0} times in a row; verification is paused to protect the eToken. Try again in {1} seconds</value>
+  </data>
+  <data name="Pipe_PinOnlyEToken" xml:space="preserve">
+    <value>Only eToken certificates need a PIN</value>
+  </data>
+  <data name="Pipe_PinPaused" xml:space="preserve">
+    <value>Failed {0} times in a row; try again in {1} minutes</value>
+  </data>
+  <data name="Pipe_PinReasonLimit" xml:space="preserve">
+    <value>{0}. {1}</value>
+  </data>
+  <data name="Pipe_PinRemaining" xml:space="preserve">
+    <value>{0} more failure(s) will pause verification for {1} minutes</value>
+  </data>
+  <data name="Pipe_PinSet" xml:space="preserve">
+    <value>PIN set: {0}</value>
+  </data>
+  <data name="Pipe_PinSetReenabled" xml:space="preserve">
+    <value>PIN set: {0}, re-enabled</value>
+  </data>
+  <data name="Pipe_PinTestFailed" xml:space="preserve">
+    <value>Test signing failed: wrong PIN, wrong container name or eToken not plugged in ({0})</value>
+  </data>
+  <data name="Pipe_PinVerifyFailed" xml:space="preserve">
+    <value>PIN verification failed: {0}</value>
+  </data>
+  <data name="Pipe_PinWrong" xml:space="preserve">
+    <value>Wrong PIN</value>
+  </data>
+  <data name="Pipe_StoreDiag" xml:space="preserve">
+    <value>The service process (SYSTEM) sees: {0}\My total={1}, with private key={2}</value>
+  </data>
+  <data name="Pipe_StoreDiagRemote" xml:space="preserve">
+    <value>; another {0} have private keys pointing to Remote KSP (synced by this computer's client) and cannot be used here</value>
+  </data>
+  <data name="Pipe_StoreEnumerated" xml:space="preserve">
+    <value>Enumerated {0}\My</value>
+  </data>
+  <data name="Pipe_StoreEnumeratedDetail" xml:space="preserve">
+    <value>total={0}, usable private key={1}, pointing to Remote KSP (excluded)={2}</value>
+  </data>
+  <data name="Pipe_TlsRegenerated" xml:space="preserve">
+    <value>TLS certificate regenerated; paired clients must pair again</value>
+  </data>
+  <data name="Pipe_TlsRegeneratedDetail" xml:space="preserve">
+    <value>Old thumbprint {0} → new thumbprint {1}; original file backed up as {2}</value>
+  </data>
+  <data name="Pipe_UnknownCertType" xml:space="preserve">
+    <value>Unknown certificate type {0}</value>
+  </data>
+  <data name="Pipe_Unreadable" xml:space="preserve">
+    <value>(unreadable)</value>
+  </data>
+  <data name="Retry_Exhausted" xml:space="preserve">
+    <value>{0} certificate(s) still unavailable after {1} automatic retries; retrying stopped</value>
+  </data>
+  <data name="Retry_ExhaustedDetail" xml:space="preserve">
+    <value>After fixing the problem (e.g. plugging in the eToken), restart the service or save the certificate configuration again in the GUI</value>
+  </data>
+  <data name="Retry_Recovered" xml:space="preserve">
+    <value>Recovered after automatic retry {0}: {1}</value>
+  </data>
+  <data name="Secure_ReparsePoint" xml:space="preserve">
+    <value>{0} is a junction or symbolic link that could redirect data elsewhere, so it was refused. An administrator should check it, delete it (only the link itself) and then start the service</value>
+  </data>
+  <data name="Secure_RestrictFailed" xml:space="preserve">
+    <value>Could not restrict access to {0}</value>
+  </data>
+  <data name="Set_AllPairedClients" xml:space="preserve">
+    <value>all paired clients</value>
+  </data>
+  <data name="Set_Backup" xml:space="preserve">
+    <value>Backup of the old certificate</value>
+  </data>
+  <data name="Set_ChangePort" xml:space="preserve">
+    <value>Change port</value>
+  </data>
+  <data name="Set_ChangePortFailed" xml:space="preserve">
+    <value>Failed to change the port</value>
+  </data>
+  <data name="Set_ChangingPort" xml:space="preserve">
+    <value>Changing the port to {0}…</value>
+  </data>
+  <data name="Set_Installed" xml:space="preserve">
+    <value>The service program was copied to {0}; the RemoteKSP service is installed and starts with Windows.</value>
+  </data>
+  <data name="Set_InstalledTitle" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="Set_InstallingBusy" xml:space="preserve">
+    <value>Installing the service (copying the service program to Program Files)…</value>
+  </data>
+  <data name="Set_MoveToProgramFiles" xml:space="preserve">
+    <value>Move to Program Files</value>
+  </data>
+  <data name="Set_NPairedClients" xml:space="preserve">
+    <value>all {0} paired clients</value>
+  </data>
+  <data name="Set_NewThumbprint" xml:space="preserve">
+    <value>New thumbprint</value>
+  </data>
+  <data name="Set_NoOldFile" xml:space="preserve">
+    <value>(there was no certificate file)</value>
+  </data>
+  <data name="Set_OldThumbprint" xml:space="preserve">
+    <value>Old thumbprint</value>
+  </data>
+  <data name="Set_OldUnreadable" xml:space="preserve">
+    <value>(the old certificate could not be read)</value>
+  </data>
+  <data name="Set_PortChanged" xml:space="preserve">
+    <value>The HTTPS port is now {0}. Pair every client again using the new port.</value>
+  </data>
+  <data name="Set_PortChangedNoFirewall" xml:space="preserve">
+    <value>The HTTPS port is now {0}, but adding the firewall rule failed (it may be managed by Group Policy). Allow inbound TCP {0} manually.</value>
+  </data>
+  <data name="Set_PortChangedNoFirewallTitle" xml:space="preserve">
+    <value>Port changed, firewall rule not updated</value>
+  </data>
+  <data name="Set_PortChangedTitle" xml:space="preserve">
+    <value>Port changed</value>
+  </data>
+  <data name="Set_PortInUse" xml:space="preserve">
+    <value>Another program on this computer is listening on port {0}; choose another one.</value>
+  </data>
+  <data name="Set_PortInUseTitle" xml:space="preserve">
+    <value>Port in use</value>
+  </data>
+  <data name="Set_PortInvalid" xml:space="preserve">
+    <value>Enter a port between 1 and 65535.</value>
+  </data>
+  <data name="Set_PortInvalidTitle" xml:space="preserve">
+    <value>Invalid port</value>
+  </data>
+  <data name="Set_PortMessage" xml:space="preserve">
+    <value>The port changes from {0} to {1}; a running service is restarted and the firewall rule is updated.
+
+The server address saved on clients includes the port, so afterwards {2} will fail to connect; on every client remove this server and pair again using the new port {1}.</value>
+  </data>
+  <data name="Set_PortTitle" xml:space="preserve">
+    <value>Change HTTPS port</value>
+  </data>
+  <data name="Set_ProgramMissing" xml:space="preserve">
+    <value>The service program file does not exist; the service cannot start</value>
+  </data>
+  <data name="Set_ProgramNotInProgramFiles" xml:space="preserve">
+    <value>The service program is not in Program Files. Moving it is recommended; afterwards upgrading only takes "Update service program" here</value>
+  </data>
+  <data name="Set_ProgramNotInstalled" xml:space="preserve">
+    <value>Not installed. Installing copies the service program to {0}</value>
+  </data>
+  <data name="Set_ProgramOtherVersion" xml:space="preserve">
+    <value>Installed version {0} differs from this program ({1})</value>
+  </data>
+  <data name="Set_ProgramSameVersion" xml:space="preserve">
+    <value>Same version as this program ({0})</value>
+  </data>
+  <data name="Set_ProgramUserWritable" xml:space="preserve">
+    <value>Normal users can modify the folder of the service program, but the service runs as SYSTEM. Moving it to Program Files is recommended</value>
+  </data>
+  <data name="Set_RegenFailed" xml:space="preserve">
+    <value>Failed to regenerate the TLS certificate</value>
+  </data>
+  <data name="Set_RegenMessage" xml:space="preserve">
+    <value>A new self-signed certificate will be generated for the HTTPS service.
+
+Clients recorded the old certificate's thumbprint when pairing, so afterwards {0} will fail to connect; remove this server on every client and pair again.
+
+The original server.pfx is backed up to the data directory, not deleted. Only use this when the certificate is damaged or the service cannot start because of it.</value>
+  </data>
+  <data name="Set_RegenTitle" xml:space="preserve">
+    <value>Regenerate TLS certificate</value>
+  </data>
+  <data name="Set_Regenerate" xml:space="preserve">
+    <value>Regenerate</value>
+  </data>
+  <data name="Set_Regenerated" xml:space="preserve">
+    <value>The new certificate is in effect. Remove this server on every client and pair again, checking the verification code.</value>
+  </data>
+  <data name="Set_RegeneratedTitle" xml:space="preserve">
+    <value>TLS certificate regenerated</value>
+  </data>
+  <data name="Set_Reinstall" xml:space="preserve">
+    <value>Reinstall</value>
+  </data>
+  <data name="Set_ReinstallFailed" xml:space="preserve">
+    <value>Reinstall failed</value>
+  </data>
+  <data name="Set_ReinstallMessage" xml:space="preserve">
+    <value>The RemoteKSP service will be deleted and created again (the service program is also updated to this version); the service stops.
+
+The data directory and configuration are not affected. Use this when the service registration is damaged; to upgrade, use "Update service program".</value>
+  </data>
+  <data name="Set_ReinstallTitle" xml:space="preserve">
+    <value>Reinstall service</value>
+  </data>
+  <data name="Set_Reinstalled" xml:space="preserve">
+    <value>The RemoteKSP service was reinstalled.</value>
+  </data>
+  <data name="Set_ReinstalledTitle" xml:space="preserve">
+    <value>Reinstalled</value>
+  </data>
+  <data name="Set_ReinstallingBusy" xml:space="preserve">
+    <value>Reinstalling the service…</value>
+  </data>
+  <data name="Set_RepairProgram" xml:space="preserve">
+    <value>Repair service program</value>
+  </data>
+  <data name="Set_StartPending" xml:space="preserve">
+    <value>Starting…</value>
+  </data>
+  <data name="Set_Started" xml:space="preserve">
+    <value>The RemoteKSP service was started.</value>
+  </data>
+  <data name="Set_StartedTitle" xml:space="preserve">
+    <value>Service started</value>
+  </data>
+  <data name="Set_StopPending" xml:space="preserve">
+    <value>Stopping…</value>
+  </data>
+  <data name="Set_Stopped" xml:space="preserve">
+    <value>The RemoteKSP service was stopped.</value>
+  </data>
+  <data name="Set_StoppedTitle" xml:space="preserve">
+    <value>Service stopped</value>
+  </data>
+  <data name="Set_TlsNotLoaded" xml:space="preserve">
+    <value>The service has not loaded a TLS certificate yet</value>
+  </data>
+  <data name="Set_TlsServiceNotRunning" xml:space="preserve">
+    <value>The service is not running; cannot read it</value>
+  </data>
+  <data name="Set_UninstallingBusy" xml:space="preserve">
+    <value>Uninstalling the service…</value>
+  </data>
+  <data name="Set_UpdateFailed" xml:space="preserve">
+    <value>Failed to update the service program</value>
+  </data>
+  <data name="Set_UpdateMessage" xml:space="preserve">
+    <value>The service will be stopped, this program copied to {0} and the service switched to that copy; it is restarted if it was running.
+
+The data directory, certificates, PINs and client pairings are not affected; clients do not need to pair again.</value>
+  </data>
+  <data name="Set_UpdateProgram" xml:space="preserve">
+    <value>Update service program</value>
+  </data>
+  <data name="Set_UpdatedMoved" xml:space="preserve">
+    <value>The service now uses {0}. The old {1} is no longer used by the service and can be deleted.</value>
+  </data>
+  <data name="Set_UpdatedTitle" xml:space="preserve">
+    <value>Service program updated</value>
+  </data>
+  <data name="Set_UpdatedVersion" xml:space="preserve">
+    <value>The service was updated to this version ({0}).</value>
+  </data>
+  <data name="Set_UpdatingBusy" xml:space="preserve">
+    <value>Updating the service program…</value>
+  </data>
+  <data name="Source_TestVirtual" xml:space="preserve">
+    <value>Automatically generated virtual certificate</value>
+  </data>
+  <data name="State_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="State_Expired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="State_PinPending" xml:space="preserve">
+    <value>PIN not verified</value>
+  </data>
+  <data name="State_Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="State_Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="State_Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="StoreCert_Display" xml:space="preserve">
+    <value>{0} ({1}, expires {2})</value>
+  </data>
+  <data name="Store_CertNotFound" xml:space="preserve">
+    <value>No certificate with thumbprint {1} in {0}\My</value>
+  </data>
+  <data name="Store_CorruptKeepFailed" xml:space="preserve">
+    <value>could not rename it ({0}); the file will not be written until this is fixed</value>
+  </data>
+  <data name="Store_CorruptKept" xml:space="preserve">
+    <value>renamed and kept as {0}</value>
+  </data>
+  <data name="Store_FileIsNull" xml:space="preserve">
+    <value>File content is null</value>
+  </data>
+  <data name="Store_NoPrivateKey" xml:space="preserve">
+    <value>Certificate {0} has no private key</value>
+  </data>
+  <data name="Store_NoRsaKey" xml:space="preserve">
+    <value>Certificate {0} has no RSA private key</value>
+  </data>
+  <data name="Store_RemoteKspKey" xml:space="preserve">
+    <value>The private key of certificate {0} points to Remote KSP (synced to this computer's client from another server), so it cannot be a signing certificate of this server. Use the "eToken" source for eToken certificates</value>
+  </data>
+  <data name="Store_UnsupportedHash" xml:space="preserve">
+    <value>Unsupported hash algorithm: {0}</value>
+  </data>
+  <data name="Svc_CannotStart" xml:space="preserve">
+    <value>Cannot start {0}</value>
+  </data>
+  <data name="Svc_DataDirIsLink" xml:space="preserve">
+    <value>{0} is a junction or symbolic link; the data directory was not deleted. An administrator should check and handle it manually</value>
+  </data>
+  <data name="Svc_DevBuild" xml:space="preserve">
+    <value>This is a development build (not the published single-file exe) and cannot be installed as a service. Run Publish\Server\RemoteKSP.Server.exe built by publish-all.ps1</value>
+  </data>
+  <data name="Svc_DirUserWritable" xml:space="preserve">
+    <value>{0} is writable by normal users; the service runs as SYSTEM, so the service program cannot be placed there</value>
+  </data>
+  <data name="Svc_InstallFailed" xml:space="preserve">
+    <value>Failed to install the service</value>
+  </data>
+  <data name="Svc_NoProgramPath" xml:space="preserve">
+    <value>Cannot determine the program path</value>
+  </data>
+  <data name="Svc_NotInstalled" xml:space="preserve">
+    <value>Not installed</value>
+  </data>
+  <data name="Svc_NotInstalledDetail" xml:space="preserve">
+    <value>Once installed, the signing service starts with Windows</value>
+  </data>
+  <data name="Svc_OpenFailed" xml:space="preserve">
+    <value>Cannot open service {0}</value>
+  </data>
+  <data name="Svc_Paused" xml:space="preserve">
+    <value>Paused</value>
+  </data>
+  <data name="Svc_PausedDetail" xml:space="preserve">
+    <value>Clients cannot sign while the service is paused</value>
+  </data>
+  <data name="Svc_PortRange" xml:space="preserve">
+    <value>The port must be between 1 and 65535</value>
+  </data>
+  <data name="Svc_QueryFailedDetail" xml:space="preserve">
+    <value>Could not read the service status</value>
+  </data>
+  <data name="Svc_RecoveryFlagFailed" xml:space="preserve">
+    <value>Failed to set the failure recovery flag</value>
+  </data>
+  <data name="Svc_RecoveryPolicyFailed" xml:space="preserve">
+    <value>Failed to set the service failure recovery policy</value>
+  </data>
+  <data name="Svc_Running" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="Svc_RunningDetail" xml:space="preserve">
+    <value>The signing service process is running (Windows service name: RemoteKSP)</value>
+  </data>
+  <data name="Svc_ScmConnectFailed" xml:space="preserve">
+    <value>Cannot connect to the service control manager</value>
+  </data>
+  <data name="Svc_StartFailed" xml:space="preserve">
+    <value>Failed to start the service</value>
+  </data>
+  <data name="Svc_Starting" xml:space="preserve">
+    <value>Starting…</value>
+  </data>
+  <data name="Svc_StartingDetail" xml:space="preserve">
+    <value>Waiting for the service to start</value>
+  </data>
+  <data name="Svc_StopFailed" xml:space="preserve">
+    <value>Failed to stop the service</value>
+  </data>
+  <data name="Svc_Stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="Svc_StoppedDetail" xml:space="preserve">
+    <value>Clients cannot sign while the service is stopped</value>
+  </data>
+  <data name="Svc_Stopping" xml:space="preserve">
+    <value>Stopping…</value>
+  </data>
+  <data name="Svc_StoppingDetail" xml:space="preserve">
+    <value>Waiting for the service to stop</value>
+  </data>
+  <data name="Svc_ToolFailed" xml:space="preserve">
+    <value>{0} ({1} exit code {2})
+{3}</value>
+  </data>
+  <data name="Svc_UninstallFailed" xml:space="preserve">
+    <value>Failed to uninstall the service</value>
+  </data>
+  <data name="Svc_Unknown" xml:space="preserve">
+    <value>Unknown status</value>
+  </data>
+  <data name="Svc_UnknownDetail" xml:space="preserve">
+    <value>The Service Control Manager returned an unrecognized status</value>
+  </data>
+  <data name="Svc_UpdatePathFailed" xml:space="preserve">
+    <value>Failed to update the service path</value>
+  </data>
+  <data name="Test_SigningRefused" xml:space="preserve">
+    <value>This is a test certificate; the server does not sign with it</value>
+  </data>
+  <data name="Tls_ReadFailed" xml:space="preserve">
+    <value>Could not read the TLS certificate {0} ({1}). No new certificate was generated, because every client would have to pair again. Restart the service after fixing the problem; if you really want a new certificate, click "Regenerate TLS certificate" under Settings in the server GUI and pair every client again</value>
+  </data>
+  <data name="Type_Pfx" xml:space="preserve">
+    <value>PFX file</value>
+  </data>
+  <data name="Type_Store" xml:space="preserve">
+    <value>Certificate store</value>
+  </data>
+  <data name="Type_Test" xml:space="preserve">
+    <value>Test certificate</value>
+  </data>
+  <data name="Un_ConfirmData" xml:space="preserve">
+    <value>{0} will be permanently deleted and cannot be recovered.
+
+Copied PFX files are deleted too; if you have no other backup, cancel and back them up first.</value>
+  </data>
+  <data name="Un_ConfirmDataTitle" xml:space="preserve">
+    <value>Confirm deleting the data directory</value>
+  </data>
+  <data name="Un_DeleteAndUninstall" xml:space="preserve">
+    <value>Delete and uninstall</value>
+  </data>
+  <data name="Un_DoneDataKept" xml:space="preserve">
+    <value>The service was uninstalled. The data directory {0} was kept and is used again after reinstalling.</value>
+  </data>
+  <data name="Un_DoneDataRemoved" xml:space="preserve">
+    <value>The service was uninstalled and the data directory deleted.</value>
+  </data>
+  <data name="Un_DoneTitle" xml:space="preserve">
+    <value>Uninstalled</value>
+  </data>
+  <data name="Un_Message" xml:space="preserve">
+    <value>Stops and deletes the RemoteKSP service, the firewall rule and the service program in Program Files\RemoteKSP.
+
+After uninstalling, no paired client can sign. Private keys on the eToken are not affected.</value>
+  </data>
+  <data name="Un_ProgramKept" xml:space="preserve">
+    <value>
+
+This program is running from {0}, so that file was not deleted; delete it manually after closing the program.</value>
+  </data>
+  <data name="Un_RemoveData" xml:space="preserve">
+    <value>Also delete the data directory {0} (certificate configuration, saved PINs, client pairings, TLS certificate, copied PFX files). This cannot be undone; after reinstalling you must add the certificates again and pair every client again</value>
+  </data>
+  <data name="Un_Title" xml:space="preserve">
+    <value>Uninstall service</value>
+  </data>
+  <data name="Un_Uninstall" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="X_AllowAllShared" xml:space="preserve">
+    <value>Allow all shared certificates (including ones added later)</value>
+  </data>
+  <data name="X_AllowSelected" xml:space="preserve">
+    <value>Only allow the selected certificates</value>
+  </data>
+  <data name="X_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="X_AuthorizedClients" xml:space="preserve">
+    <value>Authorized clients</value>
+  </data>
+  <data name="X_AutoScroll" xml:space="preserve">
+    <value>Auto-scroll</value>
+  </data>
+  <data name="X_AutoScrollOff" xml:space="preserve">
+    <value>Auto-scroll: off</value>
+  </data>
+  <data name="X_AutoScrollOn" xml:space="preserve">
+    <value>Auto-scroll: on</value>
+  </data>
+  <data name="X_Browse" xml:space="preserve">
+    <value>Browse…</value>
+  </data>
+  <data name="X_CertPermissions" xml:space="preserve">
+    <value>Certificate permissions</value>
+  </data>
+  <data name="X_CertSource" xml:space="preserve">
+    <value>Certificate source</value>
+  </data>
+  <data name="X_Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="X_CertsEmptyHint" xml:space="preserve">
+    <value>After you add an eToken, certificate store, PFX or test certificate, paired clients can get and use it</value>
+  </data>
+  <data name="X_CheckCode" xml:space="preserve">
+    <value>Make sure the code shown on the client is exactly the same as this one.</value>
+  </data>
+  <data name="X_ClearLog" xml:space="preserve">
+    <value>Clear log</value>
+  </data>
+  <data name="X_ClientInfo" xml:space="preserve">
+    <value>Client information</value>
+  </data>
+  <data name="X_ClientsEmptyHint" xml:space="preserve">
+    <value>Approved clients appear here once pairing completes</value>
+  </data>
+  <data name="X_CreatedAt" xml:space="preserve">
+    <value>Created at</value>
+  </data>
+  <data name="X_CspProvider" xml:space="preserve">
+    <value>CSP provider</value>
+  </data>
+  <data name="X_DataDirectory" xml:space="preserve">
+    <value>Data directory</value>
+  </data>
+  <data name="X_Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="X_DetectEToken" xml:space="preserve">
+    <value>Detect eToken</value>
+  </data>
+  <data name="X_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="X_ExpiresAt" xml:space="preserve">
+    <value>Expires at</value>
+  </data>
+  <data name="X_GenerateTestPfx" xml:space="preserve">
+    <value>Generate self-signed test PFX</value>
+  </data>
+  <data name="X_HttpsPort" xml:space="preserve">
+    <value>HTTPS port</value>
+  </data>
+  <data name="X_Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="X_InstallService" xml:space="preserve">
+    <value>Install service</value>
+  </data>
+  <data name="X_KeyContainer" xml:space="preserve">
+    <value>Key container</value>
+  </data>
+  <data name="X_LastSeen" xml:space="preserve">
+    <value>Last activity</value>
+  </data>
+  <data name="X_LegacyDefaultTip" xml:space="preserve">
+    <value>Old clients (/info) can only get the default certificate</value>
+  </data>
+  <data name="X_LogError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="X_LogInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="X_LogWarn" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="X_ManageCertificates" xml:space="preserve">
+    <value>Manage certificates</value>
+  </data>
+  <data name="X_MoreActions" xml:space="preserve">
+    <value>More actions</value>
+  </data>
+  <data name="X_NamePlaceholder" xml:space="preserve">
+    <value>Leave empty to use the certificate subject</value>
+  </data>
+  <data name="X_PairedAt" xml:space="preserve">
+    <value>Paired at</value>
+  </data>
+  <data name="X_PairingEmptyHint" xml:space="preserve">
+    <value>Pairing requests appear here when a client connects</value>
+  </data>
+  <data name="X_PairingIntro" xml:space="preserve">
+    <value>A client is asking to use this server's remote signing service. Check the verification code, then decide whether to allow it.</value>
+  </data>
+  <data name="X_PfxPassword" xml:space="preserve">
+    <value>PFX password</value>
+  </data>
+  <data name="X_PinFormInfo" xml:space="preserve">
+    <value>The service makes a test signature with this PIN, then saves it encrypted with DPAPI and uses it automatically when signing.</value>
+  </data>
+  <data name="X_PinOptional" xml:space="preserve">
+    <value>PIN (optional; if entered, a test signature is made and the PIN saved encrypted)</value>
+  </data>
+  <data name="X_PortNote" xml:space="preserve">
+    <value>The port clients use to reach the server (default 8443). Changing it updates the firewall rule and restarts the service; every paired client must remove this server and pair again using the new port.</value>
+  </data>
+  <data name="X_RefreshStatus" xml:space="preserve">
+    <value>Refresh status</value>
+  </data>
+  <data name="X_Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="X_ReloadKeySources" xml:space="preserve">
+    <value>Reload key sources</value>
+  </data>
+  <data name="X_ReloadKeySourcesTip" xml:space="preserve">
+    <value>Makes the service reconnect the key sources of all certificates (e.g. after plugging in the eToken) and resets the automatic retry count</value>
+  </data>
+  <data name="X_RequestExpired" xml:space="preserve">
+    <value>This pairing request has expired and cannot be approved.</value>
+  </data>
+  <data name="X_RequestExpiredTitle" xml:space="preserve">
+    <value>Request expired</value>
+  </data>
+  <data name="X_RequestTime" xml:space="preserve">
+    <value>Requested at</value>
+  </data>
+  <data name="X_RevokeClient" xml:space="preserve">
+    <value>Revoke client</value>
+  </data>
+  <data name="X_ServiceNote" xml:space="preserve">
+    <value>The service runs as SYSTEM and its program is kept in Program Files\RemoteKSP (only administrators can change it). To upgrade, open the new version of this program and click "Update service program"; data and pairings are not affected.</value>
+  </data>
+  <data name="X_ServiceProgram" xml:space="preserve">
+    <value>Service program</value>
+  </data>
+  <data name="X_ServiceStatus" xml:space="preserve">
+    <value>Service status</value>
+  </data>
+  <data name="X_SetDefault" xml:space="preserve">
+    <value>Set as default</value>
+  </data>
+  <data name="X_ShareWithClients" xml:space="preserve">
+    <value>Share with clients</value>
+  </data>
+  <data name="X_Shared" xml:space="preserve">
+    <value>Shared</value>
+  </data>
+  <data name="X_SigningKeySource" xml:space="preserve">
+    <value>Signing key source</value>
+  </data>
+  <data name="X_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="X_SourceIp" xml:space="preserve">
+    <value>Source IP address</value>
+  </data>
+  <data name="X_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="X_StartService" xml:space="preserve">
+    <value>Start service</value>
+  </data>
+  <data name="X_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="X_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="X_StopService" xml:space="preserve">
+    <value>Stop service</value>
+  </data>
+  <data name="X_StoreCurrentUser" xml:space="preserve">
+    <value>CurrentUser (service account SYSTEM)</value>
+  </data>
+  <data name="X_StoreLocalMachine" xml:space="preserve">
+    <value>LocalMachine (local computer)</value>
+  </data>
+  <data name="X_StoreLocation" xml:space="preserve">
+    <value>Store location</value>
+  </data>
+  <data name="X_Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="X_TestCertInfo" xml:space="preserve">
+    <value>The service generates a virtual certificate. Clients can use it to check pairing and certificate distribution, but signing requests are refused.</value>
+  </data>
+  <data name="X_ThumbprintLocalMachine" xml:space="preserve">
+    <value>Certificate thumbprint (SHA1, the certificate must be in LocalMachine\My)</value>
+  </data>
+  <data name="X_TimeLeft" xml:space="preserve">
+    <value>Time left</value>
+  </data>
+  <data name="X_TlsCertificate" xml:space="preserve">
+    <value>TLS certificate</value>
+  </data>
+  <data name="X_TlsNote" xml:space="preserve">
+    <value>Use this when the certificate is damaged or the service cannot start because of it. Afterwards every paired client must remove this server and pair again; the original server.pfx is backed up to the data directory.</value>
+  </data>
+  <data name="X_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="X_UninstallService" xml:space="preserve">
+    <value>Uninstall service…</value>
+  </data>
+  <data name="X_UnshareNote" xml:space="preserve">
+    <value>Once sharing is turned off, no client can get or use this certificate; clients unbind it at their next certificate update.</value>
+  </data>
+  <data name="X_UnsharedNote" xml:space="preserve">
+    <value>Certificates that are not shared are unavailable to every client; turn on sharing under Certificates first.</value>
+  </data>
+  <data name="X_UseLocalMachine" xml:space="preserve">
+    <value>The service runs as SYSTEM, so CurrentUser is the SYSTEM account's store, not the signed-in user's. Import the certificate into LocalMachine\My.</value>
+  </data>
+  <data name="X_UseLocalMachineTitle" xml:space="preserve">
+    <value>LocalMachine recommended</value>
+  </data>
+  <data name="X_ValidUntil" xml:space="preserve">
+    <value>Valid until</value>
+  </data>
+  <data name="X_VerificationCode" xml:space="preserve">
+    <value>Pairing verification code</value>
+  </data>
+  <data name="X_VerificationCodeShort" xml:space="preserve">
+    <value>Verification code</value>
+  </data>
+  <data name="X_WindowsService" xml:space="preserve">
+    <value>Windows service</value>
+  </data>
+</root>

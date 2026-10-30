@@ -101,7 +101,7 @@ token 拒绝一个 PIN 后，同一进程内同一容器的所有密钥源对象
 
 ## 回归测试
 
-Windows 上安装 .NET 9 SDK 和 Visual Studio C++ 工具后，在仓库根目录执行：
+Windows 上安装 .NET 10 SDK 和 Visual Studio C++ 工具后，在仓库根目录执行：
 
 ```powershell
 .\native\ksp\build.cmd

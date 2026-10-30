@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using RemoteKSP.Server.Core;
 using RemoteKSP.Server.Services;
@@ -8,6 +9,23 @@ namespace RemoteKSP.Server.Host;
 
 public static class WebHostBuilder
 {
+    /// <summary>
+    /// Messages returned to a client use the language it asks for in Accept-Language (the client GUI sends its
+    /// own UI language). Requests without one, such as those of the native KSP, get the service's language.
+    /// </summary>
+    public static IApplicationBuilder UseRequestLanguage(this IApplicationBuilder app) => app.Use(ApplyRequestLanguage);
+
+    private static Task ApplyRequestLanguage(Microsoft.AspNetCore.Http.HttpContext context, Func<Task> next)
+    {
+        var requested = context.Request.GetTypedHeaders().AcceptLanguage
+            .OrderByDescending(v => v.Quality ?? 1)
+            .Select(v => RemoteKSP.Shared.Localization.UiLanguage.Normalize(v.Value.Value))
+            .FirstOrDefault(code => code != null);
+        if (requested != null)
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(requested);
+        return next();
+    }
+
     public static WebApplication CreateWebHost(
         ClientStore clientStore,
         PairingManager pairingManager,
@@ -31,6 +49,7 @@ public static class WebHostBuilder
         });
 
         var app = builder.Build();
+        app.UseRequestLanguage();
         app.MapSigningEndpoints(clientStore, pairingManager, keySources, activityLog);
         return app;
     }

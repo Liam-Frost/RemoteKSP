@@ -47,7 +47,7 @@ public partial class DiagnosticsViewModel : ViewModelBase
     {
         IsTesting = true;
         TestResults.Clear();
-        Summary = "正在测试...";
+        Summary = Strings.Diag_Testing;
 
         try
         {
@@ -58,8 +58,8 @@ public partial class DiagnosticsViewModel : ViewModelBase
             if (connectivity.Outcome == TestOutcome.Fail)
             {
                 // 连不上服务端时后续测试没有意义
-                foreach (var name in new[] { "HMAC 认证 (/auth/check)", "远程签名 (/sign)", "本地 KSP (Native)" })
-                    TestResults.Add(new TestResultModel(new TestResult(name, TestOutcome.Skip, "前置测试失败，跳过")));
+                foreach (var name in new[] { Strings.Test_Hmac, Strings.Test_RemoteSign, Strings.Test_LocalKsp })
+                    TestResults.Add(new TestResultModel(new TestResult(name, TestOutcome.Skip, Strings.Diag_SkippedPrereq)));
             }
             else
             {
@@ -71,11 +71,11 @@ public partial class DiagnosticsViewModel : ViewModelBase
             int pass = TestResults.Count(r => r.Outcome == TestOutcome.Pass);
             int warn = TestResults.Count(r => r.Outcome == TestOutcome.Warn);
             int fail = TestResults.Count(r => r.Outcome == TestOutcome.Fail);
-            Summary = $"测试完成：{pass} 通过，{warn} 警告，{fail} 失败";
+            Summary = string.Format(Strings.Diag_Done, pass, warn, fail);
         }
         catch (System.Exception ex)
         {
-            Summary = $"测试失败: {ex.Message}";
+            Summary = string.Format(Strings.Diag_Failed, ex.Message);
         }
         finally
         {
@@ -99,10 +99,10 @@ public class TestResultModel
         Outcome = result.Outcome;
         OutcomeText = result.Outcome switch
         {
-            TestOutcome.Pass => "✓ 通过",
-            TestOutcome.Warn => "⚠ 警告",
-            TestOutcome.Fail => "✗ 失败",
-            TestOutcome.Skip => "○ 跳过",
+            TestOutcome.Pass => Strings.Diag_Pass,
+            TestOutcome.Warn => Strings.Diag_Warn,
+            TestOutcome.Fail => Strings.Diag_Fail,
+            TestOutcome.Skip => Strings.Diag_Skip,
             _ => "?"
         };
         Message = result.Message;

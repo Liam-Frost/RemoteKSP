@@ -37,7 +37,7 @@ public class ServiceManager
     {
         await Task.Run(() => ServiceProgram.DeployExecutable(CurrentExecutable(), ServiceProgram.InstalledExe));
         await RunOrThrowAsync("sc.exe",
-            $"create {ServiceName} {ServiceProgram.BinPathArgument(ServiceProgram.InstalledExe)} start= auto", "安装服务失败");
+            $"create {ServiceName} {ServiceProgram.BinPathArgument(ServiceProgram.InstalledExe)} start= auto", Strings.Svc_InstallFailed);
 
         // 崩溃后自动重启。GUI 和 --install-service 都以管理员运行（app.manifest），可以直接写 SCM。
         // 这里失败不回滚安装：服务每次启动时还会再配置一次（见 SigningHostedService）
@@ -60,7 +60,7 @@ public class ServiceManager
         {
             await Task.Run(() => ServiceProgram.DeployExecutable(CurrentExecutable(), ServiceProgram.InstalledExe));
             await RunOrThrowAsync("sc.exe",
-                $"config {ServiceName} {ServiceProgram.BinPathArgument(ServiceProgram.InstalledExe)}", "更新服务路径失败");
+                $"config {ServiceName} {ServiceProgram.BinPathArgument(ServiceProgram.InstalledExe)}", Strings.Svc_UpdatePathFailed);
         }
         catch when (wasRunning)
         {
@@ -87,7 +87,7 @@ public class ServiceManager
         try { await StopAndWaitAsync(); }
         catch { /* 停止失败不影响卸载，继续尝试删除 */ }
 
-        await RunOrThrowAsync("sc.exe", $"delete {ServiceName}", "卸载服务失败");
+        await RunOrThrowAsync("sc.exe", $"delete {ServiceName}", Strings.Svc_UninstallFailed);
         await RunHiddenAsync("netsh", $"advfirewall firewall delete rule name=\"{FirewallRuleName}\"");
 
         string? kept = null;
@@ -112,9 +112,9 @@ public class ServiceManager
     /// </summary>
     private static string CurrentExecutable()
     {
-        var exe = Environment.ProcessPath ?? throw new InvalidOperationException("无法确定当前程序路径");
+        var exe = Environment.ProcessPath ?? throw new InvalidOperationException(Strings.Svc_NoProgramPath);
         if (File.Exists(Path.Combine(AppContext.BaseDirectory, "RemoteKSP.Server.dll")))
-            throw new InvalidOperationException("当前运行的是开发版本（不是发布的单文件 exe），不能安装为服务。请运行 publish-all.ps1 生成的 Publish\\Server\\RemoteKSP.Server.exe");
+            throw new InvalidOperationException(Strings.Svc_DevBuild);
         return exe;
     }
 
@@ -123,7 +123,7 @@ public class ServiceManager
     public async Task<bool> ChangePortAsync(int port)
     {
         if (port is < 1 or > 65535)
-            throw new ArgumentOutOfRangeException(nameof(port), "端口必须在 1–65535 之间");
+            throw new ArgumentOutOfRangeException(nameof(port), Strings.Svc_PortRange);
 
         var wasRunning = (await GetStateAsync()).Kind is ServiceStatusKind.Running or ServiceStatusKind.Starting;
         // 先停止：服务启动时会写 config.json（补 TLS 指纹），避免和这里同时写
@@ -232,16 +232,16 @@ public class ServiceManager
         }
     }
 
-    public Task StartAsync() => RunOrThrowAsync("sc.exe", $"start {ServiceName}", "启动服务失败");
+    public Task StartAsync() => RunOrThrowAsync("sc.exe", $"start {ServiceName}", Strings.Svc_StartFailed);
 
-    public Task StopAsync() => RunOrThrowAsync("sc.exe", $"stop {ServiceName}", "停止服务失败");
+    public Task StopAsync() => RunOrThrowAsync("sc.exe", $"stop {ServiceName}", Strings.Svc_StopFailed);
 
     /// <summary>运行命令行工具，失败时把工具自己的输出（如「指定的服务已存在」）带进异常消息</summary>
     private static async Task RunOrThrowAsync(string fileName, string arguments, string failureMessage)
     {
         var (exitCode, output) = await RunHiddenAsync(fileName, arguments);
         if (exitCode != 0)
-            throw new InvalidOperationException($"{failureMessage}（{fileName} 退出码 {exitCode}）\n{output}".TrimEnd());
+            throw new InvalidOperationException(string.Format(Strings.Svc_ToolFailed, failureMessage, fileName, exitCode, output).TrimEnd());
     }
 
     /// <summary>
@@ -259,7 +259,7 @@ public class ServiceManager
             RedirectStandardError = true,
             StandardOutputEncoding = encoding,
             StandardErrorEncoding = encoding
-        }) ?? throw new InvalidOperationException($"无法启动 {fileName}");
+        }) ?? throw new InvalidOperationException(string.Format(Strings.Svc_CannotStart, fileName));
 
         // 两个管道同时读，避免输出较多时互相阻塞
         var stdout = process.StandardOutput.ReadToEndAsync();

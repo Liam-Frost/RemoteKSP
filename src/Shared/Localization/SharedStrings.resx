@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Copy_FailedMessage" xml:space="preserve">
+    <value>Could not write to the clipboard: {0}</value>
+  </data>
+  <data name="Copy_FailedTitle" xml:space="preserve">
+    <value>Copy failed</value>
+  </data>
+  <data name="Copy_SuccessMessage" xml:space="preserve">
+    <value>{0} copied to the clipboard.</value>
+  </data>
+  <data name="Copy_SuccessTitle" xml:space="preserve">
+    <value>Copied</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Dialog_CopyField" xml:space="preserve">
+    <value>Copy {0}</value>
+  </data>
+  <data name="Dialog_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Dialog_OperationFailed" xml:space="preserve">
+    <value>Operation failed</value>
+  </data>
+  <data name="Lang_Description" xml:space="preserve">
+    <value>Language of the interface. Takes effect after the app restarts.</value>
+  </data>
+  <data name="Lang_RestartFailed" xml:space="preserve">
+    <value>Could not restart: {0}</value>
+  </data>
+  <data name="Lang_RestartNow" xml:space="preserve">
+    <value>Restart now</value>
+  </data>
+  <data name="Lang_RestartPrompt" xml:space="preserve">
+    <value>Restart to switch the language.</value>
+  </data>
+  <data name="Lang_Title" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="List_Separator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="Net_CardTitle" xml:space="preserve">
+    <value>Network addresses</value>
+  </data>
+  <data name="Net_ConnectionUrl" xml:space="preserve">
+    <value>Connection URL</value>
+  </data>
+  <data name="Net_CopyIp" xml:space="preserve">
+    <value>Copy IP</value>
+  </data>
+  <data name="Net_CopyUrl" xml:space="preserve">
+    <value>Copy connection URL</value>
+  </data>
+  <data name="Net_Ethernet" xml:space="preserve">
+    <value>Ethernet</value>
+  </data>
+  <data name="Net_HideOther" xml:space="preserve">
+    <value>Hide other addresses</value>
+  </data>
+  <data name="Net_InfoName" xml:space="preserve">
+    <value>About the network</value>
+  </data>
+  <data name="Net_IpAddress" xml:space="preserve">
+    <value>IP address</value>
+  </data>
+  <data name="Net_LinkLocal" xml:space="preserve">
+    <value>Link-local</value>
+  </data>
+  <data name="Net_LinkLocalDetail" xml:space="preserve">
+    <value>Link-local addresses only work on the same network segment; %{0} is this computer's interface number, other computers must use their own</value>
+  </data>
+  <data name="Net_LinkLocalNoCopy" xml:space="preserve">
+    <value>Link-local addresses include this computer's interface number, so the URL will not work on other devices and cannot be copied</value>
+  </data>
+  <data name="Net_Loopback" xml:space="preserve">
+    <value>Loopback</value>
+  </data>
+  <data name="Net_LoopbackLocalOnly" xml:space="preserve">
+    <value>Loopback, this computer only</value>
+  </data>
+  <data name="Net_LoopbackOnlyHere" xml:space="preserve">
+    <value>{0}
+Loopback addresses only work on this computer</value>
+  </data>
+  <data name="Net_NoInterfaces" xml:space="preserve">
+    <value>No enabled network interface found</value>
+  </data>
+  <data name="Net_NoLanAddress" xml:space="preserve">
+    <value>No address reachable from the LAN; only loopback or link-local addresses</value>
+  </data>
+  <data name="Net_ReadFailed" xml:space="preserve">
+    <value>Could not read network interfaces: {0}</value>
+  </data>
+  <data name="Net_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Net_ShowOther" xml:space="preserve">
+    <value>Other addresses ({0})</value>
+  </data>
+  <data name="Net_Tunnel" xml:space="preserve">
+    <value>Tunnel</value>
+  </data>
+  <data name="Net_Wireless" xml:space="preserve">
+    <value>Wi-Fi</value>
+  </data>
+  <data name="Status_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Status_Processing" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="Status_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Status_Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Sync_Added" xml:space="preserve">
+    <value>{0} added</value>
+  </data>
+  <data name="Sync_AllUpToDate" xml:space="preserve">
+    <value>All certificates are up to date.</value>
+  </data>
+  <data name="Sync_ServerSynced" xml:space="preserve">
+    <value>Synced the certificates of server "{0}".
+
+{1}</value>
+  </data>
+  <data name="Sync_ServersSynced" xml:space="preserve">
+    <value>Synced the certificates of {0} server(s).
+
+{1}</value>
+  </data>
+  <data name="Sync_SuccessTitle" xml:space="preserve">
+    <value>Certificates synced</value>
+  </data>
+  <data name="Sync_Unbound" xml:space="preserve">
+    <value>{0} unbound</value>
+  </data>
+  <data name="Sync_UpToDate" xml:space="preserve">
+    <value>Certificates are up to date.</value>
+  </data>
+  <data name="Sync_Updated" xml:space="preserve">
+    <value>{0} updated</value>
+  </data>
+</root>

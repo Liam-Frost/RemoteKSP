@@ -57,6 +57,8 @@ eToken · 证书存储 · PFX                  （真正的私钥）
 - 实现 CNG KSP 接口，支持 PKCS#1 签名，SHA-1/256/384/512
 - 发送任何请求头之前先校验服务端证书指纹
 
+两个程序都支持**英文**和**简体中文**界面（设置 → 语言），默认英文。
+
 ## 系统要求
 
 - Windows 10 / 11 或 Windows Server 2016 及以上（x64）。KSP DLL 同时提供 x64 和 x86，供两种架构的程序使用。
@@ -137,7 +139,7 @@ RemoteKSP 面向**受信任的内部网络**设计，不要把服务端端口暴
 
 ## 从源码构建
 
-需要 Windows、.NET 9 SDK，以及安装了「使用 C++ 的桌面开发」工作负载的 Visual Studio 2022。
+需要 Windows、.NET 10 SDK，以及安装了「使用 C++ 的桌面开发」工作负载的 Visual Studio 2022。
 
 ```powershell
 .\publish-all.ps1                    # 编译 Native DLL 和两个单文件 EXE，输出到 Publish\
@@ -161,6 +163,7 @@ RemoteKSP 面向**受信任的内部网络**设计，不要把服务端端口暴
 欢迎提交 Issue 和 Pull Request。提交 PR 前请运行 `.\publish-all.ps1 -Test`；
 涉及认证、配对或密钥处理的行为改动，请在 `tests/SecurityRegression` 补充回归检查。
 安全问题请按 [SECURITY.md](SECURITY.md) 私下报告，不要公开提 Issue。
+界面文字和翻译的说明见 [docs/BUILD.md](docs/BUILD.md#translations)。
 
 ## 许可证
 

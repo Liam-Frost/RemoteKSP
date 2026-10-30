@@ -45,11 +45,11 @@ public sealed class NetworkAddressInfo
     public string InterfaceTypeText => InterfaceType switch
     {
         NetworkInterfaceType.Ethernet or NetworkInterfaceType.GigabitEthernet or
-        NetworkInterfaceType.FastEthernetT or NetworkInterfaceType.FastEthernetFx => "以太网",
-        NetworkInterfaceType.Wireless80211 => "无线",
+        NetworkInterfaceType.FastEthernetT or NetworkInterfaceType.FastEthernetFx => SharedStrings.Net_Ethernet,
+        NetworkInterfaceType.Wireless80211 => SharedStrings.Net_Wireless,
         // 环回由 ScopeText 标注，这里不再重复
         NetworkInterfaceType.Loopback => "",
-        NetworkInterfaceType.Tunnel => "隧道",
+        NetworkInterfaceType.Tunnel => SharedStrings.Net_Tunnel,
         NetworkInterfaceType.Ppp => "PPP",
         // 虚拟网卡/VPN 常报告枚举里未定义的类型值（如 53）；不显示数字，也不猜测分类，接口名已足够识别
         _ when !Enum.IsDefined(InterfaceType) || InterfaceType == NetworkInterfaceType.Unknown => "",
@@ -57,7 +57,7 @@ public sealed class NetworkAddressInfo
     };
 
     /// <summary>辅助说明，例如「链路本地」「环回」</summary>
-    public string ScopeText => IsLoopback ? "环回" : IsLinkLocal ? "链路本地" : "";
+    public string ScopeText => IsLoopback ? SharedStrings.Net_Loopback : IsLinkLocal ? SharedStrings.Net_LinkLocal : "";
 
     /// <summary>
     /// 生成 https URL。IPv6 用方括号包裹；Link-local 的 Zone ID 按 RFC 6874 编码为 %25。

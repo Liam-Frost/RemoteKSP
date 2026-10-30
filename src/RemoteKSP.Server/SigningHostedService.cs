@@ -48,7 +48,7 @@ public class SigningHostedService : BackgroundService
             _webApp = WebHostBuilder.CreateWebHost(clientStore, pairingManager, keySources, config, activityLog);
             await _webApp.StartAsync(stoppingToken);
             _logger.LogInformation("HTTPS server started on port {Port}", config.Port);
-            activityLog.Info("系统", $"HTTPS 服务已启动，端口 {config.Port}");
+            activityLog.Info(Strings.LogCat_System, string.Format(Strings.Log_HttpsStarted, config.Port));
 
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }

@@ -59,8 +59,8 @@ public static class CertificateBinder
             {
                 var provider = GetKeyProviderName(cert);
                 throw new CertificateNotManagedException(
-                    $"{location}\\My 中已有这张证书（私钥{(provider == null ? "未关联" : $"由 {provider} 提供")}），" +
-                    "不是 Remote KSP 安装的，为避免破坏它已跳过。客户端和服务端装在同一台机器上时不需要同步这张证书");
+                    string.Format(Strings.Bind_NotManaged, location,
+                        provider == null ? Strings.Bind_KeyNotLinked : string.Format(Strings.Bind_KeyProvidedBy, provider)));
             }
         }
 
@@ -71,7 +71,7 @@ public static class CertificateBinder
         // 必须在 store 里的那份证书上设置属性，内存副本上设置不会持久化
         var stored = store.Certificates.Find(X509FindType.FindByThumbprint, thumbprint, false);
         if (stored.Count == 0)
-            throw new InvalidOperationException($"证书写入 {location}\\My 失败");
+            throw new InvalidOperationException(string.Format(Strings.Bind_WriteFailed, location));
 
         // dwProvType = 0 表示 CNG KSP；KspOpenKey 用容器名（指纹）去服务端取证书
         var provInfo = new CRYPT_KEY_PROV_INFO
@@ -89,7 +89,7 @@ public static class CertificateBinder
             // 刚加进去却没绑上：删掉，免得留下一张以后会被当成"不是 Remote KSP 装的"证书
             if (added)
                 store.Remove(stored[0]);
-            throw new InvalidOperationException($"绑定私钥到 {ProviderName} 失败 (Win32 错误 {error})");
+            throw new InvalidOperationException(string.Format(Strings.Bind_LinkFailed, ProviderName, error));
         }
     }
 

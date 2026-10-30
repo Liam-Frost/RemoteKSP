@@ -134,11 +134,11 @@ public partial class ServersViewModel : ViewModelBase
     private async Task RenameAsync()
     {
         var server = SelectedServer!.Entry;
-        var form = new TextInputForm("名称", server.ServerName, "仅用于在本机区分服务端");
-        var saved = await _notificationService.ShowFormAsync("重命名服务端", form, "保存", () =>
+        var form = new TextInputForm(Strings.Srv_Name, server.ServerName, Strings.Srv_NameHint);
+        var saved = await _notificationService.ShowFormAsync(Strings.Srv_RenameTitle, form, Strings.Common_Save, () =>
         {
             if (string.IsNullOrWhiteSpace(form.Value))
-                return Task.FromResult<string?>("名称不能为空");
+                return Task.FromResult<string?>(Strings.Srv_NameRequired);
             ClientRegistry.RenameServer(server.Id, form.Value.Trim());
             return Task.FromResult<string?>(null);
         });
@@ -153,12 +153,12 @@ public partial class ServersViewModel : ViewModelBase
     {
         var item = SelectedServer!;
         var confirmed = await _notificationService.ConfirmAsync(
-            "移除服务端",
-            $"确定要移除服务端「{item.Name}」吗？\n\n本机会删除该服务端的配对凭据，并解绑它提供的 {item.CertificateCount} 张证书。之后需要重新配对才能使用。",
-            "移除",
+            Strings.Srv_RemoveTitle,
+            string.Format(Strings.Srv_RemoveMessage, item.Name, item.CertificateCount),
+            Strings.Srv_Remove,
             destructive: true,
-            new DialogField("服务端地址", item.Url),
-            new DialogField("客户端 ID", item.ClientId));
+            new DialogField(Strings.Srv_Address, item.Url),
+            new DialogField(Strings.Common_ClientId, item.ClientId));
         if (!confirmed)
             return;
 
@@ -170,13 +170,12 @@ public partial class ServersViewModel : ViewModelBase
 
             // 服务端已收到通知时列表刷新即可；没通知到要提醒用户，服务端那边仍保留着授权
             if (!notified)
-                await _notificationService.ShowWarningAsync("已在本机移除",
-                    $"已移除服务端「{item.Name}」并解绑 {unbound} 张证书。\n\n" +
-                    "但未能通知到服务端（可能离线），服务端的「已配对客户端」中仍会保留本机，需要服务端管理员手动撤销。");
+                await _notificationService.ShowWarningAsync(Strings.Srv_RemovedLocallyTitle,
+                    string.Format(Strings.Srv_RemovedLocally, item.Name, unbound));
         }
         catch (Exception ex)
         {
-            await _notificationService.ShowErrorAsync("移除失败", ex.Message);
+            await _notificationService.ShowErrorAsync(Strings.Srv_RemoveFailed, ex.Message);
         }
         finally
         {
@@ -204,10 +203,10 @@ public partial class ServersViewModel : ViewModelBase
 
         var dialog = new Wpf.Ui.Controls.ContentDialog
         {
-            Title = "添加服务端",
+            Title = Strings.Srv_AddTitle,
             Content = form,
-            PrimaryButtonText = "开始配对",
-            CloseButtonText = "取消",
+            PrimaryButtonText = Strings.Srv_StartPairing,
+            CloseButtonText = Strings.Common_Cancel,
             DefaultButton = Wpf.Ui.Controls.ContentDialogButton.Primary,
             DialogMaxWidth = 600
         };
@@ -266,7 +265,7 @@ public partial class ServersViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(ServerIp) || string.IsNullOrWhiteSpace(ServerPort))
         {
-            await _notificationService.ShowWarningAsync("缺少服务端信息", "请输入服务端地址和端口。");
+            await _notificationService.ShowWarningAsync(Strings.Srv_MissingInfoTitle, Strings.Srv_MissingInfo);
             return;
         }
 
@@ -275,14 +274,14 @@ public partial class ServersViewModel : ViewModelBase
 
         IsPairing = true;
         ShowVerificationCode = false;
-        PairingStatus = "正在连接服务端...";
+        PairingStatus = Strings.Pair_Connecting;
 
         try
         {
             var client = new PairingClient();
             var response = await client.StartPairingAsync(serverUrl, Environment.MachineName);
 
-            PairingStatus = "等待服务端管理员批准...";
+            PairingStatus = Strings.Pair_WaitingAdmin;
             if (!string.IsNullOrEmpty(client.LastServerTlsThumbprint))
             {
                 VerificationCode = Shared.Protocol.VerificationCode(
@@ -300,14 +299,14 @@ public partial class ServersViewModel : ViewModelBase
             if (result == null)
             {
                 IsPairing = false;
-                await _notificationService.ShowErrorAsync("配对超时", "服务端未在规定时间内批准配对请求，请重试。");
+                await _notificationService.ShowErrorAsync(Strings.Pair_TimedOut, Strings.Pair_TimedOutMessage);
                 return;
             }
 
             var server = ServerManager.RegisterServer(serverUrl, name, result.ClientId, result.Secret,
                 client.LastServerTlsThumbprint);
 
-            PairingStatus = "配对成功，正在获取证书...";
+            PairingStatus = Strings.Pair_SucceededFetching;
             ShowVerificationCode = false;
             IsPairing = false;
             NewServerName = "";
@@ -321,8 +320,8 @@ public partial class ServersViewModel : ViewModelBase
         catch (Exception ex)
         {
             IsPairing = false;
-            await _notificationService.ShowErrorAsync("配对失败", "无法完成配对。",
-                new DialogField("错误信息", ex.Message, Monospace: false));
+            await _notificationService.ShowErrorAsync(Strings.Pair_FailedTitle, Strings.Pair_Failed,
+                new DialogField(Strings.Common_ErrorMessage, ex.Message, Monospace: false));
         }
         finally
         {
@@ -342,7 +341,7 @@ public partial class ServerItem : CommunityToolkit.Mvvm.ComponentModel.Observabl
     private ServerStatus _status = ServerStatus.Unknown;
 
     [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
-    private string _statusText = "未知";
+    private string _statusText = Strings.Status_Unknown;
 
     [CommunityToolkit.Mvvm.ComponentModel.ObservableProperty]
     private string _statusIcon = "Question24";
@@ -359,6 +358,6 @@ public partial class ServerItem : CommunityToolkit.Mvvm.ComponentModel.Observabl
     public string Name => Entry.ServerName;
     public string Url => Entry.ServerUrl;
     public string ClientId => Entry.ClientId;
-    public string CertificateCountText => $"{CertificateCount} 张";
-    public string TlsText => Entry.TlsThumbprint ?? "未记录（旧版配对）";
+    public string CertificateCountText => string.Format(Strings.Srv_CertCount, CertificateCount);
+    public string TlsText => Entry.TlsThumbprint ?? Strings.Srv_TlsNotRecorded;
 }

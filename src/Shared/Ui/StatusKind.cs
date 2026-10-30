@@ -28,7 +28,7 @@ public static class TextSummary
     {
         var list = names.Where(n => !string.IsNullOrWhiteSpace(n)).Select(n => n.Trim()).ToList();
         if (list.Count <= max)
-            return string.Join("、", list);
-        return $"{string.Join("、", list.Take(max))} +{list.Count - max}";
+            return string.Join(Localization.SharedStrings.List_Separator, list);
+        return $"{string.Join(Localization.SharedStrings.List_Separator, list.Take(max))} +{list.Count - max}";
     }
 }

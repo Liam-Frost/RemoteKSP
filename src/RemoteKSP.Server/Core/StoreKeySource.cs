@@ -20,7 +20,7 @@ public class StoreKeySource : IKeySource
     {
         using var cert = LoadCertificate();
         using var rsa = cert.GetRSAPrivateKey()
-            ?? throw new InvalidOperationException($"证书 {_thumbprint} 没有 RSA 私钥");
+            ?? throw new InvalidOperationException(string.Format(Strings.Store_NoRsaKey, _thumbprint));
 
         var hashAlgName = hashAlgorithm.ToUpperInvariant() switch
         {
@@ -28,7 +28,7 @@ public class StoreKeySource : IKeySource
             "SHA1" => HashAlgorithmName.SHA1,
             "SHA384" => HashAlgorithmName.SHA384,
             "SHA512" => HashAlgorithmName.SHA512,
-            _ => throw new ArgumentException($"不支持的哈希算法: {hashAlgorithm}")
+            _ => throw new ArgumentException(string.Format(Strings.Store_UnsupportedHash, hashAlgorithm))
         };
 
         return rsa.SignHash(hash, hashAlgName, RSASignaturePadding.Pkcs1);
@@ -50,17 +50,15 @@ public class StoreKeySource : IKeySource
         if (certs.Count == 0)
         {
             var locationName = _storeLocation == StoreLocation.CurrentUser ? "CurrentUser" : "LocalMachine";
-            throw new InvalidOperationException($"在 {locationName}\\My 中未找到指纹为 {_thumbprint} 的证书");
+            throw new InvalidOperationException(string.Format(Strings.Store_CertNotFound, locationName, _thumbprint));
         }
 
         var cert = certs[0];
         if (!cert.HasPrivateKey)
-            throw new InvalidOperationException($"证书 {_thumbprint} 没有私钥");
+            throw new InvalidOperationException(string.Format(Strings.Store_NoPrivateKey, _thumbprint));
         // HasPrivateKey 只看有没有私钥关联：客户端绑定到 Remote KSP 的证书也是 true，但私钥在别的服务端上
         if (RemoteKSP.Shared.KeyProvider.IsRemoteKsp(cert))
-            throw new InvalidOperationException(
-                $"证书 {_thumbprint} 的私钥指向 Remote KSP（本机客户端从其他服务端同步来的），不能作为本服务端的签名证书。" +
-                "eToken 证书请改用「eToken」来源");
+            throw new InvalidOperationException(string.Format(Strings.Store_RemoteKspKey, _thumbprint));
 
         return cert;
     }

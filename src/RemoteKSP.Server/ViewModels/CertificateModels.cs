@@ -20,7 +20,7 @@ public class CertificateItem
 
     public string TypeText => TypeName(Status.SourceType);
 
-    public string SharedText => Status.IsShared ? "是" : "否";
+    public string SharedText => Status.IsShared ? Strings.Common_Yes : Strings.Common_No;
 
     public string ExpiryText => Status.NotAfter?.ToLocalTime().ToString("yyyy-MM-dd") ?? "-";
 
@@ -31,19 +31,20 @@ public class CertificateItem
     /// <summary>列表"状态"列：已停用 / 已过期 / 测试 / 待验证 PIN / 就绪 / 不可用</summary>
     public string StateText => Status switch
     {
-        _ when IsDisabled => "已停用",
-        _ when IsExpired => "已过期",
-        { SourceType: "test" } => "测试",
-        { NeedsPin: true } => "待验证 PIN",
-        { IsReady: true } => "就绪",
-        _ => "不可用"
+        _ when IsDisabled => Strings.State_Disabled,
+        _ when IsExpired => Strings.State_Expired,
+        { SourceType: "test" } => Strings.State_Test,
+        { NeedsPin: true } => Strings.State_PinPending,
+        { IsReady: true } => Strings.State_Ready,
+        _ => Strings.State_Unavailable
     };
 
     /// <summary>状态徽标配色键：Success / Caution / Critical</summary>
-    public string StateKind => StateText switch
+    public string StateKind => Status switch
     {
-        "就绪" => "Success",
-        "测试" or "待验证 PIN" => "Caution",
+        _ when IsDisabled || IsExpired => "Critical",
+        { SourceType: "test" } or { NeedsPin: true } => "Caution",
+        { IsReady: true } => "Success",
         _ => "Critical"
     };
 
@@ -55,16 +56,16 @@ public class CertificateItem
         "etoken" => $"{Status.CspProvider} / {Status.KeyContainer}",
         "store" => $"{Status.StoreLocation ?? "LocalMachine"}\\My",
         "pfx" => Status.PfxPath ?? "",
-        "test" => "自动生成的虚拟证书",
+        "test" => Strings.Source_TestVirtual,
         _ => ""
     };
 
     public static string TypeName(string sourceType) => sourceType switch
     {
         "etoken" => "eToken",
-        "store" => "证书存储",
-        "pfx" => "PFX 文件",
-        "test" => "测试证书",
+        "store" => Strings.Type_Store,
+        "pfx" => Strings.Type_Pfx,
+        "test" => Strings.Type_Test,
         _ => sourceType
     };
 }
@@ -72,5 +73,5 @@ public class CertificateItem
 /// <summary>证书存储里的一张候选证书（添加证书对话框的下拉框）</summary>
 public record StoreCertOption(string Thumbprint, string Subject, string Issuer, DateTime NotAfter)
 {
-    public string Display => $"{Subject}（{Issuer}，{NotAfter:yyyy-MM-dd} 到期）";
+    public string Display => string.Format(Strings.StoreCert_Display, Subject, Issuer, NotAfter.ToString("yyyy-MM-dd"));
 }

@@ -57,21 +57,20 @@ public record PinFailure(PinFailureKind Kind, DateTime OccurredAt)
     /// <summary>停用原因（GUI、客户端、Windows 消息共用）</summary>
     public string Reason => Kind switch
     {
-        PinFailureKind.Locked => "eToken 已锁定（PIN 重试次数已用完）",
-        PinFailureKind.Wrong => "服务端保存的 PIN 错误",
-        _ => "eToken 返回了无法识别的错误（可能是 PIN 错误）"
+        PinFailureKind.Locked => Strings.Pin_Locked,
+        PinFailureKind.Wrong => Strings.Pin_Wrong,
+        _ => Strings.Pin_Unrecognized
     };
 
     /// <summary>排除问题的操作建议</summary>
     public string Action => Kind switch
     {
-        PinFailureKind.Locked => "请用 SafeNet Authentication Client 解锁 eToken，然后在服务端 GUI 重新验证 PIN",
-        PinFailureKind.Wrong => "请在服务端 GUI「证书管理」中重新验证 PIN",
-        _ => "为避免把 eToken 试锁，已停止使用保存的 PIN。请检查 eToken 是否正常（SafeNet Authentication Client 能否登录），" +
-             "然后在服务端 GUI「证书管理」中重新验证 PIN；活动日志里有原始错误"
+        PinFailureKind.Locked => Strings.Pin_LockedAction,
+        PinFailureKind.Wrong => Strings.Pin_WrongAction,
+        _ => Strings.Pin_UnrecognizedAction
     };
 
-    public string Detail => $"已停用：{Reason}（{OccurredAt.ToLocalTime():yyyy-MM-dd HH:mm:ss}）。{Action}";
+    public string Detail => string.Format(Strings.Pin_DisabledDetail, Reason, OccurredAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), Action);
 }
 
 /// <summary>证书因 PIN 被拒停用；<see cref="JustDisabled"/> 表示这次请求触发了停用（只有这一次真正访问了 token）</summary>
@@ -81,7 +80,7 @@ public class PinRejectedException : CryptographicException
     public bool JustDisabled { get; }
 
     public PinRejectedException(PinFailure failure, bool justDisabled, Exception? inner = null)
-        : base($"证书已停用：{failure.Reason}。{failure.Action}", inner)
+        : base(string.Format(Strings.Pin_CertDisabled, failure.Reason, failure.Action), inner)
     {
         Failure = failure;
         JustDisabled = justDisabled;

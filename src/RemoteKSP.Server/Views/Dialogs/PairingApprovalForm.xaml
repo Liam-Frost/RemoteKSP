@@ -1,17 +1,17 @@
 <UserControl x:Class="RemoteKSP.Server.Views.Dialogs.PairingApprovalForm"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:RemoteKSP.Server.Localization"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Width="560" MaxWidth="680" MinWidth="520">
     <StackPanel>
         <!-- Header Description -->
         <TextBlock TextWrapping="Wrap" FontSize="13" Margin="0,0,0,16"
-                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-            一台客户端正在请求使用此服务器的远程签名服务。请核对验证码后决定是否授权。
-        </TextBlock>
+                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                   Text="{x:Static loc:Strings.X_PairingIntro}"/>
 
         <!-- Client Information -->
-        <TextBlock Text="客户端信息" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"/>
+        <TextBlock Text="{x:Static loc:Strings.X_ClientInfo}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,12"/>
 
         <Grid Margin="0,0,0,16">
             <Grid.ColumnDefinitions>
@@ -27,13 +27,13 @@
             </Grid.RowDefinitions>
 
             <!-- Machine Name -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="机器名" FontSize="13" Margin="0,0,0,12"
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Common_MachineName}" FontSize="13" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding MachineName}" FontSize="14" FontWeight="SemiBold"
                        Margin="0,0,0,12" TextWrapping="Wrap"/>
 
             <!-- Client ID -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="客户端 ID" FontSize="13" Margin="0,0,0,12"
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Common_ClientId}" FontSize="13" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ClientId, Mode=OneWay}" IsReadOnly="True"
                      FontFamily="Consolas, Cascadia Mono" FontSize="12" Margin="0,0,0,12"
@@ -41,17 +41,17 @@
                      TextWrapping="Wrap"/>
 
             <!-- IP Address -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="来源 IP 地址" FontSize="13" Margin="0,0,0,12"
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.X_SourceIp}" FontSize="13" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding IpAddress}" FontSize="13" Margin="0,0,0,12"/>
 
             <!-- Created At -->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="请求时间" FontSize="13" Margin="0,0,0,12"
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static loc:Strings.X_RequestTime}" FontSize="13" Margin="0,0,0,12"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CreatedAtStr}" FontSize="13" Margin="0,0,0,12"/>
 
             <!-- Remaining Time -->
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="剩余有效时间" FontSize="13"
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static loc:Strings.X_TimeLeft}" FontSize="13"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RemainingTimeStr}" FontSize="13">
                 <TextBlock.Style>
@@ -69,17 +69,17 @@
         <!-- Verification Code -->
         <ui:Card Padding="16" Margin="0,0,0,16" Background="#FEF3C7">
             <StackPanel>
-                <TextBlock Text="配对验证码" FontSize="13" FontWeight="SemiBold" Foreground="#92400E"/>
+                <TextBlock Text="{x:Static loc:Strings.X_VerificationCode}" FontSize="13" FontWeight="SemiBold" Foreground="#92400E"/>
                 <TextBlock Text="{Binding VerificationCode}"
                            FontFamily="Consolas, Cascadia Mono" FontSize="28" FontWeight="Bold"
                            Foreground="#92400E" Margin="0,8,0,0"/>
-                <TextBlock Text="请确认客户端显示的验证码与此处完全一致。" FontSize="12"
+                <TextBlock Text="{x:Static loc:Strings.X_CheckCode}" FontSize="12"
                            Foreground="#92400E" Margin="0,12,0,0" TextWrapping="Wrap"/>
             </StackPanel>
         </ui:Card>
 
         <!-- Expired Warning -->
         <ui:InfoBar IsOpen="{Binding IsExpired}" Severity="Error" IsClosable="False"
-                    Title="请求已过期" Message="此配对请求已超过有效期，无法批准。"/>
+                    Title="{x:Static loc:Strings.X_RequestExpiredTitle}" Message="{x:Static loc:Strings.X_RequestExpired}"/>
     </StackPanel>
 </UserControl>

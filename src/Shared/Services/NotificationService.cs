@@ -26,18 +26,18 @@ public class NotificationService
         string details;
         if (added == 0 && updated == 0 && removed == 0)
         {
-            details = "证书已是最新。";
+            details = SharedStrings.Sync_UpToDate;
         }
         else
         {
             var parts = new System.Collections.Generic.List<string>();
-            if (added > 0) parts.Add($"新增 {added} 张");
-            if (updated > 0) parts.Add($"更新 {updated} 张");
-            if (removed > 0) parts.Add($"解绑 {removed} 张");
+            if (added > 0) parts.Add(string.Format(SharedStrings.Sync_Added, added));
+            if (updated > 0) parts.Add(string.Format(SharedStrings.Sync_Updated, updated));
+            if (removed > 0) parts.Add(string.Format(SharedStrings.Sync_Unbound, removed));
             details = string.Join(" · ", parts);
         }
 
-        return _dialogService.SuccessAsync("证书同步完成", $"已成功同步服务端「{serverName}」的证书。\n\n{details}");
+        return _dialogService.SuccessAsync(SharedStrings.Sync_SuccessTitle, string.Format(SharedStrings.Sync_ServerSynced, serverName, details));
     }
 
     /// <summary>Show multi-server sync summary</summary>
@@ -46,25 +46,25 @@ public class NotificationService
         string details;
         if (totalAdded == 0 && totalUpdated == 0 && totalRemoved == 0)
         {
-            details = "所有证书均已是最新。";
+            details = SharedStrings.Sync_AllUpToDate;
         }
         else
         {
             var parts = new System.Collections.Generic.List<string>();
-            if (totalAdded > 0) parts.Add($"新增 {totalAdded} 张");
-            if (totalUpdated > 0) parts.Add($"更新 {totalUpdated} 张");
-            if (totalRemoved > 0) parts.Add($"解绑 {totalRemoved} 张");
+            if (totalAdded > 0) parts.Add(string.Format(SharedStrings.Sync_Added, totalAdded));
+            if (totalUpdated > 0) parts.Add(string.Format(SharedStrings.Sync_Updated, totalUpdated));
+            if (totalRemoved > 0) parts.Add(string.Format(SharedStrings.Sync_Unbound, totalRemoved));
             details = string.Join(" · ", parts);
         }
 
-        return _dialogService.SuccessAsync("证书同步完成", $"已成功同步 {serverCount} 台服务端的证书。\n\n{details}");
+        return _dialogService.SuccessAsync(SharedStrings.Sync_SuccessTitle, string.Format(SharedStrings.Sync_ServersSynced, serverCount, details));
     }
 
     /// <summary>Copy to clipboard and show success dialog</summary>
     public Task CopyToClipboardAsync(string text, string itemName)
     {
         Clipboard.SetText(text);
-        return _dialogService.SuccessAsync("复制成功", $"{itemName}已复制到剪贴板。");
+        return _dialogService.SuccessAsync(SharedStrings.Copy_SuccessTitle, string.Format(SharedStrings.Copy_SuccessMessage, itemName));
     }
 
     /// <summary>Show blocking error dialog (for complex errors with technical details)</summary>

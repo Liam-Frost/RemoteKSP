@@ -72,7 +72,7 @@ public static class SecureStorage
         dir.Refresh();
         RejectReparsePoint(dir);
         if (!IsRestricted(dir))
-            throw new UnauthorizedAccessException($"未能收紧 {dir.FullName} 的访问权限");
+            throw new UnauthorizedAccessException(string.Format(Strings.Secure_RestrictFailed, dir.FullName));
     }
 
     /// <summary>
@@ -142,9 +142,7 @@ public static class SecureStorage
     {
         if ((entry.Attributes & FileAttributes.ReparsePoint) != 0)
         {
-            throw new UnauthorizedAccessException(
-                $"{entry.FullName} 是联接或符号链接，可能被人用来把数据重定向到别处，已拒绝使用。" +
-                "请管理员确认后删除它（只删链接本身），再启动服务");
+            throw new UnauthorizedAccessException(string.Format(Strings.Secure_ReparsePoint, entry.FullName));
         }
     }
 

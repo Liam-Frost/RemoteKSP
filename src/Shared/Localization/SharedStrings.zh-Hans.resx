@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About_Title" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>版本 {0}</value>
+  </data>
+  <data name="Copy_FailedMessage" xml:space="preserve">
+    <value>无法写入剪贴板：{0}</value>
+  </data>
+  <data name="Copy_FailedTitle" xml:space="preserve">
+    <value>复制失败</value>
+  </data>
+  <data name="Copy_SuccessMessage" xml:space="preserve">
+    <value>{0}已复制到剪贴板。</value>
+  </data>
+  <data name="Copy_SuccessTitle" xml:space="preserve">
+    <value>复制成功</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Dialog_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Dialog_CopyField" xml:space="preserve">
+    <value>复制{0}</value>
+  </data>
+  <data name="Dialog_OK" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="Dialog_OperationFailed" xml:space="preserve">
+    <value>操作失败</value>
+  </data>
+  <data name="Lang_Description" xml:space="preserve">
+    <value>界面显示的语言，重新启动程序后生效。</value>
+  </data>
+  <data name="Lang_RestartFailed" xml:space="preserve">
+    <value>无法重新启动：{0}</value>
+  </data>
+  <data name="Lang_RestartNow" xml:space="preserve">
+    <value>立即重启</value>
+  </data>
+  <data name="Lang_RestartPrompt" xml:space="preserve">
+    <value>重新启动后切换语言。</value>
+  </data>
+  <data name="Lang_Title" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="List_Separator" xml:space="preserve">
+    <value>、</value>
+  </data>
+  <data name="Net_CardTitle" xml:space="preserve">
+    <value>网络地址</value>
+  </data>
+  <data name="Net_ConnectionUrl" xml:space="preserve">
+    <value>连接地址</value>
+  </data>
+  <data name="Net_CopyIp" xml:space="preserve">
+    <value>复制 IP</value>
+  </data>
+  <data name="Net_CopyUrl" xml:space="preserve">
+    <value>复制连接地址</value>
+  </data>
+  <data name="Net_Ethernet" xml:space="preserve">
+    <value>以太网</value>
+  </data>
+  <data name="Net_HideOther" xml:space="preserve">
+    <value>收起其他网络地址</value>
+  </data>
+  <data name="Net_InfoName" xml:space="preserve">
+    <value>网络说明</value>
+  </data>
+  <data name="Net_IpAddress" xml:space="preserve">
+    <value>IP 地址</value>
+  </data>
+  <data name="Net_LinkLocal" xml:space="preserve">
+    <value>链路本地</value>
+  </data>
+  <data name="Net_LinkLocalDetail" xml:space="preserve">
+    <value>链路本地地址只在同一网段有效；%{0} 是本机接口编号，其他机器需使用自己的编号</value>
+  </data>
+  <data name="Net_LinkLocalNoCopy" xml:space="preserve">
+    <value>链路本地地址带有本机接口编号，生成的 URL 在其他设备上无法直接使用，因此不提供复制</value>
+  </data>
+  <data name="Net_Loopback" xml:space="preserve">
+    <value>环回</value>
+  </data>
+  <data name="Net_LoopbackLocalOnly" xml:space="preserve">
+    <value>环回，仅本机</value>
+  </data>
+  <data name="Net_LoopbackOnlyHere" xml:space="preserve">
+    <value>{0}
+环回地址只能在本机使用</value>
+  </data>
+  <data name="Net_NoInterfaces" xml:space="preserve">
+    <value>未检测到已启用的网络接口</value>
+  </data>
+  <data name="Net_NoLanAddress" xml:space="preserve">
+    <value>没有可供局域网访问的地址，仅有环回或链路本地地址</value>
+  </data>
+  <data name="Net_ReadFailed" xml:space="preserve">
+    <value>读取网络接口失败：{0}</value>
+  </data>
+  <data name="Net_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Net_ShowOther" xml:space="preserve">
+    <value>其他网络地址（{0}）</value>
+  </data>
+  <data name="Net_Tunnel" xml:space="preserve">
+    <value>隧道</value>
+  </data>
+  <data name="Net_Wireless" xml:space="preserve">
+    <value>无线</value>
+  </data>
+  <data name="Status_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Status_Processing" xml:space="preserve">
+    <value>正在处理...</value>
+  </data>
+  <data name="Status_Success" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="Status_Warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="Sync_Added" xml:space="preserve">
+    <value>新增 {0} 张</value>
+  </data>
+  <data name="Sync_AllUpToDate" xml:space="preserve">
+    <value>所有证书均已是最新。</value>
+  </data>
+  <data name="Sync_ServerSynced" xml:space="preserve">
+    <value>已成功同步服务端「{0}」的证书。
+
+{1}</value>
+  </data>
+  <data name="Sync_ServersSynced" xml:space="preserve">
+    <value>已成功同步 {0} 台服务端的证书。
+
+{1}</value>
+  </data>
+  <data name="Sync_SuccessTitle" xml:space="preserve">
+    <value>证书同步完成</value>
+  </data>
+  <data name="Sync_Unbound" xml:space="preserve">
+    <value>解绑 {0} 张</value>
+  </data>
+  <data name="Sync_UpToDate" xml:space="preserve">
+    <value>证书已是最新。</value>
+  </data>
+  <data name="Sync_Updated" xml:space="preserve">
+    <value>更新 {0} 张</value>
+  </data>
+</root>

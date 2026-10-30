@@ -20,7 +20,7 @@ public partial class ClientPermissionsForm : UserControl
             {
                 Id = c.Id,
                 Name = c.Name,
-                Caption = c.IsShared ? $"{c.TypeText} · {c.Thumbprint}" : $"{c.TypeText} · 未分享",
+                Caption = c.IsShared ? $"{c.TypeText} · {c.Thumbprint}" : $"{c.TypeText} · {Strings.Perm_NotShared}",
                 IsShared = c.IsShared,
                 IsChecked = allowedCertIds == null ? c.IsShared : allowedCertIds.Contains(c.Id)
             }))

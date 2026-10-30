@@ -85,7 +85,7 @@ public partial class CertificatesViewModel : ViewModelBase
         var servers = ClientRegistry.LoadServers();
         if (servers.Count == 0)
         {
-            await _notificationService.ShowWarningAsync("尚未配对", "请先在「服务端管理」页配对服务端。");
+            await _notificationService.ShowWarningAsync(Strings.Certs_NotPairedTitle, Strings.Certs_NotPaired);
             return;
         }
 
@@ -133,10 +133,10 @@ public partial class CertificatesViewModel : ViewModelBase
             var fields = new List<DialogField>();
             foreach (var (serverName, error) in errors)
             {
-                fields.Add(new DialogField(serverName, $"失败：{error}", Monospace: false));
+                fields.Add(new DialogField(serverName, string.Format(Strings.Certs_FailedWith, error), Monospace: false));
             }
-            await _notificationService.ShowWarningAsync("部分服务端同步失败",
-                $"{succeeded} 台成功，{errors.Count} 台失败。失败的服务端已绑定的证书保持不变。",
+            await _notificationService.ShowWarningAsync(Strings.Certs_PartialSyncTitle,
+                string.Format(Strings.Certs_PartialSync, succeeded, errors.Count),
                 fields.ToArray());
         }
     }
@@ -152,11 +152,11 @@ public partial class CertificatesViewModel : ViewModelBase
         var form = new Views.Dialogs.SignToolCommandForm { DataContext = vm };
         var dialog = new Wpf.Ui.Controls.ContentDialog
         {
-            Title = "生成 SignTool 签名命令",
+            Title = Strings.St_DialogTitle,
             Content = form,
-            PrimaryButtonText = "复制命令",
-            SecondaryButtonText = "执行签名",
-            CloseButtonText = "关闭",
+            PrimaryButtonText = Strings.St_CopyCommand,
+            SecondaryButtonText = Strings.St_Run,
+            CloseButtonText = Strings.Common_Close,
             // 回车只复制，不会意外改动文件
             DefaultButton = Wpf.Ui.Controls.ContentDialogButton.Primary,
             DialogMaxWidth = 800
@@ -202,8 +202,8 @@ public partial class CertificatesViewModel : ViewModelBase
         var result = await _contentDialogService.ShowAsync(dialog, default);
         if (result == Wpf.Ui.Controls.ContentDialogResult.Primary)
         {
-            await _dialogService.SuccessAsync("命令已复制",
-                "SignTool 签名命令已复制到剪贴板，可在 CMD 终端中执行。");
+            await _dialogService.SuccessAsync(Strings.St_CopiedTitle,
+                Strings.St_Copied);
         }
     }
 
@@ -212,12 +212,12 @@ public partial class CertificatesViewModel : ViewModelBase
     {
         var cert = SelectedCertificate!;
         var confirmed = await _notificationService.ConfirmAsync(
-            "解绑证书",
-            $"确定要从本机解绑证书「{cert.Name}」吗？\n\n证书会从 LocalMachine\\My 删除，应用无法再用它签名。服务端的证书不受影响，下次\"更新证书\"时会重新下载绑定。",
-            "解绑",
+            Strings.Certs_UnbindTitle,
+            string.Format(Strings.Certs_UnbindMessage, cert.Name),
+            Strings.Certs_Unbind,
             destructive: true,
-            new DialogField("服务端", cert.ServerName ?? "(已移除)", Monospace: false),
-            new DialogField("指纹", cert.Thumbprint));
+            new DialogField(Strings.Common_Server, cert.ServerName ?? Strings.Certs_RemovedParen, Monospace: false),
+            new DialogField(Strings.Common_Thumbprint, cert.Thumbprint));
         if (!confirmed)
             return;
 
@@ -229,7 +229,7 @@ public partial class CertificatesViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _notificationService.ShowErrorAsync("解绑失败", ex.Message);
+            await _notificationService.ShowErrorAsync(Strings.Certs_UnbindFailed, ex.Message);
         }
     }
 
@@ -269,7 +269,7 @@ public class ClientCertItem
     public DateTime? NotAfter { get; }
     public bool IsInstalled { get; }
 
-    public string ServerText => ServerName ?? "(服务端已移除)";
+    public string ServerText => ServerName ?? Strings.Certs_ServerRemovedParen;
     public string ExpiryText => NotAfter?.ToString("yyyy-MM-dd") ?? "-";
 
     public bool IsExpired => NotAfter is { } t && t < DateTime.Now;
@@ -282,18 +282,18 @@ public class ClientCertItem
     /// <summary>状态：正常 / 测试 / 未安装 / 已过期 / 服务端已移除 / 服务端已停用</summary>
     public string StatusText => this switch
     {
-        _ when HasNoServer => "服务端已移除",
-        _ when IsServerDisabled => "服务端已停用",
-        _ when IsExpired => "已过期",
-        _ when !IsInstalled => "本地缺失",
-        _ when IsTest => "测试证书",
-        _ => "正常"
+        _ when HasNoServer => Strings.CState_ServerRemoved,
+        _ when IsServerDisabled => Strings.CState_ServerDisabled,
+        _ when IsExpired => Strings.CState_Expired,
+        _ when !IsInstalled => Strings.CState_Missing,
+        _ when IsTest => Strings.CState_Test,
+        _ => Strings.CState_Ok
     };
 
-    public string StatusKind => StatusText switch
+    public string StatusKind => this switch
     {
-        "正常" => "Success",
-        "测试证书" => "Caution",
-        _ => "Critical"
+        _ when HasNoServer || IsServerDisabled || IsExpired || !IsInstalled => "Critical",
+        _ when IsTest => "Caution",
+        _ => "Success"
     };
 }

@@ -65,13 +65,13 @@ public static class SignToolCommandBuilder
         string? tool = input.Mode switch
         {
             SignToolMode.PathCommand => "signtool",
-            _ when string.IsNullOrWhiteSpace(input.ToolPath) => Fail(errors, FieldTool, "请选择或填写 signtool.exe 路径"),
-            _ => CheckSafe(errors, FieldTool, input.ToolPath!.Trim(), "SignTool 路径")
+            _ when string.IsNullOrWhiteSpace(input.ToolPath) => Fail(errors, FieldTool, Strings.St_SelectTool),
+            _ => CheckSafe(errors, FieldTool, input.ToolPath!.Trim(), Strings.St_ToolPathLabel)
         };
         if (tool != null && input.Mode != SignToolMode.PathCommand)
         {
             if (!IsAbsoluteWindowsPath(tool))
-                tool = Fail(errors, FieldTool, "请填写 signtool.exe 的完整路径");
+                tool = Fail(errors, FieldTool, Strings.St_ToolFullPath);
             else
                 tool = Quote(tool);
         }
@@ -79,14 +79,14 @@ public static class SignToolCommandBuilder
         // 2. 证书：/sha1 是证书 SHA-1 指纹（选择证书），与文件摘要 /fd 无关
         var thumbprint = NormalizeThumbprint(input.Thumbprint);
         if (thumbprint == null)
-            Fail(errors, FieldThumbprint, "证书指纹必须是 40 位十六进制字符");
+            Fail(errors, FieldThumbprint, Strings.St_ThumbprintFormat);
 
         // 3. 目标文件
         string? target = string.IsNullOrWhiteSpace(input.TargetFile)
-            ? Fail(errors, FieldTarget, "请选择或填写待签名文件")
-            : CheckSafe(errors, FieldTarget, input.TargetFile.Trim(), "待签名文件路径");
+            ? Fail(errors, FieldTarget, Strings.St_SelectTarget)
+            : CheckSafe(errors, FieldTarget, input.TargetFile.Trim(), Strings.St_TargetLabel);
         if (target != null && !IsAbsoluteWindowsPath(target))
-            target = Fail(errors, FieldTarget, "请填写完整路径，例如 C:\\Build\\MyApp.exe");
+            target = Fail(errors, FieldTarget, Strings.St_TargetFullPath);
 
         // 4. 时间戳
         string? timestamp = null;
@@ -96,9 +96,9 @@ public static class SignToolCommandBuilder
             var url = input.TimestampUrl.Trim();
             if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || uri.Scheme is not ("http" or "https")
                 || string.IsNullOrEmpty(uri.Host))
-                Fail(errors, FieldTimestamp, "时间戳服务器必须是 http:// 或 https:// 开头的完整 URL");
+                Fail(errors, FieldTimestamp, Strings.St_TimestampFormat);
             else
-                timestamp = CheckSafe(errors, FieldTimestamp, url, "时间戳 URL");
+                timestamp = CheckSafe(errors, FieldTimestamp, url, Strings.St_TimestampLabel);
         }
 
         if (errors.Count > 0)
@@ -114,7 +114,7 @@ public static class SignToolCommandBuilder
             args.Add("/sm");
         if (!string.Equals(input.StoreName, "My", StringComparison.OrdinalIgnoreCase))
         {
-            var store = CheckSafe(errors, FieldThumbprint, input.StoreName, "证书存储名称");
+            var store = CheckSafe(errors, FieldThumbprint, input.StoreName, Strings.St_StoreLabel);
             if (store == null)
                 return new SignToolCommandResult(null, errors);
             args.Add("/s");
@@ -157,14 +157,14 @@ public static class SignToolCommandBuilder
     private static string? CheckSafe(Dictionary<string, string> errors, string field, string value, string label)
     {
         if (value.Any(c => char.IsControl(c)))
-            return Fail(errors, field, $"{label}包含换行或控制字符");
+            return Fail(errors, field, string.Format(Strings.St_ControlChars, label));
         var bad = value.IndexOfAny(UnsafeInQuotes);
         if (bad >= 0)
             return Fail(errors, field,
-                $"{label}包含字符「{value[bad]}」，在 CMD 命令中无法安全转义，请改用不含该字符的路径");
+                string.Format(Strings.St_UnsafeChar, label, value[bad]));
         // 以反斜杠结尾时，"C:\dir\" 会被 signtool 的参数解析当作转义的引号
         if (value.EndsWith('\\'))
-            return Fail(errors, field, $"{label}不能以反斜杠结尾");
+            return Fail(errors, field, string.Format(Strings.St_TrailingBackslash, label));
         return value;
     }
 

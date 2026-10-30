@@ -8,7 +8,7 @@ public partial class NetworkAddressesCard : UserControl
 {
     public static readonly DependencyProperty TitleProperty =
         DependencyProperty.Register(nameof(Title), typeof(string), typeof(NetworkAddressesCard),
-            new PropertyMetadata("网络地址"));
+            new PropertyMetadata(Localization.SharedStrings.Net_CardTitle));
 
     public string Title
     {

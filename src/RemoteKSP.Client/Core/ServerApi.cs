@@ -39,9 +39,9 @@ public sealed class ServerApi : IDisposable
     public ServerApi(string serverUrl, string? clientId = null, string? secret = null, string? pinnedTlsThumbprint = null)
     {
         if (!Uri.TryCreate(serverUrl, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps)
-            throw new ArgumentException("服务端必须使用 HTTPS。", nameof(serverUrl));
+            throw new ArgumentException(Strings.Api_HttpsRequired, nameof(serverUrl));
         if (clientId != null && secret != null && string.IsNullOrWhiteSpace(pinnedTlsThumbprint))
-            throw new InvalidOperationException("旧配对未记录 TLS 证书指纹，请移除服务端并重新配对。");
+            throw new InvalidOperationException(Strings.Api_NoTlsThumbprint);
         _serverUrl = serverUrl.TrimEnd('/');
         _clientId = clientId;
         _secret = secret;
@@ -61,6 +61,8 @@ public sealed class ServerApi : IDisposable
             }
         };
         _http = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(15) };
+        // 服务端按这个语言返回错误说明
+        _http.DefaultRequestHeaders.AcceptLanguage.ParseAdd(RemoteKSP.Shared.Localization.UiLanguage.Current);
     }
 
     public static ServerApi For(ServerEntry server) =>
@@ -68,7 +70,7 @@ public sealed class ServerApi : IDisposable
 
     public Task<ServerInfo> GetInfoAsync() => Run(async () =>
         await _http.GetFromJsonAsync<ServerInfo>($"{_serverUrl}/info")
-            ?? throw new InvalidOperationException("服务端返回了空响应"));
+            ?? throw new InvalidOperationException(Strings.Api_EmptyResponse));
 
     /// <summary>GET /certs：服务端允许本客户端使用的证书（需要服务端支持 multi-cert）</summary>
     public Task<List<RemoteCertificateInfo>> GetCertificatesAsync() => Run(async () =>
@@ -118,9 +120,9 @@ public sealed class ServerApi : IDisposable
         var error = statusCode switch
         {
             HttpStatusCode.Unauthorized => new UnauthorizedException(
-                "服务端拒绝了请求：凭据可能已撤销、时钟相差超过 5 分钟、请求重复，或客户端与服务端协议版本不一致"),
-            HttpStatusCode.Forbidden => new InvalidOperationException("服务端未授权本客户端使用该证书"),
-            HttpStatusCode.NotFound => new InvalidOperationException("服务端没有该证书"),
+                Strings.Api_Unauthorized),
+            HttpStatusCode.Forbidden => new InvalidOperationException(Strings.Api_Forbidden),
+            HttpStatusCode.NotFound => new InvalidOperationException(Strings.Api_NotFound),
             _ => new InvalidOperationException($"HTTP {(int)statusCode}: {await response.Content.ReadAsStringAsync()}")
         };
 
@@ -135,13 +137,15 @@ public sealed class ServerApi : IDisposable
         }
         catch (HttpRequestException ex) when (_tlsMismatch)
         {
-            throw new InvalidOperationException(
-                $"服务端 TLS 证书（{LastTlsThumbprint}）与配对时记录的不一致，可能遭到中间人攻击。确认服务端重装过后，请移除并重新配对该服务端。", ex);
+            throw new TlsMismatchException(string.Format(Strings.Api_TlsMismatch, LastTlsThumbprint), ex);
         }
     }
 
     public void Dispose() => _http.Dispose();
 }
+
+/// <summary>服务端 TLS 证书与配对时记录的指纹不一致</summary>
+public class TlsMismatchException(string message, Exception inner) : InvalidOperationException(message, inner);
 
 /// <summary>服务端返回 401 Unauthorized，凭据已被撤销</summary>
 public class UnauthorizedException : InvalidOperationException

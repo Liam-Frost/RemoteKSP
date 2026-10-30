@@ -10,7 +10,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private string _applicationTitle = "Remote KSP Client";
 
     [ObservableProperty]
-    private string _currentPageTitle = "概览";
+    private string _currentPageTitle = Strings.Nav_Overview;
 
     [ObservableProperty]
     private ObservableCollection<object> _menuItems = [];
@@ -29,25 +29,25 @@ public partial class MainWindowViewModel : ViewModelBase
         [
             new NavigationViewItem
             {
-                Content = "概览",
+                Content = Strings.Nav_Overview,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
                 TargetPageType = typeof(Views.Pages.OverviewPage)
             },
             new NavigationViewItem
             {
-                Content = "服务端管理",
+                Content = Strings.Nav_Servers,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Server24 },
                 TargetPageType = typeof(Views.Pages.ServersPage)
             },
             new NavigationViewItem
             {
-                Content = "证书管理",
+                Content = Strings.Nav_Certificates,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Certificate24 },
                 TargetPageType = typeof(Views.Pages.CertificatesPage)
             },
             new NavigationViewItem
             {
-                Content = "连接诊断",
+                Content = Strings.Nav_Diagnostics,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.CheckmarkStarburst24 },
                 TargetPageType = typeof(Views.Pages.DiagnosticsPage)
             }
@@ -57,7 +57,7 @@ public partial class MainWindowViewModel : ViewModelBase
         [
             new NavigationViewItem
             {
-                Content = "设置",
+                Content = Strings.Nav_Settings,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(Views.Pages.SettingsPage)
             }

@@ -19,6 +19,9 @@ public static class Program
     [STAThread]
     public static int Main(string[] args)
     {
+        // LAYOUTPROBE_LANG=en / zh-Hans renders the pages in that language; otherwise the saved preference
+        RemoteKSP.Shared.Localization.UiLanguage.Apply(Environment.GetEnvironmentVariable("LAYOUTPROBE_LANG")
+            ?? RemoteKSP.Shared.Localization.UiLanguage.LoadPreference());
         var side = args.ElementAtOrDefault(0) ?? "server";
         var rows = int.TryParse(args.ElementAtOrDefault(1), out var n) ? n : 1;
         var outDir = args.ElementAtOrDefault(2) ?? ".";

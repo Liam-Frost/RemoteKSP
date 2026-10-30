@@ -50,7 +50,7 @@ public partial class OverviewViewModel : ViewModelBase
 
     // Windows 服务
     [ObservableProperty] private ServiceStatusKind _serviceKind = ServiceStatusKind.Unknown;
-    [ObservableProperty] private string _serviceValue = "检查中…";
+    [ObservableProperty] private string _serviceValue = Strings.Common_Checking;
     [ObservableProperty] private string _serviceDetail = "";
     [ObservableProperty] private StatusKind _serviceIndicator = StatusKind.Busy;
     [ObservableProperty] private bool _serviceInstalled;
@@ -67,16 +67,16 @@ public partial class OverviewViewModel : ViewModelBase
 
     // 签名密钥源
     [ObservableProperty] private KeySourceState _keySourceState = KeySourceState.Loading;
-    [ObservableProperty] private string _keySourceValue = "检查中…";
+    [ObservableProperty] private string _keySourceValue = Strings.Common_Checking;
     [ObservableProperty] private string _keySourceDetail = "";
     [ObservableProperty] private string? _keySourceToolTip;
     [ObservableProperty] private StatusKind _keySourceIndicator = StatusKind.Busy;
 
     // 已授权客户端
     [ObservableProperty] private int? _authorizedClients;
-    [ObservableProperty] private string _clientsValue = "检查中…";
+    [ObservableProperty] private string _clientsValue = Strings.Common_Checking;
     [ObservableProperty] private string _clientsDetail = "";
-    [ObservableProperty] private string _clientsActionText = "管理客户端";
+    [ObservableProperty] private string _clientsActionText = Strings.Ov_ManageClients;
     [ObservableProperty] private string? _clientsToolTip;
 
     [ObservableProperty] private bool _isLoading = true;
@@ -92,11 +92,8 @@ public partial class OverviewViewModel : ViewModelBase
         _dialogService = dialogService;
         _navigate = navigate;
         Network = new NetworkAddressesViewModel(dialogService, () => ServerConfig.Load().Port,
-            "客户端可尝试用这些地址连接本机",
-            "这里列出本机网卡上的地址，以及按服务端口生成的 https 连接地址。\n\n" +
-            "• 客户端能否连上，取决于服务是否在监听、网络路由和防火墙；复制连接地址不代表已验证远程可达。\n" +
-            "• 服务端 TLS 证书是自签名的，不包含 IP；客户端按配对时记录的证书指纹校验，而不是按地址校验。\n" +
-            "• 环回地址只能在本机使用；链路本地 IPv6 地址带本机接口编号，不提供连接地址复制。");
+            Strings.Ov_NetFootnote,
+            Strings.Ov_NetDetail);
     }
 
     public async Task InitializeAsync()
@@ -193,14 +190,14 @@ public partial class OverviewViewModel : ViewModelBase
         CanStopService = service.Kind == ServiceStatusKind.Running;
         (ServiceValue, ServiceDetail, ServiceIndicator) = service.Kind switch
         {
-            ServiceStatusKind.Running => ("运行中", "签名服务进程正在运行（Windows 服务名：RemoteKSP）", StatusKind.Success),
-            ServiceStatusKind.Stopped => ("已停止", "服务停止期间，客户端无法签名", StatusKind.Caution),
-            ServiceStatusKind.Paused => ("已暂停", "服务暂停期间，客户端无法签名", StatusKind.Caution),
-            ServiceStatusKind.Starting => ("启动中…", "正在等待服务启动", StatusKind.Busy),
-            ServiceStatusKind.Stopping => ("停止中…", "正在等待服务停止", StatusKind.Busy),
-            ServiceStatusKind.NotInstalled => ("未安装", "安装后签名服务会随系统自动启动", StatusKind.Neutral),
-            ServiceStatusKind.QueryFailed => ("查询失败", service.Error ?? "无法读取服务状态", StatusKind.Critical),
-            _ => ("状态未知", "Service Control Manager 返回了未识别的状态", StatusKind.Caution)
+            ServiceStatusKind.Running => (Strings.Svc_Running, Strings.Svc_RunningDetail, StatusKind.Success),
+            ServiceStatusKind.Stopped => (Strings.Svc_Stopped, Strings.Svc_StoppedDetail, StatusKind.Caution),
+            ServiceStatusKind.Paused => (Strings.Svc_Paused, Strings.Svc_PausedDetail, StatusKind.Caution),
+            ServiceStatusKind.Starting => (Strings.Svc_Starting, Strings.Svc_StartingDetail, StatusKind.Busy),
+            ServiceStatusKind.Stopping => (Strings.Svc_Stopping, Strings.Svc_StoppingDetail, StatusKind.Busy),
+            ServiceStatusKind.NotInstalled => (Strings.Svc_NotInstalled, Strings.Svc_NotInstalledDetail, StatusKind.Neutral),
+            ServiceStatusKind.QueryFailed => (Strings.Common_QueryFailed, service.Error ?? Strings.Svc_QueryFailedDetail, StatusKind.Critical),
+            _ => (Strings.Svc_Unknown, Strings.Svc_UnknownDetail, StatusKind.Caution)
         };
         RefreshServiceCommands();
 
@@ -208,15 +205,15 @@ public partial class OverviewViewModel : ViewModelBase
         KeySourceToolTip = s.KeySourceError ?? s.KeySourceStatus?.Detail;
         (KeySourceValue, KeySourceDetail, KeySourceIndicator) = s.KeySource switch
         {
-            KeySourceState.Ready => ("已就绪", s.KeySourceStatus?.Detail ?? "", StatusKind.Success),
-            KeySourceState.NotReady => ("未就绪", s.KeySourceStatus?.Detail ?? "", StatusKind.Caution),
-            KeySourceState.NotConfigured => ("未配置", "没有分享给客户端的证书，请在证书管理中添加", StatusKind.Caution),
-            KeySourceState.ServiceNotRunning => ("服务未运行", "启动 Windows 服务后才能查询密钥源", StatusKind.Neutral),
-            KeySourceState.ServicePending => ("等待服务", "服务状态变化后会重新查询", StatusKind.Busy),
-            KeySourceState.ChannelUnavailable => ("无法获取密钥源状态", "管理通道暂时不可连接，请稍后刷新", StatusKind.Caution),
-            KeySourceState.ChannelAccessDenied => ("无法获取密钥源状态", "无权访问管理通道，请以管理员身份运行", StatusKind.Critical),
-            KeySourceState.QueryFailed => ("查询失败", "服务处理状态查询时出错，悬停查看详情", StatusKind.Critical),
-            _ => ("检查中…", "", StatusKind.Busy)
+            KeySourceState.Ready => (Strings.Ks_Ready, s.KeySourceStatus?.Detail ?? "", StatusKind.Success),
+            KeySourceState.NotReady => (Strings.Ks_NotReady, s.KeySourceStatus?.Detail ?? "", StatusKind.Caution),
+            KeySourceState.NotConfigured => (Strings.Ks_NotConfigured, Strings.Ks_NotConfiguredDetail, StatusKind.Caution),
+            KeySourceState.ServiceNotRunning => (Strings.Ks_ServiceNotRunning, Strings.Ks_ServiceNotRunningDetail, StatusKind.Neutral),
+            KeySourceState.ServicePending => (Strings.Ks_WaitingForService, Strings.Ks_WaitingForServiceDetail, StatusKind.Busy),
+            KeySourceState.ChannelUnavailable => (Strings.Ks_StatusUnavailable, Strings.Ks_ChannelUnavailable, StatusKind.Caution),
+            KeySourceState.ChannelAccessDenied => (Strings.Ks_StatusUnavailable, Strings.Ks_ChannelAccessDenied, StatusKind.Critical),
+            KeySourceState.QueryFailed => (Strings.Common_QueryFailed, Strings.Ks_QueryFailedDetail, StatusKind.Critical),
+            _ => (Strings.Common_Checking, "", StatusKind.Busy)
         };
 
         AuthorizedClients = s.ClientCount;
@@ -224,14 +221,14 @@ public partial class OverviewViewModel : ViewModelBase
         ClientsToolTip = s.ClientError;
         (ClientsValue, ClientsDetail) = (s.ClientCount, s.ClientError, service.IsRunning) switch
         {
-            (null, _, false) => ("—", "服务运行后显示"),
-            (null, _, _) when s.KeySource is KeySourceState.ChannelUnavailable => ("无法获取", "管理通道暂时不可连接，请稍后刷新"),
-            (null, _, _) when s.KeySource is KeySourceState.ChannelAccessDenied => ("无法获取", "无权访问管理通道，请以管理员身份运行"),
-            (null, _, _) => ("无法获取", "服务处理查询时出错，悬停查看详情"),
-            (0, _, _) => ("暂无已授权客户端", "客户端配对后在这里显示"),
-            ({ } n, _, _) => ($"{n} 台", "已配对并持有有效凭据的客户端"),
+            (null, _, false) => ("—", Strings.Cl_ShownWhenRunning),
+            (null, _, _) when s.KeySource is KeySourceState.ChannelUnavailable => (Strings.Cl_Unavailable, Strings.Ks_ChannelUnavailable),
+            (null, _, _) when s.KeySource is KeySourceState.ChannelAccessDenied => (Strings.Cl_Unavailable, Strings.Ks_ChannelAccessDenied),
+            (null, _, _) => (Strings.Cl_Unavailable, Strings.Cl_QueryFailedDetail),
+            (0, _, _) => (Strings.Cl_None, Strings.Cl_NoneDetail),
+            ({ } n, _, _) => (string.Format(Strings.Cl_Count, n), Strings.Cl_CountDetail),
         };
-        ClientsActionText = s.ClientCount == 0 ? "查看配对请求" : "管理客户端";
+        ClientsActionText = s.ClientCount == 0 ? Strings.Ov_ViewPairingRequests : Strings.Ov_ManageClients;
     }
 
     private void RefreshServiceCommands()
@@ -282,13 +279,13 @@ public partial class OverviewViewModel : ViewModelBase
         try
         {
             await _serviceManager.InstallAsync();
-            await _dialogService.SuccessAsync("安装成功", "Remote KSP 服务已成功安装");
+            await _dialogService.SuccessAsync(Strings.Ov_InstalledTitle, Strings.Ov_Installed);
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("安装失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_InstallFailed, ex.Message);
         }
-    }, "安装中…");
+    }, Strings.Common_Installing);
 
     [RelayCommand(CanExecute = nameof(CanStart))]
     private Task StartServiceAsync() => RunServiceActionAsync(async () =>
@@ -297,13 +294,13 @@ public partial class OverviewViewModel : ViewModelBase
         {
             await _serviceManager.StartAsync();
             if (!await WaitForAsync(ServiceStatusKind.Running))
-                await _dialogService.WarningAsync("启动超时", "服务启动命令已发送，但状态未及时更新，请稍后刷新状态");
+                await _dialogService.WarningAsync(Strings.Ov_StartTimeoutTitle, Strings.Ov_StartTimeout);
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("启动失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_StartFailed, ex.Message);
         }
-    }, "启动中…");
+    }, Strings.Svc_Starting);
 
     [RelayCommand(CanExecute = nameof(CanStop))]
     private Task StopServiceAsync() => RunServiceActionAsync(async () =>
@@ -312,13 +309,13 @@ public partial class OverviewViewModel : ViewModelBase
         {
             await _serviceManager.StopAsync();
             if (!await WaitForAsync(ServiceStatusKind.Stopped))
-                await _dialogService.WarningAsync("停止超时", "服务停止命令已发送，但状态未及时更新，请稍后刷新状态");
+                await _dialogService.WarningAsync(Strings.Ov_StopTimeoutTitle, Strings.Ov_StopTimeout);
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("停止失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_StopFailed, ex.Message);
         }
-    }, "停止中…");
+    }, Strings.Svc_Stopping);
 
     [RelayCommand(CanExecute = nameof(CanUninstall))]
     private async Task UninstallServiceAsync()
@@ -335,9 +332,9 @@ public partial class OverviewViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                await _dialogService.ErrorAsync("卸载失败", ex.Message);
+                await _dialogService.ErrorAsync(Strings.Common_UninstallFailed, ex.Message);
             }
-        }, "卸载中…");
+        }, Strings.Common_Uninstalling);
     }
 
     [RelayCommand]

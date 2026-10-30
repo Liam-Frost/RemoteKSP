@@ -126,6 +126,7 @@ jobs:
           awk -v v="$VERSION" '
             index($0, "## [" v "]") == 1 { on = 1; next }
             on && /^## \[/ { exit }
+            on && /^\[[^]]+\]: / { exit }
             on { print }
           ' CHANGELOG.md > notes.md
           size() {

@@ -65,13 +65,13 @@ public static class ServiceRecovery
     {
         var scm = OpenSCManagerW(null, null, SC_MANAGER_CONNECT);
         if (scm == IntPtr.Zero)
-            throw new Win32Exception(Marshal.GetLastWin32Error(), "无法连接服务控制管理器");
+            throw new Win32Exception(Marshal.GetLastWin32Error(), Strings.Svc_ScmConnectFailed);
         try
         {
             // SC_ACTION_RESTART 要求句柄带 SERVICE_START 权限
             var service = OpenServiceW(scm, serviceName, SERVICE_CHANGE_CONFIG | SERVICE_START);
             if (service == IntPtr.Zero)
-                throw new Win32Exception(Marshal.GetLastWin32Error(), $"无法打开服务 {serviceName}");
+                throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format(Strings.Svc_OpenFailed, serviceName));
             try
             {
                 SetFailureActions(service);
@@ -79,7 +79,7 @@ public static class ServiceRecovery
                 // 没有这个标志时，只有进程崩溃才算失败；服务以非零退出码正常停止不会触发重启
                 var flag = new SERVICE_FAILURE_ACTIONS_FLAG { fFailureActionsOnNonCrashFailures = 1 };
                 if (!ChangeServiceConfig2W(service, SERVICE_CONFIG_FAILURE_ACTIONS_FLAG, ref flag))
-                    throw new Win32Exception(Marshal.GetLastWin32Error(), "设置失败恢复标志失败");
+                    throw new Win32Exception(Marshal.GetLastWin32Error(), Strings.Svc_RecoveryFlagFailed);
             }
             finally
             {
@@ -109,7 +109,7 @@ public static class ServiceRecovery
                 lpsaActions = buffer
             };
             if (!ChangeServiceConfig2W(service, SERVICE_CONFIG_FAILURE_ACTIONS, ref actions))
-                throw new Win32Exception(Marshal.GetLastWin32Error(), "设置服务失败恢复策略失败");
+                throw new Win32Exception(Marshal.GetLastWin32Error(), Strings.Svc_RecoveryPolicyFailed);
         }
         finally
         {

@@ -27,37 +27,38 @@ public class PipeClient
         }
         catch (UnauthorizedAccessException ex)
         {
-            _activityLog?.Error("管道", "无权访问服务管道", "GUI 需要以管理员身份运行");
-            throw new PipeConnectionException("无权访问服务管道（GUI 需要以管理员身份运行）", accessDenied: true, ex);
+            _activityLog?.Error(Strings.LogCat_Pipe, Strings.Pipe_AccessDenied, Strings.Pipe_NeedsAdmin);
+            throw new PipeConnectionException(Strings.Pipe_AccessDeniedFull, accessDenied: true, ex);
         }
         catch (Exception ex)
         {
-            _activityLog?.Error("管道", "服务未运行或无法连接", ex.Message);
-            throw new PipeConnectionException($"服务未运行或无法连接: {ex.Message}", accessDenied: false, ex);
+            _activityLog?.Error(Strings.LogCat_Pipe, Strings.Pipe_NotRunning, ex.Message);
+            throw new PipeConnectionException(string.Format(Strings.Pipe_NotRunningFull, ex.Message), accessDenied: false, ex);
         }
 
         // leaveOpen：管道由外层 using 释放；否则 reader 先关闭管道，writer 释放时 Flush 会抛 "Cannot access a closed pipe"
         using var writer = new StreamWriter(pipe, leaveOpen: true) { AutoFlush = true };
         using var reader = new StreamReader(pipe, leaveOpen: true);
 
-        var request = new { Command = command, Data = data != null ? JsonSerializer.Serialize(data) : null };
+        var request = new { Command = command, Data = data != null ? JsonSerializer.Serialize(data) : null,
+            Language = RemoteKSP.Shared.Localization.UiLanguage.Current };
         await writer.WriteLineAsync(JsonSerializer.Serialize(request));
 
         var responseLine = await reader.ReadLineAsync();
         if (responseLine == null)
         {
-            _activityLog?.Error("管道", "服务无响应", command);
-            throw new PipeConnectionException("服务无响应", accessDenied: false);
+            _activityLog?.Error(Strings.LogCat_Pipe, Strings.Pipe_NoResponse, command);
+            throw new PipeConnectionException(Strings.Pipe_NoResponse, accessDenied: false);
         }
 
         var response = JsonSerializer.Deserialize<PipeResponse>(responseLine);
         if (response == null || !response.Success)
         {
-            _activityLog?.Error("管道", $"命令失败: {command}", response?.Error ?? "Unknown error");
+            _activityLog?.Error(Strings.LogCat_Pipe, string.Format(Strings.Pipe_CommandFailed, command), response?.Error ?? "Unknown error");
             throw new InvalidOperationException(response?.Error ?? "Unknown error");
         }
 
-        _activityLog?.Info("管道", $"命令成功: {command}");
+        _activityLog?.Info(Strings.LogCat_Pipe, string.Format(Strings.Pipe_CommandSucceeded, command));
 
         if (response.Data == null)
             return default;
