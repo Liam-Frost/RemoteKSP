@@ -79,7 +79,7 @@ public class ClientStore
         lock (_lock)
         {
             var client = _clients.FirstOrDefault(c => c.Id == clientId && !c.IsRevoked)
-                ?? throw new InvalidOperationException("客户端不存在或已撤销");
+                ?? throw new InvalidOperationException(Strings.Client_NotFound);
             client.AllowedCertIds = allowedCertIds;
             Save();
         }
@@ -127,7 +127,7 @@ public class ClientStore
             {
                 var json = SecureStorage.ReadAllText(_filePath);
                 _clients = JsonSerializer.Deserialize<List<PairedClient>>(json)
-                    ?? throw new JsonException("文件内容为 null");
+                    ?? throw new JsonException(Strings.Store_FileIsNull);
             }
             catch (Exception ex) when (ex is JsonException or NotSupportedException)
             {
@@ -136,14 +136,14 @@ public class ClientStore
                 string kept;
                 try
                 {
-                    kept = $"已改名保留为 {Path.GetFileName(SecureStorage.PreserveCorruptFile(_filePath))}";
+                    kept = string.Format(Strings.Store_CorruptKept, Path.GetFileName(SecureStorage.PreserveCorruptFile(_filePath)));
                 }
                 catch (Exception moveEx) when (moveEx is IOException or UnauthorizedAccessException)
                 {
                     _saveBlocked = true;
-                    kept = $"改名保留失败（{moveEx.Message}），排除问题前不会写入该文件";
+                    kept = string.Format(Strings.Store_CorruptKeepFailed, moveEx.Message);
                 }
-                LoadError = $"clients.json 无法解析（{ex.Message}），{kept}，所有客户端需要重新配对";
+                LoadError = string.Format(Strings.Client_StoreCorrupt, ex.Message, kept);
             }
         }
     }

@@ -139,7 +139,7 @@ public class ETokenKeySource : IKeySource
                     _logger.LogWarning(ex, "eToken signing failed before PIN verification (token present: {Present}); will retry on the next request",
                         _tokenPresent);
                     throw new InvalidOperationException(
-                        _tokenPresent ? $"eToken 暂时无法使用（{ex.Message}），请稍后重试" : "未检测到 eToken（未插入或驱动未就绪），插入后重试即可", ex);
+                        _tokenPresent ? string.Format(Strings.EToken_Unavailable, ex.Message) : Strings.EToken_NotDetectedRetry, ex);
                 }
                 _logger.LogError(ex, "eToken is present but signing failed with an unrecognized error; certificate disabled to protect the PIN retry counter");
                 throw Disable(PinFailureKind.Unrecognized, ex);

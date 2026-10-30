@@ -65,7 +65,7 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
         _settings = SignToolSettings.Load();
 
         CertName = cert.Name;
-        CertSubject = cert.Subject ?? "（本机证书存储中未找到）";
+        CertSubject = cert.Subject ?? Strings.St_CertNotInStore;
         CertServer = cert.ServerText;
         CertThumbprint = cert.Thumbprint;
         CertExpiry = cert.ExpiryText;
@@ -75,9 +75,9 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
         (_storeLocation, _) = CertificateBinder.FindCertificateStore(cert.Thumbprint);
         CertStoreText = _storeLocation switch
         {
-            StoreLocation.LocalMachine => @"LocalMachine\My（命令使用 /sm）",
+            StoreLocation.LocalMachine => Strings.St_StoreLocalMachine,
             StoreLocation.CurrentUser => @"CurrentUser\My",
-            _ => "本机证书存储中未找到"
+            _ => Strings.St_StoreNotFound
         };
 
         IsDiscoveredMode = _settings.Mode == SignToolMode.Discovered;
@@ -95,7 +95,7 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
     public async Task DiscoverToolsAsync()
     {
         IsDiscovering = true;
-        DiscoveryText = "正在查找 SignTool…";
+        DiscoveryText = Strings.St_Searching;
         try
         {
             var tools = await Task.Run(SignToolDiscovery.Discover);
@@ -105,12 +105,12 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
                                string.Equals(t.Path, _settings.SelectedDiscoveredPath, StringComparison.OrdinalIgnoreCase))
                            ?? SignToolDiscovery.Recommend(tools);
             DiscoveryText = tools.Count == 0
-                ? "未找到 SignTool。请安装 Windows SDK，或改用自定义路径 / PATH 命令。"
-                : $"找到 {tools.Count} 个 SignTool";
+                ? Strings.St_NotFound
+                : string.Format(Strings.St_Found, tools.Count);
         }
         catch (Exception ex)
         {
-            DiscoveryText = $"查找 SignTool 失败：{ex.Message}";
+            DiscoveryText = string.Format(Strings.St_SearchFailed, ex.Message);
         }
         finally
         {
@@ -153,8 +153,8 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
 
         if (_storeLocation == null)
         {
-            CertError = "证书未安装在本机，无法生成签名命令。请先在「证书管理」更新证书。";
-            CommandPreview = "# 证书缺失";
+            CertError = Strings.St_CertMissing;
+            CommandPreview = Strings.St_CertMissingPreview;
             CanCopy = false;
             return;
         }
@@ -183,8 +183,8 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
         var result = SignToolCommandBuilder.Build(input);
         CanCopy = result.IsValid;
         CommandPreview = result.Command ?? (string.IsNullOrWhiteSpace(TargetFile) && result.Errors.Count == 1
-            ? "（选择待签名文件后显示完整命令）"
-            : "（请先修正上方标红的字段）");
+            ? Strings.St_PickTargetPreview
+            : Strings.St_FixFieldsPreview);
 
         // 字段级错误与提示
         result.Errors.TryGetValue(SignToolCommandBuilder.FieldTool, out var te);
@@ -199,19 +199,19 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
         if (string.IsNullOrEmpty(ToolError) && toolPath != null && !File.Exists(toolPath))
         {
             ToolError = mode == SignToolMode.Custom
-                ? "该路径下没有 signtool.exe，请检查路径"
-                : "之前选择的 SignTool 已不存在，请重新选择";
+                ? Strings.St_NoToolAtPath
+                : Strings.St_ToolGone;
             CanCopy = false;
-            CommandPreview = "（请先修正上方标红的字段）";
+            CommandPreview = Strings.St_FixFieldsPreview;
         }
         if (mode == SignToolMode.Discovered && SelectedTool == null && !IsDiscovering && DiscoveredTools.Count == 0)
-            ToolError = "未找到 SignTool，请改用自定义路径或 PATH 命令";
+            ToolError = Strings.St_NoToolUseOther;
         if (mode == SignToolMode.PathCommand && !SignToolDiscovery.FindOnPath().Any())
-            ToolHint = "当前程序的 PATH 中没有 signtool.exe，请在已配置 SignTool 的终端（如 Developer Command Prompt）中执行";
+            ToolHint = Strings.St_NotOnPath;
 
         // 目标文件不存在不阻止复制：命令可能用于其他机器或尚未生成的构建产物
         if (string.IsNullOrEmpty(TargetError) && !string.IsNullOrWhiteSpace(TargetFile) && !File.Exists(TargetFile.Trim()))
-            TargetHint = "本机找不到该文件。命令仍可复制，供其他机器或后续构建使用";
+            TargetHint = Strings.St_TargetMissing;
     }
 
     /// <summary>用户尝试复制但输入无效时调用：把尚未展示的必填项错误也显示出来</summary>
@@ -253,41 +253,41 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
         var target = TargetFile.Trim();
         if (!File.Exists(target))
         {
-            ShowRunResult(RunState.Failed, "无法执行：本机找不到待签名文件。命令仍可复制到文件所在的机器上执行。", "");
+            ShowRunResult(RunState.Failed, Strings.St_RunNoTarget, "");
             return;
         }
         if (IsPathMode && !SignToolDiscovery.FindOnPath().Any())
         {
             ShowRunResult(RunState.Failed,
-                "无法执行：本程序的 PATH 中没有 signtool.exe。请改用「自动检测」或「自定义路径」，或复制命令到已配置 SignTool 的终端执行。", "");
+                Strings.St_RunNotOnPath, "");
             return;
         }
 
         var command = CommandPreview;
         SaveSettings();
         ShowRunResult(RunState.Running, UseTimestamp
-            ? "正在签名…（需要连接签名服务端和时间戳服务器，可能需要一些时间）"
-            : "正在签名…（需要连接签名服务端）", "");
+            ? Strings.St_SigningWithTimestamp
+            : Strings.St_Signing, "");
         try
         {
             var result = await SignToolRunner.RunAsync(command, Path.GetDirectoryName(target));
             var output = result.Output.Trim();
             // signtool 会把路径中的中文等字符输出成空格，这是它自身的行为，不影响签名结果
             if (target.Any(c => c > 127))
-                output += "\n\n（说明：SignTool 输出中，路径里的非 ASCII 字符会显示为空格，以退出码为准）";
+                output += Strings.St_NonAsciiNote;
             if (result.TimedOut)
                 ShowRunResult(RunState.Failed,
-                    $"执行超时（{SignToolRunner.DefaultTimeout.TotalMinutes:0} 分钟），已结束 SignTool 进程", output);
+                    string.Format(Strings.St_TimedOut, SignToolRunner.DefaultTimeout.TotalMinutes.ToString("0")), output);
             else if (result.Succeeded)
-                ShowRunResult(RunState.Succeeded, $"签名成功，用时 {result.Elapsed.TotalSeconds:0.0} 秒", output);
+                ShowRunResult(RunState.Succeeded, string.Format(Strings.St_Succeeded, result.Elapsed.TotalSeconds.ToString("0.0")), output);
             else
                 // 测试证书被服务端拒绝时，SignTool 只会报 "No certificates were found"，这里说明真正原因
-                ShowRunResult(RunState.Failed, $"签名失败，SignTool 退出码 {result.ExitCode}" +
-                    (CertIsTest ? "。这是测试证书，服务端会拒绝签名请求，请改用正式证书" : ""), output);
+                ShowRunResult(RunState.Failed, string.Format(Strings.St_Failed, result.ExitCode) +
+                    (CertIsTest ? Strings.St_FailedTestCert : ""), output);
         }
         catch (Exception ex)
         {
-            ShowRunResult(RunState.Failed, $"无法启动 SignTool：{ex.Message}", "");
+            ShowRunResult(RunState.Failed, string.Format(Strings.St_CannotStart, ex.Message), "");
         }
     }
 
@@ -296,8 +296,8 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
     {
         var dlg = new OpenFileDialog
         {
-            Filter = "SignTool 可执行文件|signtool.exe|所有文件|*.*",
-            Title = "选择 SignTool.exe"
+            Filter = Strings.St_ToolFilter,
+            Title = Strings.St_ToolPickTitle
         };
         if (dlg.ShowDialog() == true)
         {
@@ -312,8 +312,8 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
     {
         var dlg = new OpenFileDialog
         {
-            Filter = "可执行文件|*.exe;*.dll;*.sys;*.ocx;*.msi;*.msix;*.appx;*.appxbundle|所有文件|*.*",
-            Title = "选择待签名文件",
+            Filter = Strings.St_TargetFilter,
+            Title = Strings.St_TargetPickTitle,
             InitialDirectory = string.IsNullOrWhiteSpace(_settings.LastTargetDirectory)
                 ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
                 : _settings.LastTargetDirectory
@@ -340,7 +340,7 @@ public partial class SignToolCommandDialogViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            ShowRunResult(RunState.Failed, $"复制失败：无法写入剪贴板（{ex.Message}）", "");
+            ShowRunResult(RunState.Failed, string.Format(Strings.St_CopyFailed, ex.Message), "");
             return false;
         }
         SaveSettings();

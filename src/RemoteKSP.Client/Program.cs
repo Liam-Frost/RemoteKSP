@@ -9,6 +9,8 @@ public class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        RemoteKSP.Shared.Localization.UiLanguage.Apply(RemoteKSP.Shared.Localization.UiLanguage.LoadPreference());
+
         // 旧版单服务端配置迁移为 server-001（只在第一次运行时生效）
         try { Core.ClientRegistry.MigrateLegacyConfig(); }
         catch { /* 迁移失败不影响启动，用户可以重新配对 */ }

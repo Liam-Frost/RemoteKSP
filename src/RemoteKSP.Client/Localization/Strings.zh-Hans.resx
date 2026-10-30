@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_EnterAddress" xml:space="preserve">
+    <value>请输入服务器地址</value>
+  </data>
+  <data name="Add_EnterPort" xml:space="preserve">
+    <value>请输入端口</value>
+  </data>
+  <data name="Add_InvalidAddress" xml:space="preserve">
+    <value>服务器地址格式无效</value>
+  </data>
+  <data name="Add_PortRange" xml:space="preserve">
+    <value>端口必须在 1 到 65535 之间</value>
+  </data>
+  <data name="Api_EmptyResponse" xml:space="preserve">
+    <value>服务端返回了空响应</value>
+  </data>
+  <data name="Api_Forbidden" xml:space="preserve">
+    <value>服务端未授权本客户端使用该证书</value>
+  </data>
+  <data name="Api_HttpsRequired" xml:space="preserve">
+    <value>服务端必须使用 HTTPS。</value>
+  </data>
+  <data name="Api_NoTlsThumbprint" xml:space="preserve">
+    <value>旧配对未记录 TLS 证书指纹，请移除服务端并重新配对。</value>
+  </data>
+  <data name="Api_NotFound" xml:space="preserve">
+    <value>服务端没有该证书</value>
+  </data>
+  <data name="Api_TlsMismatch" xml:space="preserve">
+    <value>服务端 TLS 证书（{0}）与配对时记录的不一致，可能遭到中间人攻击。确认服务端重装过后，请移除并重新配对该服务端。</value>
+  </data>
+  <data name="Api_Unauthorized" xml:space="preserve">
+    <value>服务端拒绝了请求：凭据可能已撤销、时钟相差超过 5 分钟、请求重复，或客户端与服务端协议版本不一致</value>
+  </data>
+  <data name="Bind_KeyNotLinked" xml:space="preserve">
+    <value>未关联</value>
+  </data>
+  <data name="Bind_KeyProvidedBy" xml:space="preserve">
+    <value>由 {0} 提供</value>
+  </data>
+  <data name="Bind_LinkFailed" xml:space="preserve">
+    <value>绑定私钥到 {0} 失败 (Win32 错误 {1})</value>
+  </data>
+  <data name="Bind_NotManaged" xml:space="preserve">
+    <value>{0}\My 中已有这张证书（私钥{1}），不是 Remote KSP 安装的，为避免破坏它已跳过。客户端和服务端装在同一台机器上时不需要同步这张证书</value>
+  </data>
+  <data name="Bind_WriteFailed" xml:space="preserve">
+    <value>证书写入 {0}\My 失败</value>
+  </data>
+  <data name="CState_Expired" xml:space="preserve">
+    <value>已过期</value>
+  </data>
+  <data name="CState_Missing" xml:space="preserve">
+    <value>本地缺失</value>
+  </data>
+  <data name="CState_Ok" xml:space="preserve">
+    <value>正常</value>
+  </data>
+  <data name="CState_ServerDisabled" xml:space="preserve">
+    <value>服务端已停用</value>
+  </data>
+  <data name="CState_ServerRemoved" xml:space="preserve">
+    <value>服务端已移除</value>
+  </data>
+  <data name="CState_Test" xml:space="preserve">
+    <value>测试证书</value>
+  </data>
+  <data name="Cert_DefaultName" xml:space="preserve">
+    <value>签名证书</value>
+  </data>
+  <data name="Certs_FailedWith" xml:space="preserve">
+    <value>失败：{0}</value>
+  </data>
+  <data name="Certs_NotPaired" xml:space="preserve">
+    <value>请先在「服务端管理」页配对服务端。</value>
+  </data>
+  <data name="Certs_NotPairedTitle" xml:space="preserve">
+    <value>尚未配对</value>
+  </data>
+  <data name="Certs_PartialSync" xml:space="preserve">
+    <value>{0} 台成功，{1} 台失败。失败的服务端已绑定的证书保持不变。</value>
+  </data>
+  <data name="Certs_PartialSyncTitle" xml:space="preserve">
+    <value>部分服务端同步失败</value>
+  </data>
+  <data name="Certs_RemovedParen" xml:space="preserve">
+    <value>(已移除)</value>
+  </data>
+  <data name="Certs_ServerRemovedParen" xml:space="preserve">
+    <value>(服务端已移除)</value>
+  </data>
+  <data name="Certs_Unbind" xml:space="preserve">
+    <value>解绑</value>
+  </data>
+  <data name="Certs_UnbindFailed" xml:space="preserve">
+    <value>解绑失败</value>
+  </data>
+  <data name="Certs_UnbindMessage" xml:space="preserve">
+    <value>确定要从本机解绑证书「{0}」吗？
+
+证书会从 LocalMachine\My 删除，应用无法再用它签名。服务端的证书不受影响，下次"更新证书"时会重新下载绑定。</value>
+  </data>
+  <data name="Certs_UnbindTitle" xml:space="preserve">
+    <value>解绑证书</value>
+  </data>
+  <data name="Common_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Common_Checking" xml:space="preserve">
+    <value>检查中…</value>
+  </data>
+  <data name="Common_ClientId" xml:space="preserve">
+    <value>客户端 ID</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="Common_ErrorMessage" xml:space="preserve">
+    <value>错误信息</value>
+  </data>
+  <data name="Common_InstallFailed" xml:space="preserve">
+    <value>安装失败</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Common_Server" xml:space="preserve">
+    <value>服务端</value>
+  </data>
+  <data name="Common_Thumbprint" xml:space="preserve">
+    <value>指纹</value>
+  </data>
+  <data name="Common_Uninstall" xml:space="preserve">
+    <value>卸载</value>
+  </data>
+  <data name="Common_UninstallFailed" xml:space="preserve">
+    <value>卸载失败</value>
+  </data>
+  <data name="Common_Version" xml:space="preserve">
+    <value>版本 {0}</value>
+  </data>
+  <data name="Diag_Done" xml:space="preserve">
+    <value>测试完成：{0} 通过，{1} 警告，{2} 失败</value>
+  </data>
+  <data name="Diag_Fail" xml:space="preserve">
+    <value>✗ 失败</value>
+  </data>
+  <data name="Diag_Failed" xml:space="preserve">
+    <value>测试失败: {0}</value>
+  </data>
+  <data name="Diag_Pass" xml:space="preserve">
+    <value>✓ 通过</value>
+  </data>
+  <data name="Diag_Skip" xml:space="preserve">
+    <value>○ 跳过</value>
+  </data>
+  <data name="Diag_SkippedPrereq" xml:space="preserve">
+    <value>前置测试失败，跳过</value>
+  </data>
+  <data name="Diag_Testing" xml:space="preserve">
+    <value>正在测试...</value>
+  </data>
+  <data name="Diag_Warn" xml:space="preserve">
+    <value>⚠ 警告</value>
+  </data>
+  <data name="Ksp_CheckFailed" xml:space="preserve">
+    <value>检查失败</value>
+  </data>
+  <data name="Ksp_CheckFailedDetail" xml:space="preserve">
+    <value>无法读取 KSP 安装状态</value>
+  </data>
+  <data name="Ksp_Installed" xml:space="preserve">
+    <value>已安装</value>
+  </data>
+  <data name="Ksp_InstalledDetail" xml:space="preserve">
+    <value>已注册到 Windows；签名是否可用请运行诊断</value>
+  </data>
+  <data name="Ksp_NeedsUpdate" xml:space="preserve">
+    <value>需要更新</value>
+  </data>
+  <data name="Ksp_NeedsUpdateDetail" xml:space="preserve">
+    <value>已安装的 KSP 与当前客户端版本不一致</value>
+  </data>
+  <data name="Ksp_NotInstalled" xml:space="preserve">
+    <value>未安装</value>
+  </data>
+  <data name="Ksp_NotInstalledDetail" xml:space="preserve">
+    <value>安装后 SignTool 等应用才能使用远程证书签名</value>
+  </data>
+  <data name="List_Separator" xml:space="preserve">
+    <value>、</value>
+  </data>
+  <data name="Nav_Certificates" xml:space="preserve">
+    <value>证书管理</value>
+  </data>
+  <data name="Nav_Diagnostics" xml:space="preserve">
+    <value>连接诊断</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>概览</value>
+  </data>
+  <data name="Nav_Servers" xml:space="preserve">
+    <value>服务端管理</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Ov_CertificateCount" xml:space="preserve">
+    <value>{0} 张</value>
+  </data>
+  <data name="Ov_CertsFrom" xml:space="preserve">
+    <value>来自 {0} 台服务端，已绑定到 Remote KSP</value>
+  </data>
+  <data name="Ov_GetCertificates" xml:space="preserve">
+    <value>获取证书</value>
+  </data>
+  <data name="Ov_InstallKsp" xml:space="preserve">
+    <value>安装 KSP</value>
+  </data>
+  <data name="Ov_ManageCertificates" xml:space="preserve">
+    <value>管理证书</value>
+  </data>
+  <data name="Ov_ManageServers" xml:space="preserve">
+    <value>管理服务端</value>
+  </data>
+  <data name="Ov_NetDetail" xml:space="preserve">
+    <value>这里列出本机网卡上的地址，用于排查与服务端的连接问题。
+
+经过 NAT、代理或 VPN 时，服务端看到的来源地址可能与这里不同。</value>
+  </data>
+  <data name="Ov_NetFootnote" xml:space="preserve">
+    <value>用于排查连接问题的本机地址</value>
+  </data>
+  <data name="Ov_NoCertificates" xml:space="preserve">
+    <value>尚无已绑定证书</value>
+  </data>
+  <data name="Ov_NoServers" xml:space="preserve">
+    <value>尚未配对服务端</value>
+  </data>
+  <data name="Ov_NoServersDetail" xml:space="preserve">
+    <value>配对后才能同步服务端授权的证书</value>
+  </data>
+  <data name="Ov_PairFirst" xml:space="preserve">
+    <value>先配对服务端，再同步证书</value>
+  </data>
+  <data name="Ov_PairFirstMessage" xml:space="preserve">
+    <value>请先在「服务端管理」页面配对至少一台服务端，然后再运行诊断。</value>
+  </data>
+  <data name="Ov_PairFirstTitle" xml:space="preserve">
+    <value>需要先配对服务端</value>
+  </data>
+  <data name="Ov_PairServer" xml:space="preserve">
+    <value>配对服务端</value>
+  </data>
+  <data name="Ov_ServerCount" xml:space="preserve">
+    <value>{0} 台</value>
+  </data>
+  <data name="Ov_SyncInCertificates" xml:space="preserve">
+    <value>在证书管理中同步服务端授权的证书</value>
+  </data>
+  <data name="Ov_UninstallMessage" xml:space="preserve">
+    <value>确定要卸载 Remote KSP 吗？
+
+卸载后将无法使用远程签名功能。</value>
+  </data>
+  <data name="Ov_UninstallTitle" xml:space="preserve">
+    <value>确认卸载</value>
+  </data>
+  <data name="Ov_UpdateKsp" xml:space="preserve">
+    <value>更新 KSP</value>
+  </data>
+  <data name="Pair_Connecting" xml:space="preserve">
+    <value>正在连接服务端...</value>
+  </data>
+  <data name="Pair_Expired" xml:space="preserve">
+    <value>配对请求已过期或凭据已领取，请重新发起配对。</value>
+  </data>
+  <data name="Pair_Failed" xml:space="preserve">
+    <value>无法完成配对。</value>
+  </data>
+  <data name="Pair_FailedTitle" xml:space="preserve">
+    <value>配对失败</value>
+  </data>
+  <data name="Pair_FailedWith" xml:space="preserve">
+    <value>配对失败: {0}</value>
+  </data>
+  <data name="Pair_HttpsRequired" xml:space="preserve">
+    <value>配对必须使用 HTTPS。</value>
+  </data>
+  <data name="Pair_NoTlsThumbprint" xml:space="preserve">
+    <value>未取得服务端 TLS 证书</value>
+  </data>
+  <data name="Pair_Succeeded" xml:space="preserve">
+    <value>配对成功</value>
+  </data>
+  <data name="Pair_SucceededFetching" xml:space="preserve">
+    <value>配对成功，正在获取证书...</value>
+  </data>
+  <data name="Pair_TimedOut" xml:space="preserve">
+    <value>配对超时</value>
+  </data>
+  <data name="Pair_TimedOutMessage" xml:space="preserve">
+    <value>服务端未在规定时间内批准配对请求，请重试。</value>
+  </data>
+  <data name="Pair_WaitingAdmin" xml:space="preserve">
+    <value>等待服务端管理员批准...</value>
+  </data>
+  <data name="Pair_WaitingApproval" xml:space="preserve">
+    <value>等待服务端批准...</value>
+  </data>
+  <data name="Reg_ServerNotFound" xml:space="preserve">
+    <value>服务端不存在</value>
+  </data>
+  <data name="Reg_WriteFailed" xml:space="preserve">
+    <value>无法写入注册表（需要管理员权限）</value>
+  </data>
+  <data name="Srv_AddTitle" xml:space="preserve">
+    <value>添加服务端</value>
+  </data>
+  <data name="Srv_Address" xml:space="preserve">
+    <value>服务端地址</value>
+  </data>
+  <data name="Srv_CertCount" xml:space="preserve">
+    <value>{0} 张</value>
+  </data>
+  <data name="Srv_MissingInfo" xml:space="preserve">
+    <value>请输入服务端地址和端口。</value>
+  </data>
+  <data name="Srv_MissingInfoTitle" xml:space="preserve">
+    <value>缺少服务端信息</value>
+  </data>
+  <data name="Srv_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Srv_NameHint" xml:space="preserve">
+    <value>仅用于在本机区分服务端</value>
+  </data>
+  <data name="Srv_NameRequired" xml:space="preserve">
+    <value>名称不能为空</value>
+  </data>
+  <data name="Srv_Remove" xml:space="preserve">
+    <value>移除</value>
+  </data>
+  <data name="Srv_RemoveFailed" xml:space="preserve">
+    <value>移除失败</value>
+  </data>
+  <data name="Srv_RemoveMessage" xml:space="preserve">
+    <value>确定要移除服务端「{0}」吗？
+
+本机会删除该服务端的配对凭据，并解绑它提供的 {1} 张证书。之后需要重新配对才能使用。</value>
+  </data>
+  <data name="Srv_RemoveTitle" xml:space="preserve">
+    <value>移除服务端</value>
+  </data>
+  <data name="Srv_RemovedLocally" xml:space="preserve">
+    <value>已移除服务端「{0}」并解绑 {1} 张证书。
+
+但未能通知到服务端（可能离线），服务端的「已配对客户端」中仍会保留本机，需要服务端管理员手动撤销。</value>
+  </data>
+  <data name="Srv_RemovedLocallyTitle" xml:space="preserve">
+    <value>已在本机移除</value>
+  </data>
+  <data name="Srv_RenameTitle" xml:space="preserve">
+    <value>重命名服务端</value>
+  </data>
+  <data name="Srv_StartPairing" xml:space="preserve">
+    <value>开始配对</value>
+  </data>
+  <data name="Srv_TlsNotRecorded" xml:space="preserve">
+    <value>未记录（旧版配对）</value>
+  </data>
+  <data name="St_CannotStart" xml:space="preserve">
+    <value>无法启动 SignTool：{0}</value>
+  </data>
+  <data name="St_CertMissing" xml:space="preserve">
+    <value>证书未安装在本机，无法生成签名命令。请先在「证书管理」更新证书。</value>
+  </data>
+  <data name="St_CertMissingPreview" xml:space="preserve">
+    <value># 证书缺失</value>
+  </data>
+  <data name="St_CertNotInStore" xml:space="preserve">
+    <value>（本机证书存储中未找到）</value>
+  </data>
+  <data name="St_ControlChars" xml:space="preserve">
+    <value>{0}包含换行或控制字符</value>
+  </data>
+  <data name="St_Copied" xml:space="preserve">
+    <value>SignTool 签名命令已复制到剪贴板，可在 CMD 终端中执行。</value>
+  </data>
+  <data name="St_CopiedTitle" xml:space="preserve">
+    <value>命令已复制</value>
+  </data>
+  <data name="St_CopyCommand" xml:space="preserve">
+    <value>复制命令</value>
+  </data>
+  <data name="St_CopyFailed" xml:space="preserve">
+    <value>复制失败：无法写入剪贴板（{0}）</value>
+  </data>
+  <data name="St_DialogTitle" xml:space="preserve">
+    <value>生成 SignTool 签名命令</value>
+  </data>
+  <data name="St_Failed" xml:space="preserve">
+    <value>签名失败，SignTool 退出码 {0}</value>
+  </data>
+  <data name="St_FailedTestCert" xml:space="preserve">
+    <value>。这是测试证书，服务端会拒绝签名请求，请改用正式证书</value>
+  </data>
+  <data name="St_FixFieldsPreview" xml:space="preserve">
+    <value>（请先修正上方标红的字段）</value>
+  </data>
+  <data name="St_Found" xml:space="preserve">
+    <value>找到 {0} 个 SignTool</value>
+  </data>
+  <data name="St_NoToolAtPath" xml:space="preserve">
+    <value>该路径下没有 signtool.exe，请检查路径</value>
+  </data>
+  <data name="St_NoToolUseOther" xml:space="preserve">
+    <value>未找到 SignTool，请改用自定义路径或 PATH 命令</value>
+  </data>
+  <data name="St_NonAsciiNote" xml:space="preserve">
+    <value>
+
+（说明：SignTool 输出中，路径里的非 ASCII 字符会显示为空格，以退出码为准）</value>
+  </data>
+  <data name="St_NotFound" xml:space="preserve">
+    <value>未找到 SignTool。请安装 Windows SDK，或改用自定义路径 / PATH 命令。</value>
+  </data>
+  <data name="St_NotOnPath" xml:space="preserve">
+    <value>当前程序的 PATH 中没有 signtool.exe，请在已配置 SignTool 的终端（如 Developer Command Prompt）中执行</value>
+  </data>
+  <data name="St_PickTargetPreview" xml:space="preserve">
+    <value>（选择待签名文件后显示完整命令）</value>
+  </data>
+  <data name="St_Run" xml:space="preserve">
+    <value>执行签名</value>
+  </data>
+  <data name="St_RunNoTarget" xml:space="preserve">
+    <value>无法执行：本机找不到待签名文件。命令仍可复制到文件所在的机器上执行。</value>
+  </data>
+  <data name="St_RunNotOnPath" xml:space="preserve">
+    <value>无法执行：本程序的 PATH 中没有 signtool.exe。请改用「自动检测」或「自定义路径」，或复制命令到已配置 SignTool 的终端执行。</value>
+  </data>
+  <data name="St_SearchFailed" xml:space="preserve">
+    <value>查找 SignTool 失败：{0}</value>
+  </data>
+  <data name="St_Searching" xml:space="preserve">
+    <value>正在查找 SignTool…</value>
+  </data>
+  <data name="St_SelectTarget" xml:space="preserve">
+    <value>请选择或填写待签名文件</value>
+  </data>
+  <data name="St_SelectTool" xml:space="preserve">
+    <value>请选择或填写 signtool.exe 路径</value>
+  </data>
+  <data name="St_Signing" xml:space="preserve">
+    <value>正在签名…（需要连接签名服务端）</value>
+  </data>
+  <data name="St_SigningWithTimestamp" xml:space="preserve">
+    <value>正在签名…（需要连接签名服务端和时间戳服务器，可能需要一些时间）</value>
+  </data>
+  <data name="St_StoreLabel" xml:space="preserve">
+    <value>证书存储名称</value>
+  </data>
+  <data name="St_StoreLocalMachine" xml:space="preserve">
+    <value>LocalMachine\My（命令使用 /sm）</value>
+  </data>
+  <data name="St_StoreNotFound" xml:space="preserve">
+    <value>本机证书存储中未找到</value>
+  </data>
+  <data name="St_Succeeded" xml:space="preserve">
+    <value>签名成功，用时 {0} 秒</value>
+  </data>
+  <data name="St_TargetFilter" xml:space="preserve">
+    <value>可执行文件|*.exe;*.dll;*.sys;*.ocx;*.msi;*.msix;*.appx;*.appxbundle|所有文件|*.*</value>
+  </data>
+  <data name="St_TargetFullPath" xml:space="preserve">
+    <value>请填写完整路径，例如 C:\Build\MyApp.exe</value>
+  </data>
+  <data name="St_TargetLabel" xml:space="preserve">
+    <value>待签名文件路径</value>
+  </data>
+  <data name="St_TargetMissing" xml:space="preserve">
+    <value>本机找不到该文件。命令仍可复制，供其他机器或后续构建使用</value>
+  </data>
+  <data name="St_TargetPickTitle" xml:space="preserve">
+    <value>选择待签名文件</value>
+  </data>
+  <data name="St_ThumbprintFormat" xml:space="preserve">
+    <value>证书指纹必须是 40 位十六进制字符</value>
+  </data>
+  <data name="St_TimedOut" xml:space="preserve">
+    <value>执行超时（{0} 分钟），已结束 SignTool 进程</value>
+  </data>
+  <data name="St_TimestampFormat" xml:space="preserve">
+    <value>时间戳服务器必须是 http:// 或 https:// 开头的完整 URL</value>
+  </data>
+  <data name="St_TimestampLabel" xml:space="preserve">
+    <value>时间戳 URL</value>
+  </data>
+  <data name="St_ToolFilter" xml:space="preserve">
+    <value>SignTool 可执行文件|signtool.exe|所有文件|*.*</value>
+  </data>
+  <data name="St_ToolFullPath" xml:space="preserve">
+    <value>请填写 signtool.exe 的完整路径</value>
+  </data>
+  <data name="St_ToolGone" xml:space="preserve">
+    <value>之前选择的 SignTool 已不存在，请重新选择</value>
+  </data>
+  <data name="St_ToolPathLabel" xml:space="preserve">
+    <value>SignTool 路径</value>
+  </data>
+  <data name="St_ToolPickTitle" xml:space="preserve">
+    <value>选择 SignTool.exe</value>
+  </data>
+  <data name="St_TrailingBackslash" xml:space="preserve">
+    <value>{0}不能以反斜杠结尾</value>
+  </data>
+  <data name="St_UnsafeChar" xml:space="preserve">
+    <value>{0}包含字符「{1}」，在 CMD 命令中无法安全转义，请改用不含该字符的路径</value>
+  </data>
+  <data name="Status_CertError" xml:space="preserve">
+    <value>证书错误</value>
+  </data>
+  <data name="Status_Connected" xml:space="preserve">
+    <value>已连接</value>
+  </data>
+  <data name="Status_Offline" xml:space="preserve">
+    <value>离线</value>
+  </data>
+  <data name="Status_Unauthorized" xml:space="preserve">
+    <value>未授权</value>
+  </data>
+  <data name="Status_Unknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="Sync_AccessDenied" xml:space="preserve">
+    <value>访问被拒绝</value>
+  </data>
+  <data name="Sync_AccessDeniedDetail" xml:space="preserve">
+    <value>此客户端没有获取证书的权限。</value>
+  </data>
+  <data name="Sync_AlreadyLocal" xml:space="preserve">
+    <value>{0}（本机已有同一张证书）</value>
+  </data>
+  <data name="Sync_AuthFailed" xml:space="preserve">
+    <value>认证失败</value>
+  </data>
+  <data name="Sync_AuthFailedDetail" xml:space="preserve">
+    <value>配对信息可能已过期，请尝试重新配对服务端。</value>
+  </data>
+  <data name="Sync_CannotConnect" xml:space="preserve">
+    <value>无法连接到服务器</value>
+  </data>
+  <data name="Sync_CannotConnectDetail" xml:space="preserve">
+    <value>请检查服务器地址是否正确，以及服务器是否正在运行。</value>
+  </data>
+  <data name="Sync_CertThumbprint" xml:space="preserve">
+    <value>证书指纹</value>
+  </data>
+  <data name="Sync_ConflictMessage" xml:space="preserve">
+    <value>证书「{0}」已经绑定到服务端「{1}」。
+
+同一张证书只能由一台服务端签名。要改为使用「{2}」吗？选择取消则保留原绑定。</value>
+  </data>
+  <data name="Sync_ConflictTitle" xml:space="preserve">
+    <value>证书已被其他服务端绑定</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Sync_Explanation" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="Sync_Failed" xml:space="preserve">
+    <value>同步失败</value>
+  </data>
+  <data name="Sync_FailedMessage" xml:space="preserve">
+    <value>无法从服务端「{0}」同步证书。</value>
+  </data>
+  <data name="Sync_FailedTitle" xml:space="preserve">
+    <value>证书同步失败</value>
+  </data>
+  <data name="Sync_HttpStatus" xml:space="preserve">
+    <value>HTTP 状态</value>
+  </data>
+  <data name="Sync_KeySourceNotReady" xml:space="preserve">
+    <value>签名密钥源尚未就绪</value>
+  </data>
+  <data name="Sync_KeySourceNotReadyDetail" xml:space="preserve">
+    <value>服务端的签名密钥尚未配置或加载。请在服务端配置密钥源（证书存储、eToken 或 PFX 文件）。</value>
+  </data>
+  <data name="Sync_RejectedMessage" xml:space="preserve">
+    <value>服务端「{0}」拒绝了请求，证书没有更新。可能的原因：
+
+• 服务端管理员撤销了本客户端的配对
+• 本机和服务端的时钟相差超过 5 分钟
+• 服务端的配对记录丢失或损坏（管理员恢复后原配对可以继续使用）
+
+如果确认已被撤销，可以移除该服务端：本机会删除它的配对凭据，并解绑它提供的 {1} 张证书，之后需要重新配对。否则请先检查时钟或联系服务端管理员，保留配对。</value>
+  </data>
+  <data name="Sync_RejectedTitle" xml:space="preserve">
+    <value>服务端拒绝了本客户端的凭据</value>
+  </data>
+  <data name="Sync_ServerError" xml:space="preserve">
+    <value>服务器错误</value>
+  </data>
+  <data name="Sync_ServerErrorDetail" xml:space="preserve">
+    <value>服务端处理请求时发生错误，请查看服务端日志。</value>
+  </data>
+  <data name="Sync_ServerRemoved" xml:space="preserve">
+    <value>已移除服务端「{0}」，解绑了 {1} 张证书。如需继续使用，请重新配对。</value>
+  </data>
+  <data name="Sync_ServerRemovedTitle" xml:space="preserve">
+    <value>已移除服务端</value>
+  </data>
+  <data name="Sync_ServerReturned" xml:space="preserve">
+    <value>服务端返回</value>
+  </data>
+  <data name="Sync_Skipped" xml:space="preserve">
+    <value>，跳过 {0}（{1}）</value>
+  </data>
+  <data name="Sync_Summary" xml:space="preserve">
+    <value>新增 {0}，更新 {1}，解绑 {2}</value>
+  </data>
+  <data name="Sync_SwitchServer" xml:space="preserve">
+    <value>改用新服务端</value>
+  </data>
+  <data name="Sync_TechnicalDetail" xml:space="preserve">
+    <value>技术详情</value>
+  </data>
+  <data name="Test_CannotConnect" xml:space="preserve">
+    <value>无法连接: {0}</value>
+  </data>
+  <data name="Test_CertGone" xml:space="preserve">
+    <value>服务端已没有这张证书，请点击"更新证书"同步</value>
+  </data>
+  <data name="Test_Connectivity" xml:space="preserve">
+    <value>连通性 (HTTPS /info)</value>
+  </data>
+  <data name="Test_CredentialsRejected" xml:space="preserve">
+    <value>凭据被拒绝：可能已被服务端撤销，或两台机器时钟相差超过 5 分钟</value>
+  </data>
+  <data name="Test_CredentialsValid" xml:space="preserve">
+    <value>凭据有效</value>
+  </data>
+  <data name="Test_DisabledLocked" xml:space="preserve">
+    <value>服务端已停用这张证书：eToken 已锁定（PIN 重试次数已用完），请联系服务端管理员</value>
+  </data>
+  <data name="Test_DisabledWrongPin" xml:space="preserve">
+    <value>服务端已停用这张证书：服务端保存的 PIN 错误，请联系服务端管理员</value>
+  </data>
+  <data name="Test_Hmac" xml:space="preserve">
+    <value>HMAC 认证 (/auth/check)</value>
+  </data>
+  <data name="Test_KspSigned" xml:space="preserve">
+    <value>通过 Remote KSP 签名成功</value>
+  </data>
+  <data name="Test_LegacyServer" xml:space="preserve">
+    <value>旧版服务端（单证书）</value>
+  </data>
+  <data name="Test_LocalKsp" xml:space="preserve">
+    <value>本地 KSP (Native)</value>
+  </data>
+  <data name="Test_MultiCert" xml:space="preserve">
+    <value>支持多证书</value>
+  </data>
+  <data name="Test_NoCertificate" xml:space="preserve">
+    <value>未选择证书</value>
+  </data>
+  <data name="Test_NoKeyBound" xml:space="preserve">
+    <value>证书未绑定私钥</value>
+  </data>
+  <data name="Test_NotAllowed" xml:space="preserve">
+    <value>服务端未授权本客户端使用这张证书，请点击"更新证书"同步</value>
+  </data>
+  <data name="Test_NotInStore" xml:space="preserve">
+    <value>LocalMachine\My 中没有这张证书，请点击"更新证书"</value>
+  </data>
+  <data name="Test_NotReady" xml:space="preserve">
+    <value>设备未就绪（服务端 PIN 未验证、eToken 未插入或证书不可用）</value>
+  </data>
+  <data name="Test_RemoteSign" xml:space="preserve">
+    <value>远程签名 (/sign)</value>
+  </data>
+  <data name="Test_ServerRefused" xml:space="preserve">
+    <value>服务端拒绝：凭据无效或未授权使用这张证书</value>
+  </data>
+  <data name="Test_ServerSignFailed" xml:space="preserve">
+    <value>服务端签名失败: {0}</value>
+  </data>
+  <data name="Test_ServiceVersion" xml:space="preserve">
+    <value>服务版本 {0}，{1}</value>
+  </data>
+  <data name="Test_SignedNotInstalled" xml:space="preserve">
+    <value>签名成功，但本地未安装证书，无法验证</value>
+  </data>
+  <data name="Test_SignedVerified" xml:space="preserve">
+    <value>签名成功并验证通过</value>
+  </data>
+  <data name="Test_TestCertNoSign" xml:space="preserve">
+    <value>这是测试证书，服务端未执行真实签名（链路正常）</value>
+  </data>
+  <data name="Test_TestCertNotReady" xml:space="preserve">
+    <value>测试证书：Native KSP 返回设备未就绪（链路正常）</value>
+  </data>
+  <data name="Test_VerifyFailed" xml:space="preserve">
+    <value>签名验证失败</value>
+  </data>
+  <data name="Test_VerifyFailedMismatch" xml:space="preserve">
+    <value>签名验证失败（证书或密钥不匹配）</value>
+  </data>
+  <data name="X_AddressPlaceholder" xml:space="preserve">
+    <value>例如: 192.168.1.100</value>
+  </data>
+  <data name="X_AutoDetect" xml:space="preserve">
+    <value>自动检测（推荐）</value>
+  </data>
+  <data name="X_BoundCertificates" xml:space="preserve">
+    <value>已绑定证书</value>
+  </data>
+  <data name="X_Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="X_BrowseFile" xml:space="preserve">
+    <value>浏览文件</value>
+  </data>
+  <data name="X_Certificate" xml:space="preserve">
+    <value>证书</value>
+  </data>
+  <data name="X_CertificateCount" xml:space="preserve">
+    <value>证书数</value>
+  </data>
+  <data name="X_CheckCode" xml:space="preserve">
+    <value>请核对服务端「配对请求」页显示的验证码是否一致</value>
+  </data>
+  <data name="X_CommandPreview" xml:space="preserve">
+    <value>命令预览</value>
+  </data>
+  <data name="X_CommandPreviewCmd" xml:space="preserve">
+    <value>命令预览（Windows CMD）</value>
+  </data>
+  <data name="X_CustomPath" xml:space="preserve">
+    <value>自定义路径</value>
+  </data>
+  <data name="X_DiagHint" xml:space="preserve">
+    <value>选择服务端和证书，点击「运行测试」开始诊断</value>
+  </data>
+  <data name="X_DiagHint2" xml:space="preserve">
+    <value>测试将验证 HTTPS 连接、HMAC 认证、签名功能和本地 KSP 状态</value>
+  </data>
+  <data name="X_DigestSha256" xml:space="preserve">
+    <value>文件摘要算法：SHA256（/fd SHA256）</value>
+  </data>
+  <data name="X_DisabledReason" xml:space="preserve">
+    <value>停用原因</value>
+  </data>
+  <data name="X_FileToSign" xml:space="preserve">
+    <value>待签名文件</value>
+  </data>
+  <data name="X_GenerateCommand" xml:space="preserve">
+    <value>生成签名命令</value>
+  </data>
+  <data name="X_Issuer" xml:space="preserve">
+    <value>签发者</value>
+  </data>
+  <data name="X_LocalNetwork" xml:space="preserve">
+    <value>本机网络</value>
+  </data>
+  <data name="X_NoCertificates" xml:space="preserve">
+    <value>暂无绑定证书</value>
+  </data>
+  <data name="X_NoCertificatesHint" xml:space="preserve">
+    <value>配对服务端后点击「更新证书」，即可获取服务端授权的签名证书</value>
+  </data>
+  <data name="X_NoServers" xml:space="preserve">
+    <value>尚未配对任何服务端</value>
+  </data>
+  <data name="X_NoServersHint" xml:space="preserve">
+    <value>点击「添加服务端」开始配对，一台客户机可以同时连接多台服务端</value>
+  </data>
+  <data name="X_PairedServers" xml:space="preserve">
+    <value>已配对服务端</value>
+  </data>
+  <data name="X_Pairing" xml:space="preserve">
+    <value>正在配对</value>
+  </data>
+  <data name="X_PathNote" xml:space="preserve">
+    <value>生成的命令以 signtool 开头，由执行环境（如 Developer Command Prompt）的 PATH 解析。</value>
+  </data>
+  <data name="X_Port" xml:space="preserve">
+    <value>端口</value>
+  </data>
+  <data name="X_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="X_Rename" xml:space="preserve">
+    <value>重命名</value>
+  </data>
+  <data name="X_RunDiagnostics" xml:space="preserve">
+    <value>运行诊断</value>
+  </data>
+  <data name="X_RunTests" xml:space="preserve">
+    <value>运行测试</value>
+  </data>
+  <data name="X_ServerAddress" xml:space="preserve">
+    <value>服务器地址</value>
+  </data>
+  <data name="X_ServerNameOptional" xml:space="preserve">
+    <value>服务端名称（可选）</value>
+  </data>
+  <data name="X_ServerNamePlaceholder" xml:space="preserve">
+    <value>例如: 公司签名服务器</value>
+  </data>
+  <data name="X_SignToolOutput" xml:space="preserve">
+    <value>SignTool 输出</value>
+  </data>
+  <data name="X_SigningCertificate" xml:space="preserve">
+    <value>签名证书</value>
+  </data>
+  <data name="X_SigningOptions" xml:space="preserve">
+    <value>签名选项</value>
+  </data>
+  <data name="X_SingleFileNote" xml:space="preserve">
+    <value>仅支持单个文件。文件类型需由 SignTool 支持（如 .exe、.dll、.sys、.msi、.msix、.cab、.cat）。</value>
+  </data>
+  <data name="X_SomeDisabled" xml:space="preserve">
+    <value>服务端已停用部分证书，使用这些证书签名会失败</value>
+  </data>
+  <data name="X_StIntro" xml:space="preserve">
+    <value>配置签名工具和目标文件，生成适用于当前证书的 SignTool 命令。命令供 Windows CMD 终端执行，不直接运行签名。</value>
+  </data>
+  <data name="X_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="X_StoreLocation" xml:space="preserve">
+    <value>存储位置</value>
+  </data>
+  <data name="X_Subject" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="X_Syncing" xml:space="preserve">
+    <value>正在同步证书</value>
+  </data>
+  <data name="X_SyncingMessage" xml:space="preserve">
+    <value>正在从已配对服务端获取最新证书……</value>
+  </data>
+  <data name="X_TargetPlaceholder" xml:space="preserve">
+    <value>例如: C:\Build\Release\MyApp.exe</value>
+  </data>
+  <data name="X_Test" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="X_TestCertWarning" xml:space="preserve">
+    <value>这是测试证书：只能验证配对和证书下发，服务端会拒绝签名请求，执行签名会失败。</value>
+  </data>
+  <data name="X_Testing" xml:space="preserve">
+    <value>正在测试</value>
+  </data>
+  <data name="X_ToolPathPlaceholder" xml:space="preserve">
+    <value>例如: C:\Program Files (x86)\Windows Kits\10\bin\...\signtool.exe</value>
+  </data>
+  <data name="X_UpdateAll" xml:space="preserve">
+    <value>更新全部证书</value>
+  </data>
+  <data name="X_UpdateCertificates" xml:space="preserve">
+    <value>更新证书</value>
+  </data>
+  <data name="X_UsePath" xml:space="preserve">
+    <value>使用 PATH 命令</value>
+  </data>
+  <data name="X_UseTimestamp" xml:space="preserve">
+    <value>使用 RFC 3161 时间戳（/tr … /td SHA256）</value>
+  </data>
+  <data name="X_ValidUntil" xml:space="preserve">
+    <value>有效期至</value>
+  </data>
+  <data name="X_Validity" xml:space="preserve">
+    <value>有效期</value>
+  </data>
+  <data name="X_Verbose" xml:space="preserve">
+    <value>输出详细日志（/v）</value>
+  </data>
+  <data name="X_VerificationCode" xml:space="preserve">
+    <value>验证码</value>
+  </data>
+</root>

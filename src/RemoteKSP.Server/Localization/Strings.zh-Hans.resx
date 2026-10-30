@@ -1,0 +1,1432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add_ContainersFound" xml:space="preserve">
+    <value>检测到 {0} 个密钥容器</value>
+  </data>
+  <data name="Add_DetectFailed" xml:space="preserve">
+    <value>检测失败：{0}</value>
+  </data>
+  <data name="Add_Detecting" xml:space="preserve">
+    <value>正在检测...</value>
+  </data>
+  <data name="Add_GenerateFailed" xml:space="preserve">
+    <value>生成失败：{0}</value>
+  </data>
+  <data name="Add_NeedCertificate" xml:space="preserve">
+    <value>请选择一张证书</value>
+  </data>
+  <data name="Add_NeedContainerAndThumbprint" xml:space="preserve">
+    <value>请填写密钥容器名和证书指纹</value>
+  </data>
+  <data name="Add_NeedPfx" xml:space="preserve">
+    <value>请选择 PFX 文件</value>
+  </data>
+  <data name="Add_NoEToken" xml:space="preserve">
+    <value>未检测到 eToken（未插入或驱动未安装）</value>
+  </data>
+  <data name="Add_NoResult" xml:space="preserve">
+    <value>服务未返回结果</value>
+  </data>
+  <data name="Add_PfxCopied" xml:space="preserve">
+    <value>添加时服务会把文件复制到数据目录，之后移动或删除原文件不影响签名</value>
+  </data>
+  <data name="Add_PfxFilter" xml:space="preserve">
+    <value>PFX 文件|*.pfx;*.p12|所有文件|*.*</value>
+  </data>
+  <data name="Add_PfxGenerated" xml:space="preserve">
+    <value>已生成自签名 PFX，指纹 {0}，密码已自动填入</value>
+  </data>
+  <data name="Add_PfxPickTitle" xml:space="preserve">
+    <value>选择 PFX 文件</value>
+  </data>
+  <data name="Add_ReadingStore" xml:space="preserve">
+    <value>正在读取证书存储...</value>
+  </data>
+  <data name="Add_StoreEmpty" xml:space="preserve">
+    <value>{0}\My 中没有带私钥的证书</value>
+  </data>
+  <data name="Alert_LogDisabled" xml:space="preserve">
+    <value>证书「{0}」已停用：{1}</value>
+  </data>
+  <data name="Alert_LogDisabledDetail" xml:space="preserve">
+    <value>已删除保存的 PIN，后续签名请求直接拒绝、不再访问 eToken。{0}</value>
+  </data>
+  <data name="Alert_Message" xml:space="preserve">
+    <value>这条消息来自本机的 RemoteKSP 远程签名服务（Windows 服务名：RemoteKSP）。它使用插在本机上的 eToken，为其他电脑提供代码签名。
+
+问题：{0}
+证书：{1}
+指纹：{2}
+时间：{3}
+
+为避免耗尽 eToken 的 PIN 重试次数，RemoteKSP 已停用这张证书并删除保存的 PIN，不会再用它访问 eToken。处理之前，其他电脑通过 RemoteKSP 签名都会失败。
+
+处理方法：
+{4}
+
+如果您不负责 RemoteKSP，请把这条消息转给负责代码签名的同事。</value>
+  </data>
+  <data name="Alert_Open" xml:space="preserve">
+    <value>以管理员身份打开「RemoteKSP 服务端」程序</value>
+  </data>
+  <data name="Alert_OpenPath" xml:space="preserve">
+    <value>以管理员身份打开「RemoteKSP 服务端」程序：
+    {0}</value>
+  </data>
+  <data name="Alert_ProblemLocked" xml:space="preserve">
+    <value>eToken 已锁定（PIN 重试次数已用完）</value>
+  </data>
+  <data name="Alert_ProblemUnrecognized" xml:space="preserve">
+    <value>eToken 插着，但签名返回了无法识别的错误（可能是 PIN 错误）</value>
+  </data>
+  <data name="Alert_ProblemWrong" xml:space="preserve">
+    <value>RemoteKSP 保存的 eToken PIN 错误（可能有人修改过 eToken 的 PIN）</value>
+  </data>
+  <data name="Alert_StepsLocked" xml:space="preserve">
+    <value>1. 用 SafeNet Authentication Client 解锁这个 eToken
+2. {0}
+3. 进入「证书管理」，选中这张证书，点击「验证 PIN」，输入正确的 PIN</value>
+  </data>
+  <data name="Alert_StepsUnrecognized" xml:space="preserve">
+    <value>1. 用 SafeNet Authentication Client 确认这个 eToken 能正常登录
+2. {0}，在「活动日志」里查看原始错误
+3. 进入「证书管理」，选中这张证书，点击「验证 PIN」，输入正确的 PIN</value>
+  </data>
+  <data name="Alert_StepsWrong" xml:space="preserve">
+    <value>1. {0}
+2. 进入「证书管理」，选中这张证书，点击「验证 PIN」，输入正确的 PIN</value>
+  </data>
+  <data name="Alert_Title" xml:space="preserve">
+    <value>RemoteKSP 远程签名服务：eToken 证书已停用</value>
+  </data>
+  <data name="Api_CertDisabled" xml:space="preserve">
+    <value>服务端证书「{0}」已停用：{1}。请联系服务端管理员处理。</value>
+  </data>
+  <data name="Api_CertNotAllowed" xml:space="preserve">
+    <value>服务端未授权该客户端使用这张证书</value>
+  </data>
+  <data name="Api_CertUnknown" xml:space="preserve">
+    <value>服务端没有这张证书，请在客户端点击"更新证书"</value>
+  </data>
+  <data name="Api_ClientUnpaired" xml:space="preserve">
+    <value>客户端「{0}」主动解除配对</value>
+  </data>
+  <data name="Api_ContactAdmin" xml:space="preserve">
+    <value>{0}，请联系服务端管理员</value>
+  </data>
+  <data name="Api_HashLengthMismatch" xml:space="preserve">
+    <value>哈希长度与算法 {0} 不匹配</value>
+  </data>
+  <data name="Api_OriginalError" xml:space="preserve">
+    <value>（原始错误 0x{0}: {1}）</value>
+  </data>
+  <data name="Api_SignFailed" xml:space="preserve">
+    <value>{0} 签名失败</value>
+  </data>
+  <data name="Api_SignRefusedDisabled" xml:space="preserve">
+    <value>{0} 签名被拒绝：证书已停用</value>
+  </data>
+  <data name="Api_Signed" xml:space="preserve">
+    <value>{0} 使用证书签名</value>
+  </data>
+  <data name="Api_TestCertAttempt" xml:space="preserve">
+    <value>{0} 尝试用测试证书签名</value>
+  </data>
+  <data name="Cert_AlreadyRegistered" xml:space="preserve">
+    <value>该证书已登记为「{0}」</value>
+  </data>
+  <data name="Cert_DefaultName_EToken" xml:space="preserve">
+    <value>eToken 签名证书</value>
+  </data>
+  <data name="Cert_DefaultName_Migrated" xml:space="preserve">
+    <value>迁移的签名证书</value>
+  </data>
+  <data name="Cert_DefaultName_Pfx" xml:space="preserve">
+    <value>测试 PFX 证书</value>
+  </data>
+  <data name="Cert_DefaultName_Store" xml:space="preserve">
+    <value>证书存储签名证书</value>
+  </data>
+  <data name="Cert_DefaultName_Test" xml:space="preserve">
+    <value>测试证书</value>
+  </data>
+  <data name="Cert_NotFound" xml:space="preserve">
+    <value>证书不存在</value>
+  </data>
+  <data name="Cert_RegistryCorrupt" xml:space="preserve">
+    <value>certificates.json 无法解析（{0}），{1}，当前证书列表为空</value>
+  </data>
+  <data name="Certs_AddTitle" xml:space="preserve">
+    <value>添加证书</value>
+  </data>
+  <data name="Certs_DeleteMessage" xml:space="preserve">
+    <value>确定要从服务端删除这张证书吗？
+
+删除后客户端将无法再用它签名，下次更新证书时会自动解绑。证书本身（eToken、证书存储中的原件）不会被删除。</value>
+  </data>
+  <data name="Certs_DeleteTitle" xml:space="preserve">
+    <value>删除证书</value>
+  </data>
+  <data name="Certs_EditTitle" xml:space="preserve">
+    <value>编辑证书</value>
+  </data>
+  <data name="Certs_Empty" xml:space="preserve">
+    <value>暂无证书</value>
+  </data>
+  <data name="Certs_EnterPin" xml:space="preserve">
+    <value>请输入 PIN</value>
+  </data>
+  <data name="Certs_NameRequired" xml:space="preserve">
+    <value>名称不能为空</value>
+  </data>
+  <data name="Certs_PartlyUnavailable" xml:space="preserve">
+    <value>已重新加载 {0} 个证书，{1} 个仍不可用。</value>
+  </data>
+  <data name="Certs_PartlyUnavailableTitle" xml:space="preserve">
+    <value>部分证书仍不可用</value>
+  </data>
+  <data name="Certs_PinPrompt" xml:space="preserve">
+    <value>输入证书「{0}」所在 eToken 的 PIN。连续失败 {1} 次后需等待 {2} 分钟才能再试。</value>
+  </data>
+  <data name="Certs_PinSaved" xml:space="preserve">
+    <value>测试签名成功，PIN 已加密保存，签名服务立即生效。</value>
+  </data>
+  <data name="Certs_PinSavedTitle" xml:space="preserve">
+    <value>PIN 已保存</value>
+  </data>
+  <data name="Certs_ReloadFailed" xml:space="preserve">
+    <value>无法让服务重新加载密钥源。</value>
+  </data>
+  <data name="Certs_ReloadFailedTitle" xml:space="preserve">
+    <value>重新加载失败</value>
+  </data>
+  <data name="Certs_Reloaded" xml:space="preserve">
+    <value>已重新加载 {0} 个证书的密钥源。</value>
+  </data>
+  <data name="Certs_ReloadedTitle" xml:space="preserve">
+    <value>重新加载完成</value>
+  </data>
+  <data name="Certs_ServiceNotRunning" xml:space="preserve">
+    <value>服务未运行，无法加载证书列表</value>
+  </data>
+  <data name="Certs_VerifyAndSave" xml:space="preserve">
+    <value>验证并保存</value>
+  </data>
+  <data name="Certs_VerifyPinTitle" xml:space="preserve">
+    <value>验证 PIN</value>
+  </data>
+  <data name="Cl_Count" xml:space="preserve">
+    <value>{0} 台</value>
+  </data>
+  <data name="Cl_CountDetail" xml:space="preserve">
+    <value>已配对并持有有效凭据的客户端</value>
+  </data>
+  <data name="Cl_None" xml:space="preserve">
+    <value>暂无已授权客户端</value>
+  </data>
+  <data name="Cl_NoneDetail" xml:space="preserve">
+    <value>客户端配对后在这里显示</value>
+  </data>
+  <data name="Cl_QueryFailedDetail" xml:space="preserve">
+    <value>服务处理查询时出错，悬停查看详情</value>
+  </data>
+  <data name="Cl_ShownWhenRunning" xml:space="preserve">
+    <value>服务运行后显示</value>
+  </data>
+  <data name="Cl_Unavailable" xml:space="preserve">
+    <value>无法获取</value>
+  </data>
+  <data name="Cli_InstallFailed" xml:space="preserve">
+    <value>安装服务失败: {0}</value>
+  </data>
+  <data name="Cli_UninstallFailed" xml:space="preserve">
+    <value>卸载服务失败: {0}</value>
+  </data>
+  <data name="Cli_Uninstalled_ProgramKept" xml:space="preserve">
+    <value>服务已卸载。{0} 正在运行，未删除，可在退出后手动删除。</value>
+  </data>
+  <data name="Client_NotFound" xml:space="preserve">
+    <value>客户端不存在或已撤销</value>
+  </data>
+  <data name="Client_StoreCorrupt" xml:space="preserve">
+    <value>clients.json 无法解析（{0}），{1}，所有客户端需要重新配对</value>
+  </data>
+  <data name="Clients_AllShared" xml:space="preserve">
+    <value>全部分享证书</value>
+  </data>
+  <data name="Clients_CertCount" xml:space="preserve">
+    <value>{0} 个证书</value>
+  </data>
+  <data name="Clients_Empty" xml:space="preserve">
+    <value>暂无已配对客户端</value>
+  </data>
+  <data name="Clients_LoadCertsFailed" xml:space="preserve">
+    <value>加载证书失败</value>
+  </data>
+  <data name="Clients_NoneAllowed" xml:space="preserve">
+    <value>全部禁止</value>
+  </data>
+  <data name="Clients_PermissionsPrompt" xml:space="preserve">
+    <value>选择客户端 {0} 可以使用的证书。客户端下次更新证书时，未授权的证书会自动解绑。</value>
+  </data>
+  <data name="Clients_PermissionsTitle" xml:space="preserve">
+    <value>管理证书权限</value>
+  </data>
+  <data name="Clients_Revoke" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="Clients_RevokeFailed" xml:space="preserve">
+    <value>撤销失败</value>
+  </data>
+  <data name="Clients_RevokeMessage" xml:space="preserve">
+    <value>确定要撤销客户端的授权吗？
+
+撤销后，该客户端将无法继续使用远程签名功能。</value>
+  </data>
+  <data name="Clients_RevokeTitle" xml:space="preserve">
+    <value>撤销客户端授权</value>
+  </data>
+  <data name="Clients_Revoked" xml:space="preserve">
+    <value>已撤销客户端 {0} 的授权</value>
+  </data>
+  <data name="Clients_RevokedTitle" xml:space="preserve">
+    <value>撤销成功</value>
+  </data>
+  <data name="Clients_ServiceNotRunning" xml:space="preserve">
+    <value>服务未运行，无法加载客户端列表</value>
+  </data>
+  <data name="Common_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="Common_Checking" xml:space="preserve">
+    <value>检查中…</value>
+  </data>
+  <data name="Common_CheckingDots" xml:space="preserve">
+    <value>检查中...</value>
+  </data>
+  <data name="Common_ClientId" xml:space="preserve">
+    <value>客户端 ID</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Common_DeleteFailed" xml:space="preserve">
+    <value>删除失败</value>
+  </data>
+  <data name="Common_ErrorMessage" xml:space="preserve">
+    <value>错误信息</value>
+  </data>
+  <data name="Common_InstallFailed" xml:space="preserve">
+    <value>安装失败</value>
+  </data>
+  <data name="Common_Installing" xml:space="preserve">
+    <value>安装中…</value>
+  </data>
+  <data name="Common_IpAddress" xml:space="preserve">
+    <value>IP 地址</value>
+  </data>
+  <data name="Common_MachineName" xml:space="preserve">
+    <value>机器名</value>
+  </data>
+  <data name="Common_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="Common_QueryFailed" xml:space="preserve">
+    <value>查询失败</value>
+  </data>
+  <data name="Common_Reading" xml:space="preserve">
+    <value>读取中...</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Common_SetFailed" xml:space="preserve">
+    <value>设置失败</value>
+  </data>
+  <data name="Common_StartFailed" xml:space="preserve">
+    <value>启动失败</value>
+  </data>
+  <data name="Common_StopFailed" xml:space="preserve">
+    <value>停止失败</value>
+  </data>
+  <data name="Common_Thumbprint" xml:space="preserve">
+    <value>指纹</value>
+  </data>
+  <data name="Common_UninstallFailed" xml:space="preserve">
+    <value>卸载失败</value>
+  </data>
+  <data name="Common_Uninstalling" xml:space="preserve">
+    <value>卸载中…</value>
+  </data>
+  <data name="Common_Unknown" xml:space="preserve">
+    <value>未知</value>
+  </data>
+  <data name="Common_Version" xml:space="preserve">
+    <value>版本 {0}</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="Config_SaveRefused" xml:space="preserve">
+    <value>{0} 读取失败，为避免用默认值覆盖它，未保存配置</value>
+  </data>
+  <data name="EToken_NotDetectedRetry" xml:space="preserve">
+    <value>未检测到 eToken（未插入或驱动未就绪），插入后重试即可</value>
+  </data>
+  <data name="EToken_Unavailable" xml:space="preserve">
+    <value>eToken 暂时无法使用（{0}），请稍后重试</value>
+  </data>
+  <data name="KeySrc_CertDetail" xml:space="preserve">
+    <value>证书「{0}」{1}</value>
+  </data>
+  <data name="KeySrc_DefaultCert" xml:space="preserve">
+    <value>{0}。默认证书「{1}」：{2}</value>
+  </data>
+  <data name="KeySrc_NoContainer" xml:space="preserve">
+    <value>未指定密钥容器</value>
+  </data>
+  <data name="KeySrc_NoPfx" xml:space="preserve">
+    <value>未指定 PFX 文件</value>
+  </data>
+  <data name="KeySrc_NoShared" xml:space="preserve">
+    <value>{0}。没有分享的证书，客户端无法获取证书</value>
+  </data>
+  <data name="KeySrc_NoSuchThumbprint" xml:space="preserve">
+    <value>服务端没有指纹为 {0} 的证书</value>
+  </data>
+  <data name="KeySrc_NotInLocalMachineMy" xml:space="preserve">
+    <value>证书 {0} 不在 LocalMachine\My</value>
+  </data>
+  <data name="KeySrc_PinNotVerified" xml:space="preserve">
+    <value>尚未验证 PIN，签名会失败</value>
+  </data>
+  <data name="KeySrc_Ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="KeySrc_RetryStopped" xml:space="preserve">
+    <value>（已自动重试 {0} 次仍失败，已停止重试；排除问题后请重启服务）</value>
+  </data>
+  <data name="KeySrc_Retrying" xml:space="preserve">
+    <value>（正在自动重试 {0}/{1}）</value>
+  </data>
+  <data name="KeySrc_Summary" xml:space="preserve">
+    <value>共 {0} 个证书，{1} 个已分享</value>
+  </data>
+  <data name="KeySrc_TestDataMissing" xml:space="preserve">
+    <value>测试证书数据缺失</value>
+  </data>
+  <data name="KeySrc_TestDetail" xml:space="preserve">
+    <value>测试证书：可验证配对和下发，签名会被拒绝</value>
+  </data>
+  <data name="KeySrc_TokenAbsent" xml:space="preserve">
+    <value>未检测到 eToken（未插入或驱动未就绪）。插入后签名请求会直接使用，不用重启服务</value>
+  </data>
+  <data name="KeySrc_UnavailableDetail" xml:space="preserve">
+    <value>不可用：{0}</value>
+  </data>
+  <data name="KeySrc_UnknownType" xml:space="preserve">
+    <value>未知的密钥源类型 {0}</value>
+  </data>
+  <data name="Ks_ChannelAccessDenied" xml:space="preserve">
+    <value>无权访问管理通道，请以管理员身份运行</value>
+  </data>
+  <data name="Ks_ChannelUnavailable" xml:space="preserve">
+    <value>管理通道暂时不可连接，请稍后刷新</value>
+  </data>
+  <data name="Ks_NotConfigured" xml:space="preserve">
+    <value>未配置</value>
+  </data>
+  <data name="Ks_NotConfiguredDetail" xml:space="preserve">
+    <value>没有分享给客户端的证书，请在证书管理中添加</value>
+  </data>
+  <data name="Ks_NotReady" xml:space="preserve">
+    <value>未就绪</value>
+  </data>
+  <data name="Ks_QueryFailedDetail" xml:space="preserve">
+    <value>服务处理状态查询时出错，悬停查看详情</value>
+  </data>
+  <data name="Ks_Ready" xml:space="preserve">
+    <value>已就绪</value>
+  </data>
+  <data name="Ks_ServiceNotRunning" xml:space="preserve">
+    <value>服务未运行</value>
+  </data>
+  <data name="Ks_ServiceNotRunningDetail" xml:space="preserve">
+    <value>启动 Windows 服务后才能查询密钥源</value>
+  </data>
+  <data name="Ks_StatusUnavailable" xml:space="preserve">
+    <value>无法获取密钥源状态</value>
+  </data>
+  <data name="Ks_WaitingForService" xml:space="preserve">
+    <value>等待服务</value>
+  </data>
+  <data name="Ks_WaitingForServiceDetail" xml:space="preserve">
+    <value>服务状态变化后会重新查询</value>
+  </data>
+  <data name="List_Separator" xml:space="preserve">
+    <value>、</value>
+  </data>
+  <data name="LogCat_CertStore" xml:space="preserve">
+    <value>证书存储</value>
+  </data>
+  <data name="LogCat_Certificate" xml:space="preserve">
+    <value>证书</value>
+  </data>
+  <data name="LogCat_Client" xml:space="preserve">
+    <value>客户端</value>
+  </data>
+  <data name="LogCat_Config" xml:space="preserve">
+    <value>配置</value>
+  </data>
+  <data name="LogCat_Pairing" xml:space="preserve">
+    <value>配对</value>
+  </data>
+  <data name="LogCat_Pipe" xml:space="preserve">
+    <value>管道</value>
+  </data>
+  <data name="LogCat_Signing" xml:space="preserve">
+    <value>签名</value>
+  </data>
+  <data name="LogCat_System" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="Log_FilterAll" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="Log_HttpsStarted" xml:space="preserve">
+    <value>HTTPS 服务已启动，端口 {0}</value>
+  </data>
+  <data name="Log_LevelError" xml:space="preserve">
+    <value>❌ 错误</value>
+  </data>
+  <data name="Log_LevelInfo" xml:space="preserve">
+    <value>ℹ️ 信息</value>
+  </data>
+  <data name="Log_LevelWarn" xml:space="preserve">
+    <value>⚠️ 警告</value>
+  </data>
+  <data name="Log_Loaded" xml:space="preserve">
+    <value>活动日志已加载</value>
+  </data>
+  <data name="Nav_ActivityLog" xml:space="preserve">
+    <value>活动日志</value>
+  </data>
+  <data name="Nav_Certificates" xml:space="preserve">
+    <value>证书管理</value>
+  </data>
+  <data name="Nav_Clients" xml:space="preserve">
+    <value>已配对客户端</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>概览</value>
+  </data>
+  <data name="Nav_PairingRequests" xml:space="preserve">
+    <value>配对请求</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Ov_Installed" xml:space="preserve">
+    <value>Remote KSP 服务已成功安装</value>
+  </data>
+  <data name="Ov_InstalledTitle" xml:space="preserve">
+    <value>安装成功</value>
+  </data>
+  <data name="Ov_ManageClients" xml:space="preserve">
+    <value>管理客户端</value>
+  </data>
+  <data name="Ov_NetDetail" xml:space="preserve">
+    <value>这里列出本机网卡上的地址，以及按服务端口生成的 https 连接地址。
+
+• 客户端能否连上，取决于服务是否在监听、网络路由和防火墙；复制连接地址不代表已验证远程可达。
+• 服务端 TLS 证书是自签名的，不包含 IP；客户端按配对时记录的证书指纹校验，而不是按地址校验。
+• 环回地址只能在本机使用；链路本地 IPv6 地址带本机接口编号，不提供连接地址复制。</value>
+  </data>
+  <data name="Ov_NetFootnote" xml:space="preserve">
+    <value>客户端可尝试用这些地址连接本机</value>
+  </data>
+  <data name="Ov_StartTimeout" xml:space="preserve">
+    <value>服务启动命令已发送，但状态未及时更新，请稍后刷新状态</value>
+  </data>
+  <data name="Ov_StartTimeoutTitle" xml:space="preserve">
+    <value>启动超时</value>
+  </data>
+  <data name="Ov_StopTimeout" xml:space="preserve">
+    <value>服务停止命令已发送，但状态未及时更新，请稍后刷新状态</value>
+  </data>
+  <data name="Ov_StopTimeoutTitle" xml:space="preserve">
+    <value>停止超时</value>
+  </data>
+  <data name="Ov_ViewPairingRequests" xml:space="preserve">
+    <value>查看配对请求</value>
+  </data>
+  <data name="Pairing_Approve" xml:space="preserve">
+    <value>批准配对</value>
+  </data>
+  <data name="Pairing_ApproveFailed" xml:space="preserve">
+    <value>批准失败</value>
+  </data>
+  <data name="Pairing_ApprovedFrom" xml:space="preserve">
+    <value>已批准来自 {0} ({1}) 的配对请求</value>
+  </data>
+  <data name="Pairing_ApprovedTitle" xml:space="preserve">
+    <value>批准成功</value>
+  </data>
+  <data name="Pairing_Empty" xml:space="preserve">
+    <value>暂无待处理的配对请求</value>
+  </data>
+  <data name="Pairing_Expired" xml:space="preserve">
+    <value>配对请求已过期或已处理，请重新发起配对。</value>
+  </data>
+  <data name="Pairing_ExpiredShort" xml:space="preserve">
+    <value>已过期</value>
+  </data>
+  <data name="Pairing_Later" xml:space="preserve">
+    <value>稍后处理</value>
+  </data>
+  <data name="Pairing_Minutes" xml:space="preserve">
+    <value>{0} 分钟</value>
+  </data>
+  <data name="Pairing_NewRequestTitle" xml:space="preserve">
+    <value>新的客户端配对请求</value>
+  </data>
+  <data name="Pairing_Reject" xml:space="preserve">
+    <value>拒绝配对</value>
+  </data>
+  <data name="Pairing_RejectFailed" xml:space="preserve">
+    <value>拒绝失败</value>
+  </data>
+  <data name="Pairing_RejectedFrom" xml:space="preserve">
+    <value>已拒绝来自 {0} ({1}) 的配对请求</value>
+  </data>
+  <data name="Pairing_RejectedTitle" xml:space="preserve">
+    <value>已拒绝</value>
+  </data>
+  <data name="Pairing_Seconds" xml:space="preserve">
+    <value>{0} 秒</value>
+  </data>
+  <data name="Pairing_ServiceNotRunning" xml:space="preserve">
+    <value>服务未运行，无法加载配对请求</value>
+  </data>
+  <data name="Pairing_Success" xml:space="preserve">
+    <value>已批准客户端「{0}」的配对请求。</value>
+  </data>
+  <data name="Pairing_SuccessTitle" xml:space="preserve">
+    <value>配对成功</value>
+  </data>
+  <data name="Perm_NotShared" xml:space="preserve">
+    <value>未分享</value>
+  </data>
+  <data name="Pin_CertDisabled" xml:space="preserve">
+    <value>证书已停用：{0}。{1}</value>
+  </data>
+  <data name="Pin_DisabledDetail" xml:space="preserve">
+    <value>已停用：{0}（{1}）。{2}</value>
+  </data>
+  <data name="Pin_Locked" xml:space="preserve">
+    <value>eToken 已锁定（PIN 重试次数已用完）</value>
+  </data>
+  <data name="Pin_LockedAction" xml:space="preserve">
+    <value>请用 SafeNet Authentication Client 解锁 eToken，然后在服务端 GUI 重新验证 PIN</value>
+  </data>
+  <data name="Pin_Unrecognized" xml:space="preserve">
+    <value>eToken 返回了无法识别的错误（可能是 PIN 错误）</value>
+  </data>
+  <data name="Pin_UnrecognizedAction" xml:space="preserve">
+    <value>为避免把 eToken 试锁，已停止使用保存的 PIN。请检查 eToken 是否正常（SafeNet Authentication Client 能否登录），然后在服务端 GUI「证书管理」中重新验证 PIN；活动日志里有原始错误</value>
+  </data>
+  <data name="Pin_Wrong" xml:space="preserve">
+    <value>服务端保存的 PIN 错误</value>
+  </data>
+  <data name="Pin_WrongAction" xml:space="preserve">
+    <value>请在服务端 GUI「证书管理」中重新验证 PIN</value>
+  </data>
+  <data name="Pipe_AccessDenied" xml:space="preserve">
+    <value>无权访问服务管道</value>
+  </data>
+  <data name="Pipe_AccessDeniedFull" xml:space="preserve">
+    <value>无权访问服务管道（GUI 需要以管理员身份运行）</value>
+  </data>
+  <data name="Pipe_CertAdded" xml:space="preserve">
+    <value>添加证书：{0} ({1})</value>
+  </data>
+  <data name="Pipe_CertRemoved" xml:space="preserve">
+    <value>删除证书：{0}</value>
+  </data>
+  <data name="Pipe_CertUnavailable" xml:space="preserve">
+    <value>证书不可用：{0}</value>
+  </data>
+  <data name="Pipe_CertUpdated" xml:space="preserve">
+    <value>更新证书：{0} (分享={1})</value>
+  </data>
+  <data name="Pipe_ClientRevoked" xml:space="preserve">
+    <value>撤销客户端 {0}</value>
+  </data>
+  <data name="Pipe_CommandFailed" xml:space="preserve">
+    <value>命令失败: {0}</value>
+  </data>
+  <data name="Pipe_CommandSucceeded" xml:space="preserve">
+    <value>命令成功: {0}</value>
+  </data>
+  <data name="Pipe_DefaultNotShared" xml:space="preserve">
+    <value>未分享的证书不能设为默认证书</value>
+  </data>
+  <data name="Pipe_DefaultSet" xml:space="preserve">
+    <value>设置默认证书：{0}</value>
+  </data>
+  <data name="Pipe_Missing" xml:space="preserve">
+    <value>缺少 {0}</value>
+  </data>
+  <data name="Pipe_NeedsAdmin" xml:space="preserve">
+    <value>GUI 需要以管理员身份运行</value>
+  </data>
+  <data name="Pipe_NoOriginalFile" xml:space="preserve">
+    <value>（原来没有文件）</value>
+  </data>
+  <data name="Pipe_NoResponse" xml:space="preserve">
+    <value>服务无响应</value>
+  </data>
+  <data name="Pipe_NotRunning" xml:space="preserve">
+    <value>服务未运行或无法连接</value>
+  </data>
+  <data name="Pipe_NotRunningFull" xml:space="preserve">
+    <value>服务未运行或无法连接: {0}</value>
+  </data>
+  <data name="Pipe_PairingApproved" xml:space="preserve">
+    <value>批准配对请求 {0}...</value>
+  </data>
+  <data name="Pipe_PairingRejected" xml:space="preserve">
+    <value>拒绝配对请求 {0}...</value>
+  </data>
+  <data name="Pipe_PinLocked" xml:space="preserve">
+    <value>eToken 已锁定（PIN 重试次数已用完），请先用 SafeNet Authentication Client 解锁</value>
+  </data>
+  <data name="Pipe_PinLockout" xml:space="preserve">
+    <value>PIN 已连续验证失败 {0} 次，为保护 eToken 已暂停验证，请 {1} 秒后再试</value>
+  </data>
+  <data name="Pipe_PinOnlyEToken" xml:space="preserve">
+    <value>只有 eToken 证书需要 PIN</value>
+  </data>
+  <data name="Pipe_PinPaused" xml:space="preserve">
+    <value>已连续失败 {0} 次，请 {1} 分钟后再试</value>
+  </data>
+  <data name="Pipe_PinReasonLimit" xml:space="preserve">
+    <value>{0}。{1}</value>
+  </data>
+  <data name="Pipe_PinRemaining" xml:space="preserve">
+    <value>再失败 {0} 次将暂停验证 {1} 分钟</value>
+  </data>
+  <data name="Pipe_PinSet" xml:space="preserve">
+    <value>设置 PIN：{0}</value>
+  </data>
+  <data name="Pipe_PinSetReenabled" xml:space="preserve">
+    <value>设置 PIN：{0}，已解除停用</value>
+  </data>
+  <data name="Pipe_PinTestFailed" xml:space="preserve">
+    <value>测试签名失败：PIN 错误、容器名不对或 eToken 未插入（{0}）</value>
+  </data>
+  <data name="Pipe_PinVerifyFailed" xml:space="preserve">
+    <value>PIN 验证失败：{0}</value>
+  </data>
+  <data name="Pipe_PinWrong" xml:space="preserve">
+    <value>PIN 错误</value>
+  </data>
+  <data name="Pipe_StoreDiag" xml:space="preserve">
+    <value>服务进程(SYSTEM)看到: {0}\My 总数={1}, 带私钥={2}</value>
+  </data>
+  <data name="Pipe_StoreDiagRemote" xml:space="preserve">
+    <value>；另有 {0} 张私钥指向 Remote KSP（本机客户端同步来的），不能在这里使用</value>
+  </data>
+  <data name="Pipe_StoreEnumerated" xml:space="preserve">
+    <value>枚举 {0}\My</value>
+  </data>
+  <data name="Pipe_StoreEnumeratedDetail" xml:space="preserve">
+    <value>总数={0}, 可用私钥={1}, 指向 Remote KSP（已排除）={2}</value>
+  </data>
+  <data name="Pipe_TlsRegenerated" xml:space="preserve">
+    <value>重新生成 TLS 证书，已配对的客户端需要重新配对</value>
+  </data>
+  <data name="Pipe_TlsRegeneratedDetail" xml:space="preserve">
+    <value>旧指纹 {0} → 新指纹 {1}；原文件备份为 {2}</value>
+  </data>
+  <data name="Pipe_UnknownCertType" xml:space="preserve">
+    <value>未知的证书类型 {0}</value>
+  </data>
+  <data name="Pipe_Unreadable" xml:space="preserve">
+    <value>（无法读取）</value>
+  </data>
+  <data name="Retry_Exhausted" xml:space="preserve">
+    <value>{0} 个证书在 {1} 次自动重试后仍不可用，已停止重试</value>
+  </data>
+  <data name="Retry_ExhaustedDetail" xml:space="preserve">
+    <value>排除问题（如插入 eToken）后请重启服务，或在 GUI 中重新保存证书配置</value>
+  </data>
+  <data name="Retry_Recovered" xml:space="preserve">
+    <value>第 {0} 次自动重试后恢复：{1}</value>
+  </data>
+  <data name="Secure_ReparsePoint" xml:space="preserve">
+    <value>{0} 是联接或符号链接，可能被人用来把数据重定向到别处，已拒绝使用。请管理员确认后删除它（只删链接本身），再启动服务</value>
+  </data>
+  <data name="Secure_RestrictFailed" xml:space="preserve">
+    <value>未能收紧 {0} 的访问权限</value>
+  </data>
+  <data name="Set_AllPairedClients" xml:space="preserve">
+    <value>所有已配对客户端</value>
+  </data>
+  <data name="Set_Backup" xml:space="preserve">
+    <value>原证书备份</value>
+  </data>
+  <data name="Set_ChangePort" xml:space="preserve">
+    <value>修改端口</value>
+  </data>
+  <data name="Set_ChangePortFailed" xml:space="preserve">
+    <value>修改端口失败</value>
+  </data>
+  <data name="Set_ChangingPort" xml:space="preserve">
+    <value>正在把端口改为 {0}…</value>
+  </data>
+  <data name="Set_Installed" xml:space="preserve">
+    <value>服务程序已复制到 {0}，RemoteKSP 服务已安装并设为开机自动启动。</value>
+  </data>
+  <data name="Set_InstalledTitle" xml:space="preserve">
+    <value>安装完成</value>
+  </data>
+  <data name="Set_InstallingBusy" xml:space="preserve">
+    <value>正在安装服务（复制服务程序到 Program Files）…</value>
+  </data>
+  <data name="Set_MoveToProgramFiles" xml:space="preserve">
+    <value>迁移到 Program Files</value>
+  </data>
+  <data name="Set_NPairedClients" xml:space="preserve">
+    <value>全部 {0} 个已配对客户端</value>
+  </data>
+  <data name="Set_NewThumbprint" xml:space="preserve">
+    <value>新指纹</value>
+  </data>
+  <data name="Set_NoOldFile" xml:space="preserve">
+    <value>（原来没有证书文件）</value>
+  </data>
+  <data name="Set_OldThumbprint" xml:space="preserve">
+    <value>旧指纹</value>
+  </data>
+  <data name="Set_OldUnreadable" xml:space="preserve">
+    <value>（原证书无法读取）</value>
+  </data>
+  <data name="Set_PortChanged" xml:space="preserve">
+    <value>HTTPS 端口已改为 {0}。请让各客户端用新端口重新配对。</value>
+  </data>
+  <data name="Set_PortChangedNoFirewall" xml:space="preserve">
+    <value>HTTPS 端口已改为 {0}，但添加防火墙规则失败（可能由组策略管理）。请手动放行 TCP {0} 入站。</value>
+  </data>
+  <data name="Set_PortChangedNoFirewallTitle" xml:space="preserve">
+    <value>端口已修改，防火墙规则未更新</value>
+  </data>
+  <data name="Set_PortChangedTitle" xml:space="preserve">
+    <value>端口已修改</value>
+  </data>
+  <data name="Set_PortInUse" xml:space="preserve">
+    <value>本机已有程序在监听 {0} 端口，请换一个。</value>
+  </data>
+  <data name="Set_PortInUseTitle" xml:space="preserve">
+    <value>端口已被占用</value>
+  </data>
+  <data name="Set_PortInvalid" xml:space="preserve">
+    <value>请输入 1–65535 之间的端口号。</value>
+  </data>
+  <data name="Set_PortInvalidTitle" xml:space="preserve">
+    <value>端口无效</value>
+  </data>
+  <data name="Set_PortMessage" xml:space="preserve">
+    <value>端口将从 {0} 改为 {1}，服务在运行时会重启，防火墙规则一并更新。
+
+客户端保存的服务端地址包含端口，修改后{2}都会连接失败，需要在每台客户端上移除该服务端，再用新端口 {1} 重新配对。</value>
+  </data>
+  <data name="Set_PortTitle" xml:space="preserve">
+    <value>修改 HTTPS 端口</value>
+  </data>
+  <data name="Set_ProgramMissing" xml:space="preserve">
+    <value>服务程序文件不存在，服务无法启动</value>
+  </data>
+  <data name="Set_ProgramNotInProgramFiles" xml:space="preserve">
+    <value>服务程序不在 Program Files 中。建议迁移，之后升级只需在这里点「更新服务程序」</value>
+  </data>
+  <data name="Set_ProgramNotInstalled" xml:space="preserve">
+    <value>未安装。安装时会把服务程序复制到 {0}</value>
+  </data>
+  <data name="Set_ProgramOtherVersion" xml:space="preserve">
+    <value>已安装版本 {0}，与当前打开的程序（{1}）不一致</value>
+  </data>
+  <data name="Set_ProgramSameVersion" xml:space="preserve">
+    <value>与当前程序版本一致（{0}）</value>
+  </data>
+  <data name="Set_ProgramUserWritable" xml:space="preserve">
+    <value>服务程序所在目录普通用户可修改，而服务以 SYSTEM 运行。建议迁移到 Program Files</value>
+  </data>
+  <data name="Set_RegenFailed" xml:space="preserve">
+    <value>重新生成 TLS 证书失败</value>
+  </data>
+  <data name="Set_RegenMessage" xml:space="preserve">
+    <value>将为 HTTPS 服务生成一张新的自签名证书。
+
+客户端在配对时记录了旧证书的指纹，生成后{0}都会连接失败，需要在每台客户端上移除该服务端并重新配对。
+
+原 server.pfx 会备份到数据目录，不会删除。只在证书损坏、服务因证书无法启动等情况下使用。</value>
+  </data>
+  <data name="Set_RegenTitle" xml:space="preserve">
+    <value>重新生成 TLS 证书</value>
+  </data>
+  <data name="Set_Regenerate" xml:space="preserve">
+    <value>重新生成</value>
+  </data>
+  <data name="Set_Regenerated" xml:space="preserve">
+    <value>新证书已生效。请在每台客户端上移除该服务端并重新配对，配对时核对验证码。</value>
+  </data>
+  <data name="Set_RegeneratedTitle" xml:space="preserve">
+    <value>已重新生成 TLS 证书</value>
+  </data>
+  <data name="Set_Reinstall" xml:space="preserve">
+    <value>重新安装</value>
+  </data>
+  <data name="Set_ReinstallFailed" xml:space="preserve">
+    <value>重新安装失败</value>
+  </data>
+  <data name="Set_ReinstallMessage" xml:space="preserve">
+    <value>将删除并重新创建 RemoteKSP 服务（服务程序同时更新为当前打开的版本），服务会停止。
+
+数据目录和配置不受影响。服务注册信息损坏时使用；只是升级版本请用「更新服务程序」。</value>
+  </data>
+  <data name="Set_ReinstallTitle" xml:space="preserve">
+    <value>重新安装服务</value>
+  </data>
+  <data name="Set_Reinstalled" xml:space="preserve">
+    <value>RemoteKSP 服务已重新安装。</value>
+  </data>
+  <data name="Set_ReinstalledTitle" xml:space="preserve">
+    <value>重新安装完成</value>
+  </data>
+  <data name="Set_ReinstallingBusy" xml:space="preserve">
+    <value>正在重新安装服务…</value>
+  </data>
+  <data name="Set_RepairProgram" xml:space="preserve">
+    <value>修复服务程序</value>
+  </data>
+  <data name="Set_StartPending" xml:space="preserve">
+    <value>正在启动...</value>
+  </data>
+  <data name="Set_Started" xml:space="preserve">
+    <value>RemoteKSP 服务已成功启动。</value>
+  </data>
+  <data name="Set_StartedTitle" xml:space="preserve">
+    <value>服务已启动</value>
+  </data>
+  <data name="Set_StopPending" xml:space="preserve">
+    <value>正在停止...</value>
+  </data>
+  <data name="Set_Stopped" xml:space="preserve">
+    <value>RemoteKSP 服务已成功停止。</value>
+  </data>
+  <data name="Set_StoppedTitle" xml:space="preserve">
+    <value>服务已停止</value>
+  </data>
+  <data name="Set_TlsNotLoaded" xml:space="preserve">
+    <value>服务尚未加载 TLS 证书</value>
+  </data>
+  <data name="Set_TlsServiceNotRunning" xml:space="preserve">
+    <value>服务未运行，无法读取</value>
+  </data>
+  <data name="Set_UninstallingBusy" xml:space="preserve">
+    <value>正在卸载服务…</value>
+  </data>
+  <data name="Set_UpdateFailed" xml:space="preserve">
+    <value>更新服务程序失败</value>
+  </data>
+  <data name="Set_UpdateMessage" xml:space="preserve">
+    <value>将停止服务，把当前打开的程序复制到 {0}，服务改为使用这个副本，原来在运行就重新启动。
+
+数据目录、证书、PIN 和客户端配对都不受影响，客户端不需要重新配对。</value>
+  </data>
+  <data name="Set_UpdateProgram" xml:space="preserve">
+    <value>更新服务程序</value>
+  </data>
+  <data name="Set_UpdatedMoved" xml:space="preserve">
+    <value>服务现在使用 {0}。原来的 {1} 不再被服务使用，可以删除。</value>
+  </data>
+  <data name="Set_UpdatedTitle" xml:space="preserve">
+    <value>服务程序已更新</value>
+  </data>
+  <data name="Set_UpdatedVersion" xml:space="preserve">
+    <value>服务已更新为当前版本（{0}）。</value>
+  </data>
+  <data name="Set_UpdatingBusy" xml:space="preserve">
+    <value>正在更新服务程序…</value>
+  </data>
+  <data name="Source_TestVirtual" xml:space="preserve">
+    <value>自动生成的虚拟证书</value>
+  </data>
+  <data name="State_Disabled" xml:space="preserve">
+    <value>已停用</value>
+  </data>
+  <data name="State_Expired" xml:space="preserve">
+    <value>已过期</value>
+  </data>
+  <data name="State_PinPending" xml:space="preserve">
+    <value>待验证 PIN</value>
+  </data>
+  <data name="State_Ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="State_Test" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="State_Unavailable" xml:space="preserve">
+    <value>不可用</value>
+  </data>
+  <data name="StoreCert_Display" xml:space="preserve">
+    <value>{0}（{1}，{2} 到期）</value>
+  </data>
+  <data name="Store_CertNotFound" xml:space="preserve">
+    <value>在 {0}\My 中未找到指纹为 {1} 的证书</value>
+  </data>
+  <data name="Store_CorruptKeepFailed" xml:space="preserve">
+    <value>改名保留失败（{0}），排除问题前不会写入该文件</value>
+  </data>
+  <data name="Store_CorruptKept" xml:space="preserve">
+    <value>已改名保留为 {0}</value>
+  </data>
+  <data name="Store_FileIsNull" xml:space="preserve">
+    <value>文件内容为 null</value>
+  </data>
+  <data name="Store_NoPrivateKey" xml:space="preserve">
+    <value>证书 {0} 没有私钥</value>
+  </data>
+  <data name="Store_NoRsaKey" xml:space="preserve">
+    <value>证书 {0} 没有 RSA 私钥</value>
+  </data>
+  <data name="Store_RemoteKspKey" xml:space="preserve">
+    <value>证书 {0} 的私钥指向 Remote KSP（本机客户端从其他服务端同步来的），不能作为本服务端的签名证书。eToken 证书请改用「eToken」来源</value>
+  </data>
+  <data name="Store_UnsupportedHash" xml:space="preserve">
+    <value>不支持的哈希算法: {0}</value>
+  </data>
+  <data name="Svc_CannotStart" xml:space="preserve">
+    <value>无法启动 {0}</value>
+  </data>
+  <data name="Svc_DataDirIsLink" xml:space="preserve">
+    <value>{0} 是联接或符号链接，未删除数据目录。请管理员确认后手动处理</value>
+  </data>
+  <data name="Svc_DevBuild" xml:space="preserve">
+    <value>当前运行的是开发版本（不是发布的单文件 exe），不能安装为服务。请运行 publish-all.ps1 生成的 Publish\Server\RemoteKSP.Server.exe</value>
+  </data>
+  <data name="Svc_DirUserWritable" xml:space="preserve">
+    <value>{0} 普通用户可写，服务以 SYSTEM 运行，不能把服务程序放在这里</value>
+  </data>
+  <data name="Svc_InstallFailed" xml:space="preserve">
+    <value>安装服务失败</value>
+  </data>
+  <data name="Svc_NoProgramPath" xml:space="preserve">
+    <value>无法确定当前程序路径</value>
+  </data>
+  <data name="Svc_NotInstalled" xml:space="preserve">
+    <value>未安装</value>
+  </data>
+  <data name="Svc_NotInstalledDetail" xml:space="preserve">
+    <value>安装后签名服务会随系统自动启动</value>
+  </data>
+  <data name="Svc_OpenFailed" xml:space="preserve">
+    <value>无法打开服务 {0}</value>
+  </data>
+  <data name="Svc_Paused" xml:space="preserve">
+    <value>已暂停</value>
+  </data>
+  <data name="Svc_PausedDetail" xml:space="preserve">
+    <value>服务暂停期间，客户端无法签名</value>
+  </data>
+  <data name="Svc_PortRange" xml:space="preserve">
+    <value>端口必须在 1–65535 之间</value>
+  </data>
+  <data name="Svc_QueryFailedDetail" xml:space="preserve">
+    <value>无法读取服务状态</value>
+  </data>
+  <data name="Svc_RecoveryFlagFailed" xml:space="preserve">
+    <value>设置失败恢复标志失败</value>
+  </data>
+  <data name="Svc_RecoveryPolicyFailed" xml:space="preserve">
+    <value>设置服务失败恢复策略失败</value>
+  </data>
+  <data name="Svc_Running" xml:space="preserve">
+    <value>运行中</value>
+  </data>
+  <data name="Svc_RunningDetail" xml:space="preserve">
+    <value>签名服务进程正在运行（Windows 服务名：RemoteKSP）</value>
+  </data>
+  <data name="Svc_ScmConnectFailed" xml:space="preserve">
+    <value>无法连接服务控制管理器</value>
+  </data>
+  <data name="Svc_StartFailed" xml:space="preserve">
+    <value>启动服务失败</value>
+  </data>
+  <data name="Svc_Starting" xml:space="preserve">
+    <value>启动中…</value>
+  </data>
+  <data name="Svc_StartingDetail" xml:space="preserve">
+    <value>正在等待服务启动</value>
+  </data>
+  <data name="Svc_StopFailed" xml:space="preserve">
+    <value>停止服务失败</value>
+  </data>
+  <data name="Svc_Stopped" xml:space="preserve">
+    <value>已停止</value>
+  </data>
+  <data name="Svc_StoppedDetail" xml:space="preserve">
+    <value>服务停止期间，客户端无法签名</value>
+  </data>
+  <data name="Svc_Stopping" xml:space="preserve">
+    <value>停止中…</value>
+  </data>
+  <data name="Svc_StoppingDetail" xml:space="preserve">
+    <value>正在等待服务停止</value>
+  </data>
+  <data name="Svc_ToolFailed" xml:space="preserve">
+    <value>{0}（{1} 退出码 {2}）
+{3}</value>
+  </data>
+  <data name="Svc_UninstallFailed" xml:space="preserve">
+    <value>卸载服务失败</value>
+  </data>
+  <data name="Svc_Unknown" xml:space="preserve">
+    <value>状态未知</value>
+  </data>
+  <data name="Svc_UnknownDetail" xml:space="preserve">
+    <value>Service Control Manager 返回了未识别的状态</value>
+  </data>
+  <data name="Svc_UpdatePathFailed" xml:space="preserve">
+    <value>更新服务路径失败</value>
+  </data>
+  <data name="Test_SigningRefused" xml:space="preserve">
+    <value>这是测试证书，服务端不会用它执行真实签名</value>
+  </data>
+  <data name="Tls_ReadFailed" xml:space="preserve">
+    <value>无法读取 TLS 证书 {0}（{1}）。没有自动生成新证书，因为换证书后所有客户端都要重新配对。排除问题后重启服务；确实要换证书时，在服务端 GUI「设置」里点「重新生成 TLS 证书」，然后让各客户端重新配对</value>
+  </data>
+  <data name="Type_Pfx" xml:space="preserve">
+    <value>PFX 文件</value>
+  </data>
+  <data name="Type_Store" xml:space="preserve">
+    <value>证书存储</value>
+  </data>
+  <data name="Type_Test" xml:space="preserve">
+    <value>测试证书</value>
+  </data>
+  <data name="Un_ConfirmData" xml:space="preserve">
+    <value>{0} 将被永久删除，无法恢复。
+
+其中复制进来的 PFX 文件也会删除；如果没有其他备份，请先取消并备份。</value>
+  </data>
+  <data name="Un_ConfirmDataTitle" xml:space="preserve">
+    <value>确认删除数据目录</value>
+  </data>
+  <data name="Un_DeleteAndUninstall" xml:space="preserve">
+    <value>删除并卸载</value>
+  </data>
+  <data name="Un_DoneDataKept" xml:space="preserve">
+    <value>服务已卸载。数据目录 {0} 已保留，重新安装后继续使用。</value>
+  </data>
+  <data name="Un_DoneDataRemoved" xml:space="preserve">
+    <value>服务已卸载，数据目录已删除。</value>
+  </data>
+  <data name="Un_DoneTitle" xml:space="preserve">
+    <value>卸载完成</value>
+  </data>
+  <data name="Un_Message" xml:space="preserve">
+    <value>将停止并删除 RemoteKSP 服务，删除防火墙规则和 Program Files\RemoteKSP 里的服务程序。
+
+卸载后所有已配对的客户端都无法签名。eToken 里的私钥不受影响。</value>
+  </data>
+  <data name="Un_ProgramKept" xml:space="preserve">
+    <value>
+
+当前程序正从 {0} 运行，这个文件没有删除，关闭程序后可以手动删除。</value>
+  </data>
+  <data name="Un_RemoveData" xml:space="preserve">
+    <value>同时删除数据目录 {0}（证书配置、保存的 PIN、客户端配对、TLS 证书、复制进来的 PFX）。删除后无法恢复，重新安装后需要重新添加证书并让所有客户端重新配对</value>
+  </data>
+  <data name="Un_Title" xml:space="preserve">
+    <value>卸载服务</value>
+  </data>
+  <data name="Un_Uninstall" xml:space="preserve">
+    <value>卸载</value>
+  </data>
+  <data name="X_AllowAllShared" xml:space="preserve">
+    <value>允许所有已分享的证书（包括以后新增的）</value>
+  </data>
+  <data name="X_AllowSelected" xml:space="preserve">
+    <value>仅允许选中的证书</value>
+  </data>
+  <data name="X_Apply" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="X_AuthorizedClients" xml:space="preserve">
+    <value>已授权客户端</value>
+  </data>
+  <data name="X_AutoScroll" xml:space="preserve">
+    <value>自动滚动</value>
+  </data>
+  <data name="X_AutoScrollOff" xml:space="preserve">
+    <value>自动滚动：关</value>
+  </data>
+  <data name="X_AutoScrollOn" xml:space="preserve">
+    <value>自动滚动：开</value>
+  </data>
+  <data name="X_Browse" xml:space="preserve">
+    <value>浏览...</value>
+  </data>
+  <data name="X_CertPermissions" xml:space="preserve">
+    <value>证书权限</value>
+  </data>
+  <data name="X_CertSource" xml:space="preserve">
+    <value>证书来源</value>
+  </data>
+  <data name="X_Certificate" xml:space="preserve">
+    <value>证书</value>
+  </data>
+  <data name="X_CertsEmptyHint" xml:space="preserve">
+    <value>添加 eToken、证书存储、PFX 或测试证书后，已配对的客户端即可获取并使用</value>
+  </data>
+  <data name="X_CheckCode" xml:space="preserve">
+    <value>请确认客户端显示的验证码与此处完全一致。</value>
+  </data>
+  <data name="X_ClearLog" xml:space="preserve">
+    <value>清空日志</value>
+  </data>
+  <data name="X_ClientInfo" xml:space="preserve">
+    <value>客户端信息</value>
+  </data>
+  <data name="X_ClientsEmptyHint" xml:space="preserve">
+    <value>已批准的客户端将在完成配对后显示在此处</value>
+  </data>
+  <data name="X_CreatedAt" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="X_CspProvider" xml:space="preserve">
+    <value>CSP 提供程序</value>
+  </data>
+  <data name="X_DataDirectory" xml:space="preserve">
+    <value>数据目录</value>
+  </data>
+  <data name="X_Default" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="X_DetectEToken" xml:space="preserve">
+    <value>检测 eToken</value>
+  </data>
+  <data name="X_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="X_ExpiresAt" xml:space="preserve">
+    <value>过期时间</value>
+  </data>
+  <data name="X_GenerateTestPfx" xml:space="preserve">
+    <value>生成自签名测试 PFX</value>
+  </data>
+  <data name="X_HttpsPort" xml:space="preserve">
+    <value>HTTPS 端口</value>
+  </data>
+  <data name="X_Install" xml:space="preserve">
+    <value>安装</value>
+  </data>
+  <data name="X_InstallService" xml:space="preserve">
+    <value>安装服务</value>
+  </data>
+  <data name="X_KeyContainer" xml:space="preserve">
+    <value>密钥容器</value>
+  </data>
+  <data name="X_LastSeen" xml:space="preserve">
+    <value>最后活动</value>
+  </data>
+  <data name="X_LegacyDefaultTip" xml:space="preserve">
+    <value>旧版客户端（/info）只能获取默认证书</value>
+  </data>
+  <data name="X_LogError" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="X_LogInfo" xml:space="preserve">
+    <value>INFO</value>
+  </data>
+  <data name="X_LogWarn" xml:space="preserve">
+    <value>WARN</value>
+  </data>
+  <data name="X_ManageCertificates" xml:space="preserve">
+    <value>管理证书</value>
+  </data>
+  <data name="X_MoreActions" xml:space="preserve">
+    <value>更多操作</value>
+  </data>
+  <data name="X_NamePlaceholder" xml:space="preserve">
+    <value>留空则使用证书主题</value>
+  </data>
+  <data name="X_PairedAt" xml:space="preserve">
+    <value>配对时间</value>
+  </data>
+  <data name="X_PairingEmptyHint" xml:space="preserve">
+    <value>配对请求将在客户端发起连接时出现在此处</value>
+  </data>
+  <data name="X_PairingIntro" xml:space="preserve">
+    <value>一台客户端正在请求使用此服务器的远程签名服务。请核对验证码后决定是否授权。</value>
+  </data>
+  <data name="X_PfxPassword" xml:space="preserve">
+    <value>PFX 密码</value>
+  </data>
+  <data name="X_PinFormInfo" xml:space="preserve">
+    <value>服务会用这个 PIN 做一次测试签名，成功后用 DPAPI 加密保存，签名时自动使用。</value>
+  </data>
+  <data name="X_PinOptional" xml:space="preserve">
+    <value>PIN（可选，填写后会测试签名并加密保存）</value>
+  </data>
+  <data name="X_PortNote" xml:space="preserve">
+    <value>客户端连接服务端用的端口（默认 8443）。修改后会更新防火墙规则并重启服务；已配对的客户端都要移除该服务端，再用新端口重新配对。</value>
+  </data>
+  <data name="X_RefreshStatus" xml:space="preserve">
+    <value>刷新状态</value>
+  </data>
+  <data name="X_Reload" xml:space="preserve">
+    <value>重新读取</value>
+  </data>
+  <data name="X_ReloadKeySources" xml:space="preserve">
+    <value>重新加载密钥源</value>
+  </data>
+  <data name="X_ReloadKeySourcesTip" xml:space="preserve">
+    <value>让服务重新连接所有证书的密钥源（如插好 eToken 后），并重置自动重试次数</value>
+  </data>
+  <data name="X_RequestExpired" xml:space="preserve">
+    <value>此配对请求已超过有效期，无法批准。</value>
+  </data>
+  <data name="X_RequestExpiredTitle" xml:space="preserve">
+    <value>请求已过期</value>
+  </data>
+  <data name="X_RequestTime" xml:space="preserve">
+    <value>请求时间</value>
+  </data>
+  <data name="X_RevokeClient" xml:space="preserve">
+    <value>撤销客户端</value>
+  </data>
+  <data name="X_ServiceNote" xml:space="preserve">
+    <value>服务以 SYSTEM 身份运行，服务程序固定放在 Program Files\RemoteKSP（只有管理员能修改）。升级时用新版本打开本程序，点「更新服务程序」即可，数据和配对不受影响。</value>
+  </data>
+  <data name="X_ServiceProgram" xml:space="preserve">
+    <value>服务程序</value>
+  </data>
+  <data name="X_ServiceStatus" xml:space="preserve">
+    <value>服务状态</value>
+  </data>
+  <data name="X_SetDefault" xml:space="preserve">
+    <value>设为默认</value>
+  </data>
+  <data name="X_ShareWithClients" xml:space="preserve">
+    <value>分享给客户端</value>
+  </data>
+  <data name="X_Shared" xml:space="preserve">
+    <value>分享</value>
+  </data>
+  <data name="X_SigningKeySource" xml:space="preserve">
+    <value>签名密钥源</value>
+  </data>
+  <data name="X_Source" xml:space="preserve">
+    <value>来源</value>
+  </data>
+  <data name="X_SourceIp" xml:space="preserve">
+    <value>来源 IP 地址</value>
+  </data>
+  <data name="X_Start" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="X_StartService" xml:space="preserve">
+    <value>启动服务</value>
+  </data>
+  <data name="X_Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="X_Stop" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="X_StopService" xml:space="preserve">
+    <value>停止服务</value>
+  </data>
+  <data name="X_StoreCurrentUser" xml:space="preserve">
+    <value>CurrentUser (服务账户 SYSTEM)</value>
+  </data>
+  <data name="X_StoreLocalMachine" xml:space="preserve">
+    <value>LocalMachine (本地计算机)</value>
+  </data>
+  <data name="X_StoreLocation" xml:space="preserve">
+    <value>存储位置</value>
+  </data>
+  <data name="X_Subject" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="X_TestCertInfo" xml:space="preserve">
+    <value>服务会自动生成一张虚拟证书。客户端可以用它验证配对和证书下发，但签名请求会被拒绝。</value>
+  </data>
+  <data name="X_ThumbprintLocalMachine" xml:space="preserve">
+    <value>证书指纹 (SHA1，证书需在 LocalMachine\My)</value>
+  </data>
+  <data name="X_TimeLeft" xml:space="preserve">
+    <value>剩余有效时间</value>
+  </data>
+  <data name="X_TlsCertificate" xml:space="preserve">
+    <value>TLS 证书</value>
+  </data>
+  <data name="X_TlsNote" xml:space="preserve">
+    <value>证书损坏或服务因证书无法启动时使用。重新生成后，所有已配对的客户端都要移除该服务端并重新配对；原 server.pfx 会备份到数据目录。</value>
+  </data>
+  <data name="X_Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="X_UninstallService" xml:space="preserve">
+    <value>卸载服务…</value>
+  </data>
+  <data name="X_UnshareNote" xml:space="preserve">
+    <value>取消分享后，所有客户端都无法再获取或使用这张证书；客户端下次更新证书时会自动解绑。</value>
+  </data>
+  <data name="X_UnsharedNote" xml:space="preserve">
+    <value>未分享的证书对所有客户端都不可用，需先在「证书管理」中开启分享。</value>
+  </data>
+  <data name="X_UseLocalMachine" xml:space="preserve">
+    <value>服务以 SYSTEM 运行，CurrentUser 是 SYSTEM 账户的存储，不是当前登录用户的。请把证书导入 LocalMachine\My。</value>
+  </data>
+  <data name="X_UseLocalMachineTitle" xml:space="preserve">
+    <value>建议使用 LocalMachine</value>
+  </data>
+  <data name="X_ValidUntil" xml:space="preserve">
+    <value>有效期至</value>
+  </data>
+  <data name="X_VerificationCode" xml:space="preserve">
+    <value>配对验证码</value>
+  </data>
+  <data name="X_VerificationCodeShort" xml:space="preserve">
+    <value>验证码</value>
+  </data>
+  <data name="X_WindowsService" xml:space="preserve">
+    <value>Windows 服务</value>
+  </data>
+</root>

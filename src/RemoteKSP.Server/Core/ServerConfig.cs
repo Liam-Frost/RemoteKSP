@@ -34,6 +34,9 @@ public class ServerConfig
     /// <summary>TLS 证书指纹</summary>
     public string? TlsCertThumbprint { get; set; }
 
+    /// <summary>服务自己写的消息（活动日志、Windows 提示）用的语言，跟随服务端 GUI 最近一次使用的语言</summary>
+    public string? Language { get; set; }
+
     [JsonIgnore]
     public bool IsConfigured => !string.IsNullOrEmpty(Thumbprint) &&
         (KeySourceType == "pfx" || KeySourceType == "store" || !string.IsNullOrEmpty(KeyContainer));
@@ -74,7 +77,7 @@ public class ServerConfig
     public void Save()
     {
         if (_readFailed)
-            throw new InvalidOperationException($"{ServerPaths.ConfigFile} 读取失败，为避免用默认值覆盖它，未保存配置");
+            throw new InvalidOperationException(string.Format(Strings.Config_SaveRefused, ServerPaths.ConfigFile));
         ServerPaths.EnsureDataDirectory();
         var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
         SecureStorage.WriteAllTextAtomic(ServerPaths.ConfigFile, json);

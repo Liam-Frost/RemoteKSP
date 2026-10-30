@@ -14,11 +14,13 @@ public partial class SettingsViewModel : ViewModelBase
     private readonly Services.ServiceManager _serviceManager;
 
     [ObservableProperty] private string _version = typeof(SettingsViewModel).Assembly.GetName().Version!.ToString(3);
+
+    public RemoteKSP.Shared.Localization.LanguageSettingsViewModel Language { get; } = new();
     [ObservableProperty] private string _dataDirectory = "";
-    [ObservableProperty] private string _serviceStatus = "检查中...";
+    [ObservableProperty] private string _serviceStatus = Strings.Common_CheckingDots;
     [ObservableProperty] private bool _serviceInstalled;
     [ObservableProperty] private bool _serviceRunning;
-    [ObservableProperty] private string _tlsThumbprint = "读取中...";
+    [ObservableProperty] private string _tlsThumbprint = Strings.Common_Reading;
     [ObservableProperty] private string _tlsNotAfter = "";
 
     private readonly Services.PipeClient _pipeClient;
@@ -52,13 +54,13 @@ public partial class SettingsViewModel : ViewModelBase
         try
         {
             var info = await _pipeClient.SendCommandAsync<TlsInfo>("GetTlsCertificate");
-            TlsThumbprint = string.IsNullOrEmpty(info?.Thumbprint) ? "服务尚未加载 TLS 证书" : Grouped(info.Thumbprint);
+            TlsThumbprint = string.IsNullOrEmpty(info?.Thumbprint) ? Strings.Set_TlsNotLoaded : Grouped(info.Thumbprint);
             TlsNotAfter = info?.NotAfter is { } notAfter ? notAfter.ToLocalTime().ToString("yyyy-MM-dd") : "";
             return info;
         }
         catch (Services.PipeConnectionException)
         {
-            TlsThumbprint = "服务未运行，无法读取";
+            TlsThumbprint = Strings.Set_TlsServiceNotRunning;
             TlsNotAfter = "";
             return null;
         }
@@ -72,14 +74,11 @@ public partial class SettingsViewModel : ViewModelBase
     private async Task RegenerateTlsCertificateAsync()
     {
         var info = await LoadTlsCertificateAsync();
-        var clients = info == null ? "所有" : $"全部 {info.PairedClients} 个";
+        var clients = info == null ? Strings.Set_AllPairedClients : string.Format(Strings.Set_NPairedClients, info.PairedClients);
         var confirmed = await _dialogService.ConfirmAsync(
-            "重新生成 TLS 证书",
-            "将为 HTTPS 服务生成一张新的自签名证书。\n\n" +
-            $"客户端在配对时记录了旧证书的指纹，生成后{clients}已配对客户端都会连接失败，" +
-            "需要在每台客户端上移除该服务端并重新配对。\n\n" +
-            "原 server.pfx 会备份到数据目录，不会删除。只在证书损坏、服务因证书无法启动等情况下使用。",
-            "重新生成",
+            Strings.Set_RegenTitle,
+            string.Format(Strings.Set_RegenMessage, clients),
+            Strings.Set_Regenerate,
             destructive: true);
         if (!confirmed)
             return;
@@ -90,7 +89,7 @@ public partial class SettingsViewModel : ViewModelBase
             try
             {
                 result = await _pipeClient.SendCommandAsync<Core.TlsCertificateManager.RegenerateResult>(
-                    "RegenerateTlsCertificate") ?? throw new InvalidOperationException("服务未返回结果");
+                    "RegenerateTlsCertificate") ?? throw new InvalidOperationException(Strings.Add_NoResult);
             }
             catch (Services.PipeConnectionException)
             {
@@ -99,15 +98,15 @@ public partial class SettingsViewModel : ViewModelBase
 
             await LoadTlsCertificateAsync();
             await RefreshServiceStatusAsync();
-            await _dialogService.SuccessAsync("已重新生成 TLS 证书",
-                "新证书已生效。请在每台客户端上移除该服务端并重新配对，配对时核对验证码。",
-                new DialogField("新指纹", Grouped(result.NewThumbprint), Monospace: true),
-                new DialogField("旧指纹", result.OldThumbprint is { } old ? Grouped(old) : "（原证书无法读取）", Monospace: true),
-                new DialogField("原证书备份", result.BackupFile ?? "（原来没有证书文件）", Monospace: true));
+            await _dialogService.SuccessAsync(Strings.Set_RegeneratedTitle,
+                Strings.Set_Regenerated,
+                new DialogField(Strings.Set_NewThumbprint, Grouped(result.NewThumbprint), Monospace: true),
+                new DialogField(Strings.Set_OldThumbprint, result.OldThumbprint is { } old ? Grouped(old) : Strings.Set_OldUnreadable, Monospace: true),
+                new DialogField(Strings.Set_Backup, result.BackupFile ?? Strings.Set_NoOldFile, Monospace: true));
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("重新生成 TLS 证书失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Set_RegenFailed, ex.Message);
         }
     }
 
@@ -160,10 +159,10 @@ public partial class SettingsViewModel : ViewModelBase
                 ServiceRunning = sc.Status == ServiceControllerStatus.Running;
                 ServiceStatus = sc.Status switch
                 {
-                    ServiceControllerStatus.Running => "运行中",
-                    ServiceControllerStatus.Stopped => "已停止",
-                    ServiceControllerStatus.StartPending => "正在启动...",
-                    ServiceControllerStatus.StopPending => "正在停止...",
+                    ServiceControllerStatus.Running => Strings.Svc_Running,
+                    ServiceControllerStatus.Stopped => Strings.Svc_Stopped,
+                    ServiceControllerStatus.StartPending => Strings.Set_StartPending,
+                    ServiceControllerStatus.StopPending => Strings.Set_StopPending,
                     _ => sc.Status.ToString()
                 };
             }
@@ -171,7 +170,7 @@ public partial class SettingsViewModel : ViewModelBase
             {
                 ServiceInstalled = false;
                 ServiceRunning = false;
-                ServiceStatus = "未安装";
+                ServiceStatus = Strings.Svc_NotInstalled;
             }
         });
     }
@@ -186,13 +185,13 @@ public partial class SettingsViewModel : ViewModelBase
             {
                 sc.Stop();
                 sc.WaitForStatus(ServiceControllerStatus.Stopped, System.TimeSpan.FromSeconds(30));
-                await _dialogService.SuccessAsync("服务已停止", "RemoteKSP 服务已成功停止。");
+                await _dialogService.SuccessAsync(Strings.Set_StoppedTitle, Strings.Set_Stopped);
             }
             await RefreshServiceStatusAsync();
         }
         catch (System.Exception ex)
         {
-            await _dialogService.ErrorAsync("停止失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_StopFailed, ex.Message);
         }
     }
 
@@ -206,13 +205,13 @@ public partial class SettingsViewModel : ViewModelBase
             {
                 sc.Start();
                 sc.WaitForStatus(ServiceControllerStatus.Running, System.TimeSpan.FromSeconds(30));
-                await _dialogService.SuccessAsync("服务已启动", "RemoteKSP 服务已成功启动。");
+                await _dialogService.SuccessAsync(Strings.Set_StartedTitle, Strings.Set_Started);
             }
             await RefreshServiceStatusAsync();
         }
         catch (System.Exception ex)
         {
-            await _dialogService.ErrorAsync("启动失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_StartFailed, ex.Message);
         }
     }
 
@@ -221,7 +220,7 @@ public partial class SettingsViewModel : ViewModelBase
     [ObservableProperty] private string _programPath = "";
     [ObservableProperty] private string _programStatus = "";
     [ObservableProperty] private bool _programNeedsAction;
-    [ObservableProperty] private string _programActionText = "更新服务程序";
+    [ObservableProperty] private string _programActionText = Strings.Set_UpdateProgram;
     [ObservableProperty] private bool _isBusy;
     [ObservableProperty] private string _busyText = "";
 
@@ -232,9 +231,9 @@ public partial class SettingsViewModel : ViewModelBase
         {
             var registered = Services.ServiceManager.RegisteredExecutable();
             if (registered == null)
-                return ("", $"未安装。安装时会把服务程序复制到 {Services.ServiceProgram.InstallDir}", false, "");
+                return ("", string.Format(Strings.Set_ProgramNotInstalled, Services.ServiceProgram.InstallDir), false, "");
             if (!System.IO.File.Exists(registered))
-                return (registered, "服务程序文件不存在，服务无法启动", true, "修复服务程序");
+                return (registered, Strings.Set_ProgramMissing, true, Strings.Set_RepairProgram);
 
             var inProgramFiles = string.Equals(System.IO.Path.GetFullPath(registered),
                 System.IO.Path.GetFullPath(Services.ServiceProgram.InstalledExe), StringComparison.OrdinalIgnoreCase);
@@ -242,16 +241,16 @@ public partial class SettingsViewModel : ViewModelBase
             {
                 var writable = Services.ServiceProgram.WritableByNonAdmins(new System.IO.FileInfo(registered).Directory!);
                 return (registered, writable
-                        ? "服务程序所在目录普通用户可修改，而服务以 SYSTEM 运行。建议迁移到 Program Files"
-                        : "服务程序不在 Program Files 中。建议迁移，之后升级只需在这里点「更新服务程序」",
-                    true, "迁移到 Program Files");
+                        ? Strings.Set_ProgramUserWritable
+                        : Strings.Set_ProgramNotInProgramFiles,
+                    true, Strings.Set_MoveToProgramFiles);
             }
 
-            var installedVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(registered).FileVersion ?? "未知";
+            var installedVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(registered).FileVersion ?? Strings.Common_Unknown;
             var current = Environment.ProcessPath;
             if (current == null || Services.ServiceProgram.SameBuild(registered, current))
-                return (registered, $"与当前程序版本一致（{installedVersion}）", false, "");
-            return (registered, $"已安装版本 {installedVersion}，与当前打开的程序（{Version}）不一致", true, "更新服务程序");
+                return (registered, string.Format(Strings.Set_ProgramSameVersion, installedVersion), false, "");
+            return (registered, string.Format(Strings.Set_ProgramOtherVersion, installedVersion, Version), true, Strings.Set_UpdateProgram);
         });
         ProgramPath = path;
         ProgramStatus = status;
@@ -279,17 +278,17 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private Task InstallServiceAsync() => RunBusyAsync("正在安装服务（复制服务程序到 Program Files）…", async () =>
+    private Task InstallServiceAsync() => RunBusyAsync(Strings.Set_InstallingBusy, async () =>
     {
         try
         {
             await _serviceManager.InstallAsync();
-            await _dialogService.SuccessAsync("安装完成",
-                $"服务程序已复制到 {Services.ServiceProgram.InstallDir}，RemoteKSP 服务已安装并设为开机自动启动。");
+            await _dialogService.SuccessAsync(Strings.Set_InstalledTitle,
+                string.Format(Strings.Set_Installed, Services.ServiceProgram.InstallDir));
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("安装失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_InstallFailed, ex.Message);
         }
     });
 
@@ -299,27 +298,26 @@ public partial class SettingsViewModel : ViewModelBase
     {
         var confirmed = await _dialogService.ConfirmAsync(
             ProgramActionText,
-            $"将停止服务，把当前打开的程序复制到 {Services.ServiceProgram.InstallDir}，服务改为使用这个副本，原来在运行就重新启动。\n\n" +
-            "数据目录、证书、PIN 和客户端配对都不受影响，客户端不需要重新配对。",
+            string.Format(Strings.Set_UpdateMessage, Services.ServiceProgram.InstallDir),
             ProgramActionText);
         if (!confirmed)
             return;
 
-        await RunBusyAsync("正在更新服务程序…", async () =>
+        await RunBusyAsync(Strings.Set_UpdatingBusy, async () =>
         {
             try
             {
                 var oldPath = ProgramPath;
                 await _serviceManager.UpdateProgramAsync();
                 var moved = !string.Equals(oldPath, Services.ServiceProgram.InstalledExe, StringComparison.OrdinalIgnoreCase);
-                await _dialogService.SuccessAsync("服务程序已更新",
+                await _dialogService.SuccessAsync(Strings.Set_UpdatedTitle,
                     moved
-                        ? $"服务现在使用 {Services.ServiceProgram.InstalledExe}。原来的 {oldPath} 不再被服务使用，可以删除。"
-                        : $"服务已更新为当前版本（{Version}）。");
+                        ? string.Format(Strings.Set_UpdatedMoved, Services.ServiceProgram.InstalledExe, oldPath)
+                        : string.Format(Strings.Set_UpdatedVersion, Version));
             }
             catch (Exception ex)
             {
-                await _dialogService.ErrorAsync("更新服务程序失败", ex.Message);
+                await _dialogService.ErrorAsync(Strings.Set_UpdateFailed, ex.Message);
             }
         });
     }
@@ -330,7 +328,7 @@ public partial class SettingsViewModel : ViewModelBase
         if (await ServiceUninstallUi.ConfirmAsync(_dialogService) is not { } removeData)
             return;
 
-        await RunBusyAsync("正在卸载服务…", async () =>
+        await RunBusyAsync(Strings.Set_UninstallingBusy, async () =>
         {
             try
             {
@@ -339,7 +337,7 @@ public partial class SettingsViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                await _dialogService.ErrorAsync("卸载失败", ex.Message);
+                await _dialogService.ErrorAsync(Strings.Common_UninstallFailed, ex.Message);
             }
         });
     }
@@ -348,14 +346,13 @@ public partial class SettingsViewModel : ViewModelBase
     private async Task ReinstallServiceAsync()
     {
         var confirmed = await _dialogService.ConfirmAsync(
-            "重新安装服务",
-            "将删除并重新创建 RemoteKSP 服务（服务程序同时更新为当前打开的版本），服务会停止。\n\n" +
-            "数据目录和配置不受影响。服务注册信息损坏时使用；只是升级版本请用「更新服务程序」。",
-            "重新安装");
+            Strings.Set_ReinstallTitle,
+            Strings.Set_ReinstallMessage,
+            Strings.Set_Reinstall);
         if (!confirmed)
             return;
 
-        await RunBusyAsync("正在重新安装服务…", async () =>
+        await RunBusyAsync(Strings.Set_ReinstallingBusy, async () =>
         {
             try
             {
@@ -367,11 +364,11 @@ public partial class SettingsViewModel : ViewModelBase
                     await Task.Delay(500); // 等待 SCM 更新状态
                 }
                 await _serviceManager.InstallAsync();
-                await _dialogService.SuccessAsync("重新安装完成", "RemoteKSP 服务已重新安装。");
+                await _dialogService.SuccessAsync(Strings.Set_ReinstalledTitle, Strings.Set_Reinstalled);
             }
             catch (Exception ex)
             {
-                await _dialogService.ErrorAsync("重新安装失败", ex.Message);
+                await _dialogService.ErrorAsync(Strings.Set_ReinstallFailed, ex.Message);
             }
         });
     }
@@ -392,45 +389,43 @@ public partial class SettingsViewModel : ViewModelBase
     {
         if (!int.TryParse(HttpsPort.Trim(), out var port) || port is < 1 or > 65535)
         {
-            await _dialogService.WarningAsync("端口无效", "请输入 1–65535 之间的端口号。");
+            await _dialogService.WarningAsync(Strings.Set_PortInvalidTitle, Strings.Set_PortInvalid);
             return;
         }
         if (port == _currentPort)
             return;
         if (Services.ServiceManager.IsPortInUse(port))
         {
-            await _dialogService.WarningAsync("端口已被占用", $"本机已有程序在监听 {port} 端口，请换一个。");
+            await _dialogService.WarningAsync(Strings.Set_PortInUseTitle, string.Format(Strings.Set_PortInUse, port));
             return;
         }
 
         var info = await LoadTlsCertificateAsync();
-        var clients = info == null ? "所有" : $"全部 {info.PairedClients} 个";
+        var clients = info == null ? Strings.Set_AllPairedClients : string.Format(Strings.Set_NPairedClients, info.PairedClients);
         var confirmed = await _dialogService.ConfirmAsync(
-            "修改 HTTPS 端口",
-            $"端口将从 {_currentPort} 改为 {port}，服务在运行时会重启，防火墙规则一并更新。\n\n" +
-            $"客户端保存的服务端地址包含端口，修改后{clients}已配对客户端都会连接失败，" +
-            $"需要在每台客户端上移除该服务端，再用新端口 {port} 重新配对。",
-            "修改端口",
+            Strings.Set_PortTitle,
+            string.Format(Strings.Set_PortMessage, _currentPort, port, clients),
+            Strings.Set_ChangePort,
             destructive: true);
         if (!confirmed)
             return;
 
-        await RunBusyAsync($"正在把端口改为 {port}…", async () =>
+        await RunBusyAsync(string.Format(Strings.Set_ChangingPort, port), async () =>
         {
             try
             {
                 var firewallOk = await _serviceManager.ChangePortAsync(port);
                 LoadPort();
                 if (firewallOk)
-                    await _dialogService.SuccessAsync("端口已修改", $"HTTPS 端口已改为 {port}。请让各客户端用新端口重新配对。");
+                    await _dialogService.SuccessAsync(Strings.Set_PortChangedTitle, string.Format(Strings.Set_PortChanged, port));
                 else
-                    await _dialogService.WarningAsync("端口已修改，防火墙规则未更新",
-                        $"HTTPS 端口已改为 {port}，但添加防火墙规则失败（可能由组策略管理）。请手动放行 TCP {port} 入站。");
+                    await _dialogService.WarningAsync(Strings.Set_PortChangedNoFirewallTitle,
+                        string.Format(Strings.Set_PortChangedNoFirewall, port));
             }
             catch (Exception ex)
             {
                 LoadPort();
-                await _dialogService.ErrorAsync("修改端口失败", ex.Message);
+                await _dialogService.ErrorAsync(Strings.Set_ChangePortFailed, ex.Message);
             }
         });
     }

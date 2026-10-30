@@ -26,7 +26,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private string _applicationTitle = "Remote KSP Server";
 
     [ObservableProperty]
-    private string _currentPageTitle = "概览";
+    private string _currentPageTitle = Strings.Nav_Overview;
 
     [ObservableProperty]
     private ObservableCollection<object> _menuItems = [];
@@ -110,11 +110,11 @@ public partial class MainWindowViewModel : ViewModelBase
 
         var dialog = new ContentDialog
         {
-            Title = "新的客户端配对请求",
+            Title = Strings.Pairing_NewRequestTitle,
             Content = form,
-            PrimaryButtonText = "批准配对",
-            SecondaryButtonText = "拒绝配对",
-            CloseButtonText = "稍后处理",
+            PrimaryButtonText = Strings.Pairing_Approve,
+            SecondaryButtonText = Strings.Pairing_Reject,
+            CloseButtonText = Strings.Pairing_Later,
             DefaultButton = ContentDialogButton.Close,
             DialogMaxWidth = 680
         };
@@ -145,13 +145,13 @@ public partial class MainWindowViewModel : ViewModelBase
                     approved = true;
                     dialog.Hide(ContentDialogResult.Primary);
 
-                    await _dialogService.SuccessAsync("配对成功", $"已批准客户端「{request.MachineName}」的配对请求。");
+                    await _dialogService.SuccessAsync(Strings.Pairing_SuccessTitle, string.Format(Strings.Pairing_Success, request.MachineName));
                 }
                 catch (Exception ex)
                 {
                     dialog.IsPrimaryButtonEnabled = true;
                     dialog.IsSecondaryButtonEnabled = true;
-                    await _dialogService.ErrorAsync("批准失败", ex.Message);
+                    await _dialogService.ErrorAsync(Strings.Pairing_ApproveFailed, ex.Message);
                 }
             }
             else if (e.Result == ContentDialogResult.Secondary && !rejected)
@@ -173,7 +173,7 @@ public partial class MainWindowViewModel : ViewModelBase
                 {
                     dialog.IsPrimaryButtonEnabled = true;
                     dialog.IsSecondaryButtonEnabled = true;
-                    await _dialogService.ErrorAsync("拒绝失败", ex.Message);
+                    await _dialogService.ErrorAsync(Strings.Pairing_RejectFailed, ex.Message);
                 }
             }
             else if (e.Result == ContentDialogResult.None)
@@ -198,31 +198,31 @@ public partial class MainWindowViewModel : ViewModelBase
         [
             new NavigationViewItem
             {
-                Content = "概览",
+                Content = Strings.Nav_Overview,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
                 TargetPageType = typeof(Views.Pages.OverviewPage)
             },
             new NavigationViewItem
             {
-                Content = "证书管理",
+                Content = Strings.Nav_Certificates,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Certificate24 },
                 TargetPageType = typeof(Views.Pages.CertificatesPage)
             },
             new NavigationViewItem
             {
-                Content = "配对请求",
+                Content = Strings.Nav_PairingRequests,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.PersonAdd24 },
                 TargetPageType = typeof(Views.Pages.PairingRequestsPage)
             },
             new NavigationViewItem
             {
-                Content = "已配对客户端",
+                Content = Strings.Nav_Clients,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.People24 },
                 TargetPageType = typeof(Views.Pages.ClientsPage)
             },
             new NavigationViewItem
             {
-                Content = "活动日志",
+                Content = Strings.Nav_ActivityLog,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentBulletList24 },
                 TargetPageType = typeof(Views.Pages.ActivityLogPage)
             }
@@ -232,7 +232,7 @@ public partial class MainWindowViewModel : ViewModelBase
         [
             new NavigationViewItem
             {
-                Content = "设置",
+                Content = Strings.Nav_Settings,
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(Views.Pages.SettingsPage)
             }

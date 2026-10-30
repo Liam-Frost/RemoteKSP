@@ -61,6 +61,8 @@ locally against the certificate's public key before it is returned.
 - Implements the CNG KSP interface, PKCS#1 signatures with SHA-1/256/384/512
 - Checks the server certificate fingerprint before any request header is sent
 
+Both apps are available in **English** and **Simplified Chinese** (Settings → Language).
+
 ## Requirements
 
 - Windows 10 / 11 or Windows Server 2016+ (x64). The KSP DLL is available for x64 and x86 applications.
@@ -90,8 +92,8 @@ gh attestation verify .\RemoteKSP.Server-v2.2.0.exe --repo Liam-Frost/RemoteKSP
 
 ### 1. Set up the server (the machine with the eToken)
 
-Run `RemoteKSP.Server.exe` as Administrator and click **Install service** (安装服务) on the
-Overview (概览) page. The program is copied to `C:\Program Files\RemoteKSP\` and the
+Run `RemoteKSP.Server.exe` as Administrator and click **Install service** on the
+Overview page. The program is copied to `C:\Program Files\RemoteKSP\` and the
 `RemoteKSP` service starts automatically on boot, listening on HTTPS port 8443
 (a firewall rule is added). Unattended alternative:
 
@@ -100,23 +102,23 @@ Overview (概览) page. The program is copied to `C:\Program Files\RemoteKSP\` a
 .\RemoteKSP.Server.exe --uninstall-service [--remove-data]
 ```
 
-Then add a certificate under **Certificates → Add certificate** (证书管理 → 添加证书):
+Then add a certificate under **Certificates → Add certificate**:
 
 | Source | Use it for | Notes |
 |---|---|---|
-| **eToken** | Hardware tokens (recommended) | Import the public `.cer` into `LocalMachine\My` first (`certutil -addstore My cert.cer`), click *Detect eToken* (检测 eToken) for the container, enter the thumbprint and PIN. A test signature validates the PIN before it is saved. |
+| **eToken** | Hardware tokens (recommended) | Import the public `.cer` into `LocalMachine\My` first (`certutil -addstore My cert.cer`), click *Detect eToken* for the container, enter the thumbprint and PIN. A test signature validates the PIN before it is saved. |
 | **Certificate store** | Software keys already in Windows | Lists only certificates with a usable private key. |
 | **PFX file** | Software keys in a file | Copied into the data directory; password protected with DPAPI. |
 | **Test certificate** | Trying out pairing | Public key only — signing with it is refused. |
 
-Tick **Share with clients** (分享给客户端) so paired clients can sync it.
+Tick **Share with clients** so paired clients can sync it.
 
 ### 2. Pair a client
 
-1. Run `RemoteKSP.Client.exe` as Administrator and click **Install KSP** (安装 KSP).
-2. **Servers → Add server** (服务端管理 → 添加服务端): enter the server address and port.
+1. Run `RemoteKSP.Client.exe` as Administrator and click **Install KSP**.
+2. **Servers → Add server**: enter the server address and port.
 3. Check that the verification code shown on both machines matches.
-4. Approve the request on the server under **Pairing requests** (配对请求).
+4. Approve the request on the server under **Pairing requests**.
 5. Shared certificates are synced into `LocalMachine\My` automatically.
 
 ### 3. Sign
@@ -125,7 +127,7 @@ Tick **Share with clients** (分享给客户端) so paired clients can sync it.
 signtool sign /sm /sha1 <thumbprint> /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 app.exe
 ```
 
-`/sm` selects the machine store. The client's **Certificates** (证书管理) page can generate
+`/sm` selects the machine store. The client's **Certificates** page can generate
 and run this command for you. Any other CNG-aware application can simply pick the
 certificate.
 
@@ -147,7 +149,7 @@ To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
 ## Building from source
 
-Requirements: Windows, .NET 9 SDK, Visual Studio 2022 with the *Desktop development with C++* workload.
+Requirements: Windows, .NET 10 SDK, Visual Studio 2022 with the *Desktop development with C++* workload.
 
 ```powershell
 .\publish-all.ps1                    # native DLLs + both single-file executables → Publish\
@@ -167,7 +169,6 @@ for details, the project layout and how releases are made.
 | [docs/Archive/ETOKEN_PIN_ERROR_CHECK.md](docs/Archive/ETOKEN_PIN_ERROR_CHECK.md) | Verifying real eToken error codes (Chinese) |
 | [CHANGELOG.md](CHANGELOG.md) | Release history |
 
-> The user interface is currently in Simplified Chinese. English UI support is planned.
 
 ## Contributing
 
@@ -175,6 +176,9 @@ Issues and pull requests are welcome. Please run `.\publish-all.ps1 -Test` befor
 opening a pull request, and add a regression check to `tests/SecurityRegression`
 for any behavior change in authentication, pairing or key handling. Security issues
 go through [SECURITY.md](SECURITY.md), not public issues.
+
+Translations are welcome too: see [docs/BUILD.md](docs/BUILD.md#translations) for where the UI
+text lives and how to add a language.
 
 ## License
 

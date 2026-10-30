@@ -39,31 +39,31 @@ public partial class OperationStatus : ObservableObject
         OnPropertyChanged(nameof(Severity));
     }
 
-    public void Run(string title = "正在处理...")
+    public void Run(string? title = null)
     {
         State = OperationState.Running;
-        Title = title;
+        Title = title ?? SharedStrings.Status_Processing;
         Message = "";
     }
 
     public void Success(string message)
     {
         State = OperationState.Success;
-        Title = "成功";
+        Title = SharedStrings.Status_Success;
         Message = message;
     }
 
     public void Warn(string message)
     {
         State = OperationState.Warning;
-        Title = "警告";
+        Title = SharedStrings.Status_Warning;
         Message = message;
     }
 
     public void Error(string message)
     {
         State = OperationState.Error;
-        Title = "错误";
+        Title = SharedStrings.Status_Error;
         Message = message;
     }
 

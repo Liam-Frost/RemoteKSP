@@ -68,7 +68,7 @@ public class CertificateRegistry
             entry.Thumbprint = Protocol.NormalizeThumbprint(entry.Thumbprint);
             var existing = _entries.FirstOrDefault(e => e.Thumbprint == entry.Thumbprint);
             if (existing != null)
-                throw new InvalidOperationException($"该证书已登记为「{existing.Name}」");
+                throw new InvalidOperationException(string.Format(Strings.Cert_AlreadyRegistered, existing.Name));
 
             entry.Id = NextId();
             entry.AddedAt = DateTime.UtcNow;
@@ -83,7 +83,7 @@ public class CertificateRegistry
         lock (_lock)
         {
             var entry = _entries.FirstOrDefault(e => e.Id == id)
-                ?? throw new InvalidOperationException("证书不存在");
+                ?? throw new InvalidOperationException(Strings.Cert_NotFound);
             entry.PinEncrypted = DpapiHelper.ProtectString(pin);
             entry.PinFailure = null;
             entry.PinFailedAt = null;
@@ -172,7 +172,7 @@ public class CertificateRegistry
                 {
                     var json = SecureStorage.ReadAllText(_filePath);
                     var data = JsonSerializer.Deserialize<CertificateRegistryData>(json)
-                        ?? throw new JsonException("文件内容为 null");
+                        ?? throw new JsonException(Strings.Store_FileIsNull);
                     _entries = data.Certificates ?? new List<CertificateEntry>();
                 }
                 catch (Exception ex) when (ex is JsonException or NotSupportedException)
@@ -182,14 +182,14 @@ public class CertificateRegistry
                     string kept;
                     try
                     {
-                        kept = $"已改名保留为 {Path.GetFileName(SecureStorage.PreserveCorruptFile(_filePath))}";
+                        kept = string.Format(Strings.Store_CorruptKept, Path.GetFileName(SecureStorage.PreserveCorruptFile(_filePath)));
                     }
                     catch (Exception moveEx) when (moveEx is IOException or UnauthorizedAccessException)
                     {
                         _saveBlocked = true;
-                        kept = $"改名保留失败（{moveEx.Message}），排除问题前不会写入该文件";
+                        kept = string.Format(Strings.Store_CorruptKeepFailed, moveEx.Message);
                     }
-                    LoadError = $"certificates.json 无法解析（{ex.Message}），{kept}，当前证书列表为空";
+                    LoadError = string.Format(Strings.Cert_RegistryCorrupt, ex.Message, kept);
                 }
             }
             else
@@ -225,10 +225,10 @@ public class CertificateRegistry
                 {
                     Name = config.KeySourceType switch
                     {
-                        "etoken" => "eToken 签名证书",
-                        "pfx" => "测试 PFX 证书",
-                        "store" => "证书存储签名证书",
-                        _ => "迁移的签名证书"
+                        "etoken" => Strings.Cert_DefaultName_EToken,
+                        "pfx" => Strings.Cert_DefaultName_Pfx,
+                        "store" => Strings.Cert_DefaultName_Store,
+                        _ => Strings.Cert_DefaultName_Migrated
                     },
                     Thumbprint = config.Thumbprint ?? "",
                     SourceType = config.KeySourceType ?? "etoken",
@@ -263,7 +263,7 @@ public class CertificateRegistry
                 _entries.Add(new CertificateEntry
                 {
                     Id = NextId(),
-                    Name = "测试证书",
+                    Name = Strings.Cert_DefaultName_Test,
                     Thumbprint = dummy.Thumbprint.ToLowerInvariant(),
                     SourceType = "test",
                     IsShared = true,

@@ -1,6 +1,7 @@
 <Page x:Class="RemoteKSP.Server.Views.Pages.ActivityLogPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:RemoteKSP.Server.Localization"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -34,25 +35,25 @@
         <!-- Toolbar -->
         <Grid Grid.Row="0" Margin="0,0,0,12">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <ui:Button Content="清空日志" Icon="{ui:SymbolIcon Delete24}" Margin="0,0,8,0"
+                <ui:Button Content="{x:Static loc:Strings.X_ClearLog}" Icon="{ui:SymbolIcon Delete24}" Margin="0,0,8,0"
                            Command="{Binding ViewModel.ClearCommand, RelativeSource={RelativeSource AncestorType=Page}}"/>
                 <ComboBox SelectedValue="{Binding ViewModel.FilterLevel, RelativeSource={RelativeSource AncestorType=Page}}"
-                          SelectedValuePath="Content"
+                          SelectedValuePath="Tag"
                           Width="120" Margin="0,0,8,0">
-                    <ComboBoxItem Content="全部"/>
-                    <ComboBoxItem Content="INFO"/>
-                    <ComboBoxItem Content="WARN"/>
-                    <ComboBoxItem Content="ERROR"/>
+                    <ComboBoxItem Tag="ALL" Content="{x:Static loc:Strings.Log_FilterAll}"/>
+                    <ComboBoxItem Tag="INFO" Content="{x:Static loc:Strings.X_LogInfo}"/>
+                    <ComboBoxItem Tag="WARN" Content="{x:Static loc:Strings.X_LogWarn}"/>
+                    <ComboBoxItem Tag="ERROR" Content="{x:Static loc:Strings.X_LogError}"/>
                 </ComboBox>
             </StackPanel>
-            <ToggleButton Content="自动滚动" HorizontalAlignment="Right"
+            <ToggleButton Content="{x:Static loc:Strings.X_AutoScroll}" HorizontalAlignment="Right"
                           IsChecked="{Binding ViewModel.AutoScroll, RelativeSource={RelativeSource AncestorType=Page}}">
                 <ToggleButton.Style>
                     <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                        <Setter Property="Content" Value="自动滚动：关"/>
+                        <Setter Property="Content" Value="{x:Static loc:Strings.X_AutoScrollOff}"/>
                         <Style.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter Property="Content" Value="自动滚动：开"/>
+                                <Setter Property="Content" Value="{x:Static loc:Strings.X_AutoScrollOn}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>

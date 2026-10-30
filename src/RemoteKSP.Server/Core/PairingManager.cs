@@ -95,7 +95,7 @@ public class PairingManager
             var request = _pendingRequests.Find(r => r.RequestId == requestId);
             if (request != null) Expire(request);
             if (request == null || request.Status != PairingStatus.Pending)
-                throw new InvalidOperationException("配对请求已过期或已处理，请重新发起配对。");
+                throw new InvalidOperationException(Strings.Pairing_Expired);
             request.Status = PairingStatus.Approved;
             request.GeneratedSecret = generatedSecret;
         }

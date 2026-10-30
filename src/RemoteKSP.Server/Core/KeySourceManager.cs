@@ -141,8 +141,8 @@ public class KeySourceManager
         if (_maxRetryAttempts <= 0)
             return "";
         return _retryAttempts >= _maxRetryAttempts
-            ? $"（已自动重试 {_retryAttempts} 次仍失败，已停止重试；排除问题后请重启服务）"
-            : $"（正在自动重试 {_retryAttempts}/{_maxRetryAttempts}）";
+            ? string.Format(Strings.KeySrc_RetryStopped, _retryAttempts)
+            : string.Format(Strings.KeySrc_Retrying, _retryAttempts, _maxRetryAttempts);
     }
 
     private class LoadedCert
@@ -188,9 +188,9 @@ public class KeySourceManager
                 NeedsPin = needsPin,
                 Detail = entry.SourceType switch
                 {
-                    "test" => "测试证书：可验证配对和下发，签名会被拒绝",
-                    _ when needsPin => "尚未验证 PIN，签名会失败",
-                    _ => "就绪"
+                    "test" => Strings.KeySrc_TestDetail,
+                    _ when needsPin => Strings.KeySrc_PinNotVerified,
+                    _ => Strings.KeySrc_Ready
                 },
                 Subject = cert.Subject,
                 NotAfter = cert.NotAfter.ToUniversalTime()
@@ -198,7 +198,7 @@ public class KeySourceManager
         }
         catch (Exception ex)
         {
-            return new LoadedCert { Entry = entry, Detail = $"不可用：{ex.Message}" };
+            return new LoadedCert { Entry = entry, Detail = string.Format(Strings.KeySrc_UnavailableDetail, ex.Message) };
         }
     }
 
@@ -218,12 +218,12 @@ public class KeySourceManager
         {
             var def = _loaded.FirstOrDefault(l => l.Entry.IsShared);
             var shared = _loaded.Count(l => l.Entry.IsShared);
-            var summary = $"共 {_loaded.Count} 个证书，{shared} 个已分享";
+            var summary = string.Format(Strings.KeySrc_Summary, _loaded.Count, shared);
             if (def == null)
-                return new KeySourceStatus(ModeTest, "", $"{summary}。没有分享的证书，客户端无法获取证书");
+                return new KeySourceStatus(ModeTest, "", string.Format(Strings.KeySrc_NoShared, summary));
 
             var mode = def.Entry.SourceType == "test" || def.Source == null ? ModeTest : ModeProduction;
-            return new KeySourceStatus(mode, def.Entry.Thumbprint, $"{summary}。默认证书「{def.Entry.Name}」：{DetailOf(def)}");
+            return new KeySourceStatus(mode, def.Entry.Thumbprint, string.Format(Strings.KeySrc_DefaultCert, summary, def.Entry.Name, DetailOf(def)));
         }
     }
 
@@ -232,7 +232,7 @@ public class KeySourceManager
 
     private static string DetailOf(LoadedCert l) => FailureOf(l)?.Detail ?? l.Detail;
 
-    private const string TokenAbsentDetail = "未检测到 eToken（未插入或驱动未就绪）。插入后签名请求会直接使用，不用重启服务";
+    private static string TokenAbsentDetail => Strings.KeySrc_TokenAbsent;
 
     public List<CertificateStatus> GetCertificateStatuses()
     {
@@ -332,12 +332,12 @@ public class KeySourceManager
         lock (_lock)
         {
             current = _loaded.FirstOrDefault(x => x.Entry.Thumbprint == normalized)
-                ?? throw new KeyNotFoundException($"服务端没有指纹为 {normalized} 的证书");
+                ?? throw new KeyNotFoundException(string.Format(Strings.KeySrc_NoSuchThumbprint, normalized));
             if (current.Source != null)
                 return current;
             var now = DateTime.UtcNow;
             if (_lastOnDemandReload.TryGetValue(current.Entry.Id, out var last) && now - last < _onDemandReloadInterval)
-                throw new InvalidOperationException($"证书「{current.Entry.Name}」{current.Detail}");
+                throw new InvalidOperationException(string.Format(Strings.KeySrc_CertDetail, current.Entry.Name, current.Detail));
             _lastOnDemandReload[current.Entry.Id] = now;
             generation = _generation;
         }
@@ -354,7 +354,7 @@ public class KeySourceManager
                     _loaded[index] = reloaded;
             }
             var latest = _loaded.FirstOrDefault(x => x.Entry.Thumbprint == normalized) ?? reloaded;
-            return latest.Source != null ? latest : throw new InvalidOperationException($"证书「{latest.Entry.Name}」{latest.Detail}");
+            return latest.Source != null ? latest : throw new InvalidOperationException(string.Format(Strings.KeySrc_CertDetail, latest.Entry.Name, latest.Detail));
         }
     }
 
@@ -365,7 +365,7 @@ public class KeySourceManager
         {
             case "test":
                 if (string.IsNullOrEmpty(entry.TestCertDer))
-                    throw new InvalidOperationException("测试证书数据缺失");
+                    throw new InvalidOperationException(Strings.KeySrc_TestDataMissing);
                 return new TestKeySource(Convert.FromBase64String(entry.TestCertDer));
 
             case "store":
@@ -381,7 +381,7 @@ public class KeySourceManager
             case "pfx":
             {
                 if (string.IsNullOrEmpty(entry.PfxPath))
-                    throw new InvalidOperationException("未指定 PFX 文件");
+                    throw new InvalidOperationException(Strings.KeySrc_NoPfx);
                 var pfxPath = Path.IsPathRooted(entry.PfxPath)
                     ? entry.PfxPath
                     : Path.Combine(ServerPaths.DataDir, entry.PfxPath);
@@ -399,7 +399,7 @@ public class KeySourceManager
                     ? "eToken Base Cryptographic Provider"
                     : entry.CspProvider;
                 if (string.IsNullOrWhiteSpace(entry.KeyContainer))
-                    throw new InvalidOperationException("未指定密钥容器");
+                    throw new InvalidOperationException(Strings.KeySrc_NoContainer);
 
                 var source = new ETokenKeySource(csp, entry.KeyContainer, entry.Thumbprint,
                     NullLogger<ETokenKeySource>.Instance);
@@ -411,7 +411,7 @@ public class KeySourceManager
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"证书 {entry.Thumbprint} 不在 LocalMachine\\My", ex);
+                    throw new InvalidOperationException(string.Format(Strings.KeySrc_NotInLocalMachineMy, entry.Thumbprint), ex);
                 }
 
                 // 不按容器枚举结果拦截：没插 token 时照样加载，签名时直接访问 token，
@@ -426,7 +426,7 @@ public class KeySourceManager
             }
 
             default:
-                throw new InvalidOperationException($"未知的密钥源类型 {entry.SourceType}");
+                throw new InvalidOperationException(string.Format(Strings.KeySrc_UnknownType, entry.SourceType));
         }
     }
 }

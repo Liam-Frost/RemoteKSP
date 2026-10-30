@@ -1,6 +1,8 @@
 <Page x:Class="RemoteKSP.Client.Views.Pages.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:RemoteKSP.Client.Localization"
+      xmlns:shloc="clr-namespace:RemoteKSP.Shared.Localization;assembly=RemoteKSP.Shared"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -10,11 +12,14 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="24,0,24,24" MaxWidth="720">
+            <shloc:LanguageCard Margin="0,0,0,16"
+                                DataContext="{Binding ViewModel.Language, RelativeSource={RelativeSource AncestorType=Page}}"/>
+
             <ui:Card Padding="24">
                 <StackPanel>
-                    <TextBlock Text="关于" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                    <TextBlock Text="{x:Static loc:Strings.Common_About}" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
                     <TextBlock Text="Remote KSP Client" FontSize="14" FontWeight="Medium"/>
-                    <TextBlock Text="{Binding ViewModel.Version, RelativeSource={RelativeSource AncestorType=Page}, StringFormat='版本 {0}'}"
+                    <TextBlock Text="{Binding ViewModel.Version, RelativeSource={RelativeSource AncestorType=Page}, StringFormat={x:Static loc:Strings.Common_Version}}"
                                FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,4,0,0"/>
                 </StackPanel>
             </ui:Card>

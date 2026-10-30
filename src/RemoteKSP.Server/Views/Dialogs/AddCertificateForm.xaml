@@ -1,36 +1,37 @@
 <UserControl x:Class="RemoteKSP.Server.Views.Dialogs.AddCertificateForm"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:RemoteKSP.Server.Localization"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              Width="600" MaxWidth="720" MinWidth="480">
 
     <StackPanel>
-        <TextBlock Text="证书来源" FontSize="13" Margin="0,0,0,8"/>
+        <TextBlock Text="{x:Static loc:Strings.X_CertSource}" FontSize="13" Margin="0,0,0,8"/>
         <WrapPanel Margin="0,0,0,16">
-            <RadioButton Content="证书存储" GroupName="SourceType" Margin="0,0,16,0" IsChecked="{Binding IsStore}"/>
+            <RadioButton Content="{x:Static loc:Strings.Type_Store}" GroupName="SourceType" Margin="0,0,16,0" IsChecked="{Binding IsStore}"/>
             <RadioButton Content="eToken" GroupName="SourceType" Margin="0,0,16,0" IsChecked="{Binding IsEToken}"/>
-            <RadioButton Content="PFX 文件" GroupName="SourceType" Margin="0,0,16,0" IsChecked="{Binding IsPfx}"/>
-            <RadioButton Content="测试证书" GroupName="SourceType" IsChecked="{Binding IsTest}"/>
+            <RadioButton Content="{x:Static loc:Strings.Type_Pfx}" GroupName="SourceType" Margin="0,0,16,0" IsChecked="{Binding IsPfx}"/>
+            <RadioButton Content="{x:Static loc:Strings.Type_Test}" GroupName="SourceType" IsChecked="{Binding IsTest}"/>
         </WrapPanel>
 
-        <TextBlock Text="名称" FontSize="13" Margin="0,0,0,4"/>
+        <TextBlock Text="{x:Static loc:Strings.Common_Name}" FontSize="13" Margin="0,0,0,4"/>
         <ui:TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                    PlaceholderText="留空则使用证书主题" Margin="0,0,0,16"/>
+                    PlaceholderText="{x:Static loc:Strings.X_NamePlaceholder}" Margin="0,0,0,16"/>
 
         <!-- 证书存储 -->
         <StackPanel Visibility="{Binding IsStore, Converter={StaticResource BoolToVisibilityConverter}}">
-            <TextBlock Text="存储位置" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_StoreLocation}" FontSize="13" Margin="0,0,0,4"/>
             <ComboBox SelectedValue="{Binding StoreLocation}" SelectedValuePath="Tag"
                       HorizontalAlignment="Left" MinWidth="280" Margin="0,0,0,12">
-                <ComboBoxItem Content="LocalMachine (本地计算机)" Tag="LocalMachine"/>
-                <ComboBoxItem Content="CurrentUser (服务账户 SYSTEM)" Tag="CurrentUser"/>
+                <ComboBoxItem Content="{x:Static loc:Strings.X_StoreLocalMachine}" Tag="LocalMachine"/>
+                <ComboBoxItem Content="{x:Static loc:Strings.X_StoreCurrentUser}" Tag="CurrentUser"/>
             </ComboBox>
 
             <ui:InfoBar IsOpen="{Binding IsCurrentUserStore}" Severity="Warning" IsClosable="False" Margin="0,0,0,12"
-                        Title="建议使用 LocalMachine"
-                        Message="服务以 SYSTEM 运行，CurrentUser 是 SYSTEM 账户的存储，不是当前登录用户的。请把证书导入 LocalMachine\My。"/>
+                        Title="{x:Static loc:Strings.X_UseLocalMachineTitle}"
+                        Message="{x:Static loc:Strings.X_UseLocalMachine}"/>
 
-            <TextBlock Text="证书" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_Certificate}" FontSize="13" Margin="0,0,0,4"/>
             <Grid Margin="0,0,0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -38,7 +39,7 @@
                 </Grid.ColumnDefinitions>
                 <ComboBox ItemsSource="{Binding StoreCertificates}" SelectedItem="{Binding SelectedStoreCertificate}"
                           DisplayMemberPath="Display"/>
-                <ui:Button Grid.Column="1" Icon="{ui:SymbolIcon ArrowSync24}" Margin="8,0,0,0" ToolTip="重新读取"
+                <ui:Button Grid.Column="1" Icon="{ui:SymbolIcon ArrowSync24}" Margin="8,0,0,0" ToolTip="{x:Static loc:Strings.X_Reload}"
                            Command="{Binding LoadStoreCertificatesCommand}"/>
             </Grid>
             <TextBlock Text="{Binding SelectedStoreCertificate.Thumbprint}" Style="{StaticResource MonospaceTextStyle}"
@@ -48,10 +49,10 @@
 
         <!-- eToken -->
         <StackPanel Visibility="{Binding IsEToken, Converter={StaticResource BoolToVisibilityConverter}}">
-            <TextBlock Text="CSP 提供程序" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_CspProvider}" FontSize="13" Margin="0,0,0,4"/>
             <ui:TextBox Text="{Binding CspProvider}" Margin="0,0,0,12"/>
 
-            <TextBlock Text="密钥容器" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_KeyContainer}" FontSize="13" Margin="0,0,0,4"/>
             <Grid Margin="0,0,0,4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -59,43 +60,43 @@
                 </Grid.ColumnDefinitions>
                 <ComboBox IsEditable="True" ItemsSource="{Binding Containers}"
                           Text="{Binding KeyContainer, UpdateSourceTrigger=PropertyChanged}"/>
-                <ui:Button Grid.Column="1" Content="检测 eToken" Margin="8,0,0,0"
+                <ui:Button Grid.Column="1" Content="{x:Static loc:Strings.X_DetectEToken}" Margin="8,0,0,0"
                            Command="{Binding DetectContainersCommand}"/>
             </Grid>
             <TextBlock Text="{Binding DetectStatus}" Style="{StaticResource CaptionTextStyle}" Margin="0,0,0,12"/>
 
-            <TextBlock Text="证书指纹 (SHA1，证书需在 LocalMachine\My)" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_ThumbprintLocalMachine}" FontSize="13" Margin="0,0,0,4"/>
             <ui:TextBox Text="{Binding EtokenThumbprint}" FontFamily="Cascadia Mono, Consolas" Margin="0,0,0,12"/>
 
-            <TextBlock Text="PIN（可选，填写后会测试签名并加密保存）" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_PinOptional}" FontSize="13" Margin="0,0,0,4"/>
             <PasswordBox x:Name="PinBox" MaxWidth="300" HorizontalAlignment="Left" PasswordChanged="PinBox_PasswordChanged"/>
         </StackPanel>
 
         <!-- PFX -->
         <StackPanel Visibility="{Binding IsPfx, Converter={StaticResource BoolToVisibilityConverter}}">
-            <TextBlock Text="PFX 文件" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.Type_Pfx}" FontSize="13" Margin="0,0,0,4"/>
             <Grid Margin="0,0,0,12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <ui:TextBox Text="{Binding PfxPath}" IsReadOnly="True"/>
-                <ui:Button Grid.Column="1" Content="浏览..." Margin="8,0,0,0" Command="{Binding BrowsePfxCommand}"/>
+                <ui:Button Grid.Column="1" Content="{x:Static loc:Strings.X_Browse}" Margin="8,0,0,0" Command="{Binding BrowsePfxCommand}"/>
             </Grid>
 
-            <TextBlock Text="PFX 密码" FontSize="13" Margin="0,0,0,4"/>
+            <TextBlock Text="{x:Static loc:Strings.X_PfxPassword}" FontSize="13" Margin="0,0,0,4"/>
             <PasswordBox x:Name="PfxPasswordBox" MaxWidth="300" HorizontalAlignment="Left" Margin="0,0,0,12"
                          PasswordChanged="PfxPasswordBox_PasswordChanged"/>
 
-            <ui:Button Content="生成自签名测试 PFX" Command="{Binding GenerateTestPfxCommand}" Margin="0,0,0,8"/>
+            <ui:Button Content="{x:Static loc:Strings.X_GenerateTestPfx}" Command="{Binding GenerateTestPfxCommand}" Margin="0,0,0,8"/>
             <TextBlock Text="{Binding PfxStatus}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap"/>
         </StackPanel>
 
         <!-- 测试证书 -->
         <ui:InfoBar IsOpen="{Binding IsTest}" Severity="Informational" IsClosable="False"
-                    Title="测试证书"
-                    Message="服务会自动生成一张虚拟证书。客户端可以用它验证配对和证书下发，但签名请求会被拒绝。"/>
+                    Title="{x:Static loc:Strings.Type_Test}"
+                    Message="{x:Static loc:Strings.X_TestCertInfo}"/>
 
-        <CheckBox Content="分享给客户端" IsChecked="{Binding IsShared}" Margin="0,16,0,0"/>
+        <CheckBox Content="{x:Static loc:Strings.X_ShareWithClients}" IsChecked="{Binding IsShared}" Margin="0,16,0,0"/>
     </StackPanel>
 </UserControl>

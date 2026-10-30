@@ -9,7 +9,7 @@ using RemoteKSP.Server.Services;
 
 namespace RemoteKSP.Server.ViewModels;
 
-/// <summary>"添加证书"对话框。所有校验和落盘都在服务里做，这里只收集输入</summary>
+/// <summary>Strings.Certs_AddTitle对话框。所有校验和落盘都在服务里做，这里只收集输入</summary>
 public partial class AddCertificateViewModel : ViewModelBase
 {
     private readonly PipeClient _pipeClient;
@@ -68,7 +68,7 @@ public partial class AddCertificateViewModel : ViewModelBase
     [RelayCommand]
     private async Task LoadStoreCertificatesAsync()
     {
-        StoreStatus = "正在读取证书存储...";
+        StoreStatus = Strings.Add_ReadingStore;
         StoreCertificates.Clear();
         try
         {
@@ -77,7 +77,7 @@ public partial class AddCertificateViewModel : ViewModelBase
 
             if (response == null)
             {
-                StoreStatus = $"{StoreLocation}\\My 中没有带私钥的证书";
+                StoreStatus = string.Format(Strings.Add_StoreEmpty, StoreLocation);
                 return;
             }
 
@@ -87,7 +87,7 @@ public partial class AddCertificateViewModel : ViewModelBase
             SelectedStoreCertificate = StoreCertificates.FirstOrDefault();
 
             if (certs.Length == 0)
-                StoreStatus = response.DiagInfo ?? $"{StoreLocation}\\My 中没有带私钥的证书";
+                StoreStatus = response.DiagInfo ?? string.Format(Strings.Add_StoreEmpty, StoreLocation);
             else
                 StoreStatus = "";
         }
@@ -102,7 +102,7 @@ public partial class AddCertificateViewModel : ViewModelBase
     [RelayCommand]
     private async Task DetectContainersAsync()
     {
-        DetectStatus = "正在检测...";
+        DetectStatus = Strings.Add_Detecting;
         try
         {
             var containers = await _pipeClient.SendCommandAsync<string[]>(
@@ -111,12 +111,12 @@ public partial class AddCertificateViewModel : ViewModelBase
             if (string.IsNullOrEmpty(KeyContainer) && containers.Length > 0)
                 KeyContainer = containers[0];
             DetectStatus = containers.Length == 0
-                ? "未检测到 eToken（未插入或驱动未安装）"
-                : $"检测到 {containers.Length} 个密钥容器";
+                ? Strings.Add_NoEToken
+                : string.Format(Strings.Add_ContainersFound, containers.Length);
         }
         catch (Exception ex)
         {
-            DetectStatus = $"检测失败：{ex.Message}";
+            DetectStatus = string.Format(Strings.Add_DetectFailed, ex.Message);
         }
     }
 
@@ -125,13 +125,13 @@ public partial class AddCertificateViewModel : ViewModelBase
     {
         var dialog = new OpenFileDialog
         {
-            Filter = "PFX 文件|*.pfx;*.p12|所有文件|*.*",
-            Title = "选择 PFX 文件"
+            Filter = Strings.Add_PfxFilter,
+            Title = Strings.Add_PfxPickTitle
         };
         if (dialog.ShowDialog() == true)
         {
             PfxPath = dialog.FileName;
-            PfxStatus = "添加时服务会把文件复制到数据目录，之后移动或删除原文件不影响签名";
+            PfxStatus = Strings.Add_PfxCopied;
         }
     }
 
@@ -141,17 +141,17 @@ public partial class AddCertificateViewModel : ViewModelBase
         try
         {
             var result = await _pipeClient.SendCommandAsync<GenerateTestCertResult>("GenerateTestCert", null)
-                ?? throw new InvalidOperationException("服务未返回结果");
+                ?? throw new InvalidOperationException(Strings.Add_NoResult);
             PfxPath = result.PfxFile;
             PfxPassword = result.Password;
             PfxPasswordGenerated?.Invoke(result.Password);
             if (string.IsNullOrWhiteSpace(Name))
-                Name = "测试 PFX 证书";
-            PfxStatus = $"已生成自签名 PFX，指纹 {result.Thumbprint}，密码已自动填入";
+                Name = Strings.Cert_DefaultName_Pfx;
+            PfxStatus = string.Format(Strings.Add_PfxGenerated, result.Thumbprint);
         }
         catch (Exception ex)
         {
-            PfxStatus = $"生成失败：{ex.Message}";
+            PfxStatus = string.Format(Strings.Add_GenerateFailed, ex.Message);
         }
     }
 
@@ -163,23 +163,23 @@ public partial class AddCertificateViewModel : ViewModelBase
         {
             case "etoken":
                 if (string.IsNullOrWhiteSpace(KeyContainer) || string.IsNullOrWhiteSpace(EtokenThumbprint))
-                    return "请填写密钥容器名和证书指纹";
+                    return Strings.Add_NeedContainerAndThumbprint;
                 request = new { SourceType, Name, IsShared, CspProvider, KeyContainer,
                     Thumbprint = EtokenThumbprint.Trim(), Pin };
                 break;
             case "store":
                 if (SelectedStoreCertificate == null)
-                    return "请选择一张证书";
+                    return Strings.Add_NeedCertificate;
                 request = new { SourceType, Name, IsShared, StoreLocation,
                     SelectedStoreCertificate.Thumbprint };
                 break;
             case "pfx":
                 if (string.IsNullOrWhiteSpace(PfxPath))
-                    return "请选择 PFX 文件";
+                    return Strings.Add_NeedPfx;
                 request = new { SourceType, Name, IsShared, PfxPath, PfxPassword };
                 break;
             default:
-                request = new { SourceType, Name = string.IsNullOrWhiteSpace(Name) ? "测试证书" : Name, IsShared };
+                request = new { SourceType, Name = string.IsNullOrWhiteSpace(Name) ? Strings.Cert_DefaultName_Test : Name, IsShared };
                 break;
         }
 

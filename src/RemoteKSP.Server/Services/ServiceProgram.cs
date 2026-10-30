@@ -72,7 +72,7 @@ public static class ServiceProgram
 
         var dir = Directory.CreateDirectory(Path.GetDirectoryName(target)!);
         if (WritableByNonAdmins(dir))
-            throw new UnauthorizedAccessException($"{dir.FullName} 普通用户可写，服务以 SYSTEM 运行，不能把服务程序放在这里");
+            throw new UnauthorizedAccessException(string.Format(Strings.Svc_DirUserWritable, dir.FullName));
 
         var temp = target + ".new";
         var aside = $"{target}.old-{DateTime.Now:yyyyMMddHHmmssfff}";
@@ -160,7 +160,7 @@ public static class ServiceProgram
         if (!root.Exists)
             return;
         if ((root.Attributes & FileAttributes.ReparsePoint) != 0)
-            throw new UnauthorizedAccessException($"{root.FullName} 是联接或符号链接，未删除数据目录。请管理员确认后手动处理");
+            throw new UnauthorizedAccessException(string.Format(Strings.Svc_DataDirIsLink, root.FullName));
 
         var entries = new System.Collections.Generic.List<FileSystemInfo> { root };
         var pending = new System.Collections.Generic.Stack<DirectoryInfo>();
@@ -176,7 +176,7 @@ public static class ServiceProgram
             }
         }
         if (entries.FirstOrDefault(e => (e.Attributes & FileAttributes.ReparsePoint) != 0) is { } link)
-            throw new UnauthorizedAccessException($"{link.FullName} 是联接或符号链接，未删除数据目录。请管理员确认后手动处理");
+            throw new UnauthorizedAccessException(string.Format(Strings.Svc_DataDirIsLink, link.FullName));
 
         // 先删文件，再从最深的目录往上删
         foreach (var file in entries.OfType<FileInfo>())

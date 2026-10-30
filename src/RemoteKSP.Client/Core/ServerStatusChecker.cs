@@ -39,7 +39,7 @@ public static class ServerStatusChecker
         {
             return ServerStatus.Unauthorized;
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("TLS 证书") && ex.Message.Contains("不一致"))
+        catch (TlsMismatchException)
         {
             return ServerStatus.TlsMismatch;
         }
@@ -52,11 +52,11 @@ public static class ServerStatusChecker
     /// <summary>状态的友好显示文本</summary>
     public static string GetStatusText(ServerStatus status) => status switch
     {
-        ServerStatus.Connected => "已连接",
-        ServerStatus.Unauthorized => "未授权",
-        ServerStatus.Unreachable => "离线",
-        ServerStatus.TlsMismatch => "证书错误",
-        _ => "未知"
+        ServerStatus.Connected => Strings.Status_Connected,
+        ServerStatus.Unauthorized => Strings.Status_Unauthorized,
+        ServerStatus.Unreachable => Strings.Status_Offline,
+        ServerStatus.TlsMismatch => Strings.Status_CertError,
+        _ => Strings.Status_Unknown
     };
 
     /// <summary>状态的图标</summary>

@@ -1,6 +1,7 @@
 <Page x:Class="RemoteKSP.Client.Views.Pages.OverviewPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:RemoteKSP.Client.Localization"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -12,7 +13,7 @@
 
     <!-- 页面标题「概览」由窗口标题行显示；「运行诊断」放在同一行右侧 -->
     <sharedui:PageHeader.Actions>
-        <ui:Button Content="运行诊断" Icon="{ui:SymbolIcon CheckmarkStarburst24}" Appearance="Primary"
+        <ui:Button Content="{x:Static loc:Strings.X_RunDiagnostics}" Icon="{ui:SymbolIcon CheckmarkStarburst24}" Appearance="Primary"
                    Command="{Binding ViewModel.RunDiagnosticsCommand}"/>
     </sharedui:PageHeader.Actions>
 
@@ -35,7 +36,7 @@
                                        Command="{Binding ViewModel.InstallKspCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                        Visibility="{Binding ViewModel.KspNeedsInstall, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <!-- 卸载是低频破坏性操作：低强调样式，点击后仍有确认对话框 -->
-                            <ui:Button Content="卸载" Style="{StaticResource SubtleButtonStyle}"
+                            <ui:Button Content="{x:Static loc:Strings.Common_Uninstall}" Style="{StaticResource SubtleButtonStyle}"
                                        Command="{Binding ViewModel.UninstallKspCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                                        Visibility="{Binding ViewModel.KspInstalled, RelativeSource={RelativeSource AncestorType=Page}, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
@@ -43,7 +44,7 @@
                 </sharedui:MetricCard>
 
                 <!-- 只表示已配对，不表示在线：目前没有实时在线检测 -->
-                <sharedui:MetricCard Symbol="Server24" Title="已配对服务端"
+                <sharedui:MetricCard Symbol="Server24" Title="{x:Static loc:Strings.X_PairedServers}"
                                      Value="{Binding ViewModel.ServersValue, RelativeSource={RelativeSource AncestorType=Page}}"
                                      Detail="{Binding ViewModel.ServersDetail, RelativeSource={RelativeSource AncestorType=Page}}"
                                      DetailToolTip="{Binding ViewModel.ServersToolTip, RelativeSource={RelativeSource AncestorType=Page}, TargetNullValue={x:Null}}">
@@ -55,7 +56,7 @@
                 </sharedui:MetricCard>
 
                 <!-- 只统计已绑定数量；证书是否过期、私钥能否调用属于各自独立的状态，这里不标成功 -->
-                <sharedui:MetricCard Symbol="Certificate24" Title="已绑定证书"
+                <sharedui:MetricCard Symbol="Certificate24" Title="{x:Static loc:Strings.X_BoundCertificates}"
                                      Value="{Binding ViewModel.CertificatesValue, RelativeSource={RelativeSource AncestorType=Page}}"
                                      Detail="{Binding ViewModel.CertificatesDetail, RelativeSource={RelativeSource AncestorType=Page}}">
                     <sharedui:MetricCard.Actions>
@@ -67,7 +68,7 @@
             </sharedui:ResponsiveColumnsPanel>
 
             <!-- 本机网络：独立一行 -->
-            <net:NetworkAddressesCard Title="本机网络"
+            <net:NetworkAddressesCard Title="{x:Static loc:Strings.X_LocalNetwork}"
                                       DataContext="{Binding ViewModel.Network, RelativeSource={RelativeSource AncestorType=Page}}"/>
         </StackPanel>
     </ScrollViewer>

@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RemoteKSP.Server.Core;
+using RemoteKSP.Shared.Localization;
+using System.Globalization;
 
 namespace RemoteKSP.Server.Services;
 
@@ -84,6 +86,7 @@ public class PipeServer : BackgroundService
             if (request == null)
                 return;
 
+            ApplyLanguage(request.Language);
             var response = await ProcessCommandAsync(request);
             var responseJson = JsonSerializer.Serialize(response);
             await writer.WriteLineAsync(responseJson);
@@ -134,6 +137,30 @@ public class PipeServer : BackgroundService
         }
     }
 
+    /// <summary>
+    /// Replies use the language of the GUI that asked. The service also adopts it for messages it writes on
+    /// its own (activity log, Windows alerts) and remembers it in config.json for the next start.
+    /// </summary>
+    private void ApplyLanguage(string? language)
+    {
+        if (UiLanguage.Normalize(language) is not { } lang)
+            return;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(lang);
+        if (lang == UiLanguage.Current)
+            return;
+        UiLanguage.Apply(lang);
+        try
+        {
+            var config = ServerConfig.Load();
+            config.Language = lang;
+            config.Save();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Could not save the UI language to the configuration");
+        }
+    }
+
     private object GetStatus() => "Running";
 
     private object GetPendingRequests()
@@ -165,7 +192,7 @@ public class PipeServer : BackgroundService
 
         var secret = Guid.NewGuid().ToString("N");
         _pairingManager.Approve(requestId, secret);
-        _activityLog.Info("配对", $"批准配对请求 {requestId[..8]}...");
+        _activityLog.Info(Strings.LogCat_Pairing, string.Format(Strings.Pipe_PairingApproved, requestId[..8]));
         return new { Success = true };
     }
 
@@ -180,7 +207,7 @@ public class PipeServer : BackgroundService
             throw new ArgumentException("Invalid RequestId");
 
         _pairingManager.Reject(requestId);
-        _activityLog.Info("配对", $"拒绝配对请求 {requestId[..8]}...");
+        _activityLog.Info(Strings.LogCat_Pairing, string.Format(Strings.Pipe_PairingRejected, requestId[..8]));
         return new { Success = true };
     }
 
@@ -210,7 +237,7 @@ public class PipeServer : BackgroundService
 
         var client = _clientStore.GetAll().FirstOrDefault(c => c.Id == clientId);
         _clientStore.Revoke(clientId);
-        _activityLog.Warning("客户端", $"撤销客户端 {client?.MachineName ?? clientId}");
+        _activityLog.Warning(Strings.LogCat_Client, string.Format(Strings.Pipe_ClientRevoked, client?.MachineName ?? clientId));
         return new { Success = true };
     }
 
@@ -247,7 +274,7 @@ public class PipeServer : BackgroundService
         data.TryGetProperty(name, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
 
     private static string RequireString(JsonElement data, string name) =>
-        GetString(data, name) is { Length: > 0 } s ? s : throw new ArgumentException($"缺少 {name}");
+        GetString(data, name) is { Length: > 0 } s ? s : throw new ArgumentException(string.Format(Strings.Pipe_Missing, name));
 
     /// <summary>添加证书：先按类型补全指纹并试加载一次，失败不写入注册表</summary>
     private object AddCertificate(string? dataJson)
@@ -302,7 +329,7 @@ public class PipeServer : BackgroundService
                 break;
 
             default:
-                throw new ArgumentException($"未知的证书类型 {entry.SourceType}");
+                throw new ArgumentException(string.Format(Strings.Pipe_UnknownCertType, entry.SourceType));
         }
 
         entry.Thumbprint = RemoteKSP.Shared.Protocol.NormalizeThumbprint(entry.Thumbprint);
@@ -322,7 +349,7 @@ public class PipeServer : BackgroundService
 
         _keySources.Registry.Add(entry);
         _keySources.Reload();
-        _activityLog.Info("证书", $"添加证书：{entry.Name} ({entry.SourceType})", entry.Thumbprint);
+        _activityLog.Info(Strings.LogCat_Certificate, string.Format(Strings.Pipe_CertAdded, entry.Name, entry.SourceType), entry.Thumbprint);
         return new { entry.Id, entry.Thumbprint };
     }
 
@@ -333,10 +360,10 @@ public class PipeServer : BackgroundService
         var name = RequireString(data, "Name").Trim();
         var isShared = data.GetProperty("IsShared").GetBoolean();
 
-        var entry = _keySources.Registry.GetById(id) ?? throw new InvalidOperationException("证书不存在");
+        var entry = _keySources.Registry.GetById(id) ?? throw new InvalidOperationException(Strings.Cert_NotFound);
         _keySources.Registry.Update(id, name, isShared);
         _keySources.Reload();
-        _activityLog.Info("证书", $"更新证书：{name} (分享={isShared})");
+        _activityLog.Info(Strings.LogCat_Certificate, string.Format(Strings.Pipe_CertUpdated, name, isShared));
         return new { Success = true };
     }
 
@@ -346,25 +373,25 @@ public class PipeServer : BackgroundService
         var entry = _keySources.Registry.GetById(id);
         _keySources.Registry.Remove(id);
         _keySources.Reload();
-        _activityLog.Warning("证书", $"删除证书：{entry?.Name ?? id}");
+        _activityLog.Warning(Strings.LogCat_Certificate, string.Format(Strings.Pipe_CertRemoved, entry?.Name ?? id));
         return new { Success = true };
     }
 
     private object SetDefaultCertificate(string? dataJson)
     {
         var id = RequireString(ParseData(dataJson), "Id");
-        var entry = _keySources.Registry.GetById(id) ?? throw new InvalidOperationException("证书不存在");
+        var entry = _keySources.Registry.GetById(id) ?? throw new InvalidOperationException(Strings.Cert_NotFound);
         if (!entry.IsShared)
-            throw new InvalidOperationException("未分享的证书不能设为默认证书");
+            throw new InvalidOperationException(Strings.Pipe_DefaultNotShared);
 
         // 检查证书是否可用
         var status = _keySources.GetCertificateStatuses().FirstOrDefault(s => s.Id == id);
         if (status != null && !status.IsReady)
-            throw new InvalidOperationException($"证书不可用：{status.Detail}");
+            throw new InvalidOperationException(string.Format(Strings.Pipe_CertUnavailable, status.Detail));
 
         _keySources.Registry.SetDefault(id);
         _keySources.Reload();
-        _activityLog.Info("证书", $"设置默认证书：{entry.Name}");
+        _activityLog.Info(Strings.LogCat_Certificate, string.Format(Strings.Pipe_DefaultSet, entry.Name));
         return new { Success = true };
     }
 
@@ -375,9 +402,9 @@ public class PipeServer : BackgroundService
         var id = RequireString(data, "Id");
         var pin = RequireString(data, "Pin");
 
-        var entry = _keySources.Registry.GetById(id) ?? throw new InvalidOperationException("证书不存在");
+        var entry = _keySources.Registry.GetById(id) ?? throw new InvalidOperationException(Strings.Cert_NotFound);
         if (entry.SourceType != "etoken")
-            throw new InvalidOperationException("只有 eToken 证书需要 PIN");
+            throw new InvalidOperationException(Strings.Pipe_PinOnlyEToken);
 
         var source = (ETokenKeySource)KeySourceManager.CreateKeySource(entry);
         VerifyPinLimited(source, entry, pin);
@@ -385,7 +412,8 @@ public class PipeServer : BackgroundService
         var wasDisabled = entry.PinFailure != null;
         _keySources.Registry.SetPin(id, pin);
         _keySources.Reload();
-        _activityLog.Info("证书", wasDisabled ? $"设置 PIN：{entry.Name}，已解除停用" : $"设置 PIN：{entry.Name}");
+        _activityLog.Info(Strings.LogCat_Certificate,
+            string.Format(wasDisabled ? Strings.Pipe_PinSetReenabled : Strings.Pipe_PinSet, entry.Name));
         return new { Success = true };
     }
 
@@ -398,7 +426,7 @@ public class PipeServer : BackgroundService
         var key = PinAttemptLimiter.KeyFor(entry.CspProvider, entry.KeyContainer);
         if (_pinLimiter.GetLockout(key) is { } wait)
             throw new InvalidOperationException(
-                $"PIN 已连续验证失败 {PinAttemptLimiter.MaxFailures} 次，为保护 eToken 已暂停验证，请 {Math.Ceiling(wait.TotalSeconds)} 秒后再试");
+                string.Format(Strings.Pipe_PinLockout, PinAttemptLimiter.MaxFailures, Math.Ceiling(wait.TotalSeconds)));
 
         var result = source.VerifyPin(pin);
         if (result.Success)
@@ -409,18 +437,19 @@ public class PipeServer : BackgroundService
 
         var remaining = _pinLimiter.RecordFailure(key);
         var name = string.IsNullOrEmpty(entry.Name) ? entry.KeyContainer : entry.Name;
-        _activityLog.Warning("证书", $"PIN 验证失败：{name}", result.Error);
+        _activityLog.Warning(Strings.LogCat_Certificate, string.Format(Strings.Pipe_PinVerifyFailed, name), result.Error);
 
         var reason = result.Failure switch
         {
-            PinFailureKind.Locked => "eToken 已锁定（PIN 重试次数已用完），请先用 SafeNet Authentication Client 解锁",
-            PinFailureKind.Wrong => "PIN 错误",
-            _ => $"测试签名失败：PIN 错误、容器名不对或 eToken 未插入（{result.Error}）"
+            PinFailureKind.Locked => Strings.Pipe_PinLocked,
+            PinFailureKind.Wrong => Strings.Pipe_PinWrong,
+            _ => string.Format(Strings.Pipe_PinTestFailed, result.Error)
         };
+        var minutes = PinAttemptLimiter.LockoutDuration.TotalMinutes.ToString("0");
         var limit = remaining > 0
-            ? $"再失败 {remaining} 次将暂停验证 {PinAttemptLimiter.LockoutDuration.TotalMinutes:0} 分钟"
-            : $"已连续失败 {PinAttemptLimiter.MaxFailures} 次，请 {PinAttemptLimiter.LockoutDuration.TotalMinutes:0} 分钟后再试";
-        throw new InvalidOperationException($"{reason}。{limit}");
+            ? string.Format(Strings.Pipe_PinRemaining, remaining, minutes)
+            : string.Format(Strings.Pipe_PinPaused, PinAttemptLimiter.MaxFailures, minutes);
+        throw new InvalidOperationException(string.Format(Strings.Pipe_PinReasonLimit, reason, limit));
     }
 
     /// <summary>HTTPS 当前使用的 TLS 证书（设置页显示指纹和有效期）</summary>
@@ -439,8 +468,9 @@ public class PipeServer : BackgroundService
     private object RegenerateTlsCertificate()
     {
         var result = TlsCertificateManager.RegenerateServerCertificate();
-        _activityLog.Warning("系统", "重新生成 TLS 证书，已配对的客户端需要重新配对",
-            $"旧指纹 {result.OldThumbprint ?? "（无法读取）"} → 新指纹 {result.NewThumbprint}；原文件备份为 {result.BackupFile ?? "（原来没有文件）"}");
+        _activityLog.Warning(Strings.LogCat_System, Strings.Pipe_TlsRegenerated,
+            string.Format(Strings.Pipe_TlsRegeneratedDetail, result.OldThumbprint ?? Strings.Pipe_Unreadable,
+                result.NewThumbprint, result.BackupFile ?? Strings.Pipe_NoOriginalFile));
         return result;
     }
 
@@ -480,8 +510,8 @@ public class PipeServer : BackgroundService
 
         var withPrivateKey = certsWithKey.Count(c => c.hasKey);
 
-        _activityLog.Info("证书存储", $"枚举 {locationName}\\My",
-            $"总数={allCerts}, 可用私钥={withPrivateKey}, 指向 Remote KSP（已排除）={remoteKsp}");
+        _activityLog.Info(Strings.LogCat_CertStore, string.Format(Strings.Pipe_StoreEnumerated, locationName),
+            string.Format(Strings.Pipe_StoreEnumeratedDetail, allCerts, withPrivateKey, remoteKsp));
 
         var result = certsWithKey
             .Where(c => c.hasKey)
@@ -498,8 +528,8 @@ public class PipeServer : BackgroundService
         return new
         {
             Certificates = result,
-            DiagInfo = $"服务进程(SYSTEM)看到: {locationName}\\My 总数={allCerts}, 带私钥={withPrivateKey}" +
-                (remoteKsp > 0 ? $"；另有 {remoteKsp} 张私钥指向 Remote KSP（本机客户端同步来的），不能在这里使用" : "")
+            DiagInfo = string.Format(Strings.Pipe_StoreDiag, locationName, allCerts, withPrivateKey) +
+                (remoteKsp > 0 ? string.Format(Strings.Pipe_StoreDiagRemote, remoteKsp) : "")
         };
     }
 
@@ -517,7 +547,8 @@ public class PipeServer : BackgroundService
     }
 }
 
-public record PipeRequest(string Command, string? Data);
+/// <param name="Language">UI language of the GUI that sent the request; replies and log entries use it</param>
+public record PipeRequest(string Command, string? Data, string? Language = null);
 public record PipeResponse
 {
     public bool Success { get; set; }

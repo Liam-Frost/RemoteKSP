@@ -22,7 +22,11 @@ using RemoteKSP.Server.Core;
 using RemoteKSP.Server.Host;
 using RemoteKSP.Server.Services;
 using RemoteKSP.Shared;
+using RemoteKSP.Shared.Localization;
 using RemoteKSP.Shared.Networking;
+
+// Expected texts below are English; the developer's own language preference must not change them
+UiLanguage.Apply(UiLanguage.English);
 
 var passed = 0;
 void Check(bool condition, string description)
@@ -403,10 +407,10 @@ NetworkAddressInfo Nic(string name, string id, string ip, bool primary, bool loo
 var ipv4Row = new NetworkAddressItem(Nic("WLAN", "w", "10.0.0.5", true), 8443);
 Check(ipv4Row.DetailText == "10.0.0.5", "IPv4 row tooltip does not read the IPv6-only ScopeId");
 var linkLocalRow = new NetworkAddressItem(Nic("WLAN", "w", "fe80::1%12", false, linkLocal: true), 8443);
-Check(!linkLocalRow.CanCopyServerUrl && linkLocalRow.ServerUrlToolTip.Contains("无法直接使用"),
+Check(!linkLocalRow.CanCopyServerUrl && linkLocalRow.ServerUrlToolTip.Contains("will not work on other devices"),
     "link-local IPv6 connection URL is not offered for copying, with an explanation");
 var loopbackRow = new NetworkAddressItem(Nic("Loopback", "lo", "127.0.0.1", false, loopback: true), 8443);
-Check(loopbackRow.CanCopyServerUrl && loopbackRow.ServerUrlToolTip.Contains("只能在本机") && loopbackRow.MetaText.Contains("仅本机"),
+Check(loopbackRow.CanCopyServerUrl && loopbackRow.ServerUrlToolTip.Contains("only work on this computer") && loopbackRow.MetaText.Contains("this computer only"),
     "loopback URL is copyable and labelled local-only");
 Check(new NetworkAddressItem(Nic("WLAN", "w", "10.0.0.5", true), null) is { HasServerUrl: false, CanCopyServerUrl: false },
     "client rows (no port) never produce a server URL");
@@ -420,18 +424,18 @@ netVm.Show([
 ]);
 Check(netVm.Groups.Select(g => g.Name).SequenceEqual(["WLAN", "VPN"]) && netVm.Groups[0].Addresses.Count == 2,
     "collapsed network list: primary addresses grouped per interface, IPv4 before IPv6");
-Check(netVm.HiddenCount == 3 && netVm.ToggleText == "其他网络地址（3）", "disclosure counts hidden addresses, not interfaces");
+Check(netVm.HiddenCount == 3 && netVm.ToggleText == "Other addresses (3)", "disclosure counts hidden addresses, not interfaces");
 netVm.ShowOther = true;
 Check(netVm.Groups.Select(g => g.Name).SequenceEqual(["WLAN", "VPN", "Loopback"]) &&
       netVm.Groups[0].Addresses.Select(a => a.AddressText).SequenceEqual(["10.0.0.5", "2001:db8::5", "fe80::1"]),
     "expanded list keeps each interface once, with its extra addresses under it");
 netVm.ShowOther = false;
 netVm.Show([Nic("Loopback", "lo", "127.0.0.1", false, loopback: true)]);
-Check(!netVm.HasAddresses && netVm.EmptyText.Contains("仅有环回") && netVm.HasHidden,
+Check(!netVm.HasAddresses && netVm.EmptyText.Contains("only loopback or link-local") && netVm.HasHidden,
     "only loopback: explains why nothing is listed and offers the hidden addresses");
 
-Check(RemoteKSP.Shared.Ui.TextSummary.Names(["sign-01", "sign-02"]) == "sign-01、sign-02" &&
-      RemoteKSP.Shared.Ui.TextSummary.Names(["a", "b", "c", "d", "e"]) == "a、b、c +2",
+Check(RemoteKSP.Shared.Ui.TextSummary.Names(["sign-01", "sign-02"]) == "sign-01, sign-02" &&
+      RemoteKSP.Shared.Ui.TextSummary.Names(["a", "b", "c", "d", "e"]) == "a, b, c +2",
     "server name summary caps at three names and shows +N");
 
 KeySourceStatus Ks(string mode, string thumb) => new(mode, thumb, "detail");
@@ -446,31 +450,31 @@ var serverVm = new RemoteKSP.Server.ViewModels.OverviewViewModel(new ServiceMana
     new RemoteKSP.Shared.Services.DialogService(new Wpf.Ui.ContentDialogService()), _ => { });
 var runningState = new ServiceState(ServiceStatusKind.Running, null);
 serverVm.Apply(new(runningState, RemoteKSP.Server.ViewModels.KeySourceState.ChannelUnavailable, null, "timeout", null, "timeout"));
-Check(serverVm.ServiceValue == "运行中" && serverVm.KeySourceValue == "无法获取密钥源状态" &&
-      serverVm.KeySourceDetail.Contains("管理通道") && serverVm.KeySourceToolTip == "timeout" && serverVm.ClientsValue == "无法获取",
+Check(serverVm.ServiceValue == "Running" && serverVm.KeySourceValue == "Key source status unavailable" &&
+      serverVm.KeySourceDetail.Contains("management channel") && serverVm.KeySourceToolTip == "timeout" && serverVm.ClientsValue == "Unavailable",
     "running service + unreachable pipe: key source and clients say unavailable, raw error kept in tooltip");
 Check(serverVm.CanStopService && !serverVm.CanStartService && !serverVm.CanInstallService,
     "running service offers stop only");
 serverVm.Apply(new(new(ServiceStatusKind.Stopped, null), RemoteKSP.Server.ViewModels.KeySourceState.ServiceNotRunning, null, null, null, null));
-Check(serverVm.CanStartService && !serverVm.CanStopService && serverVm.KeySourceValue == "服务未运行" && serverVm.ClientsValue == "—",
+Check(serverVm.CanStartService && !serverVm.CanStopService && serverVm.KeySourceValue == "Service not running" && serverVm.ClientsValue == "—",
     "stopped service offers start; key source says not running only when SCM says so");
 serverVm.Apply(new(new(ServiceStatusKind.Starting, null), RemoteKSP.Server.ViewModels.KeySourceState.ServicePending, null, null, null, null));
 Check(!serverVm.CanStartService && !serverVm.CanStopService && !serverVm.StartServiceCommand.CanExecute(null),
     "pending service disables start and stop");
 serverVm.Apply(new(runningState, RemoteKSP.Server.ViewModels.KeySourceState.Ready, Ks("production", "ab"), null, 0, null));
-Check(serverVm.ClientsValue == "暂无已授权客户端" && serverVm.ClientsActionText == "查看配对请求",
+Check(serverVm.ClientsValue == "No authorized clients" && serverVm.ClientsActionText == "View pairing requests",
     "zero clients is shown as such (not as a failure) and links to pairing requests");
 Check(new ServiceState(ServiceStatusKind.QueryFailed, "x") is { IsInstalled: false, IsRunning: false },
     "SCM query failure is not treated as installed or running");
 
 var clientVm = new RemoteKSP.Client.ViewModels.OverviewViewModel(null!, null!, _ => { });
 clientVm.Apply(new(RemoteKSP.Client.ViewModels.KspInstallState.NeedsUpdate, null, ["sign-01", "sign-02", "a", "b"], 0, 0));
-Check(clientVm.KspInstalled && clientVm.KspNeedsInstall && clientVm.InstallKspText == "更新 KSP" &&
-      clientVm.ServersDetail == "sign-01、sign-02、a +1" && clientVm.CertificatesValue == "尚无已绑定证书",
+Check(clientVm.KspInstalled && clientVm.KspNeedsInstall && clientVm.InstallKspText == "Update KSP" &&
+      clientVm.ServersDetail == "sign-01, sign-02, a +1" && clientVm.CertificatesValue == "No bound certificates yet",
     "client overview: update offered, names summarised, zero certificates stated");
 clientVm.Apply(new(RemoteKSP.Client.ViewModels.KspInstallState.Installed, null, [], 3, 1));
-Check(clientVm.ServersValue == "尚未配对服务端" && clientVm.ServersToolTip == null && clientVm.CertificatesValue == "3 张" &&
-      clientVm.KspDetail.Contains("运行诊断"), "client overview: installed KSP does not claim signing works");
+Check(clientVm.ServersValue == "No server paired yet" && clientVm.ServersToolTip == null && clientVm.CertificatesValue == "3 certificate(s)" &&
+      clientVm.KspDetail.Contains("run Diagnostics"), "client overview: installed KSP does not claim signing works");
 
 Console.WriteLine("\n--- Feature Tests: Key Source Retry ---");
 var retryDir = Path.Combine(Path.GetTempPath(), "rksp-retry-" + Guid.NewGuid().ToString("N"));
@@ -498,7 +502,7 @@ try
     var r1 = mgr.RetryFailed(3);
     Check(r1.Outcome == RetryOutcome.StillFailing && r1.Attempt == 1 && r1.Remaining == 1,
         "retry: first attempt still failing, attempt counted");
-    Check(mgr.GetCertificateStatuses().Single().Detail.Contains("正在自动重试 1/3"), "retry: status shows retry progress");
+    Check(mgr.GetCertificateStatuses().Single().Detail.Contains("retrying automatically 1/3"), "retry: status shows retry progress");
     File.WriteAllBytes(pfxPath, retryCert.Export(X509ContentType.Pfx));
     var r2 = mgr.RetryFailed(3);
     Check(r2.Outcome == RetryOutcome.AllRecovered && r2.Recovered.SequenceEqual(["延迟就绪证书"]) && Ready(mgr),
@@ -513,7 +517,7 @@ try
     Check(capped.RetryFailed(2).Attempt == 1 && capped.RetryFailed(2).Attempt == 2, "retry: attempts 1 and 2 run");
     var exhausted = capped.RetryFailed(2);
     Check(exhausted.Outcome == RetryOutcome.Exhausted && exhausted.Attempt == 2, "retry: stops at max attempts");
-    Check(capped.GetCertificateStatuses().Single().Detail.Contains("已停止重试"), "retry: status says retrying stopped");
+    Check(capped.GetCertificateStatuses().Single().Detail.Contains("retrying stopped"), "retry: status says retrying stopped");
     capped.Reload();
     Check(capped.RetryFailed(2) is { Outcome: RetryOutcome.StillFailing, Attempt: 1 }, "retry: Reload resets the attempt budget");
 
@@ -590,20 +594,20 @@ try
     Check(rejections.Count(r => r.JustDisabled) == 1 && rejections.All(r => r.Failure.Kind == PinFailureKind.Wrong),
         "pin: only the first rejection reports the transition to disabled");
     var disabledStatus = pinMgr.GetCertificateStatuses().Single();
-    Check(disabledStatus is { IsReady: false, NeedsPin: false } && disabledStatus.DisabledReason == "服务端保存的 PIN 错误"
-          && disabledStatus.Detail.StartsWith("已停用"),
+    Check(disabledStatus is { IsReady: false, NeedsPin: false } && disabledStatus.DisabledReason == "The PIN saved on the server is wrong"
+          && disabledStatus.Detail.StartsWith("Disabled"),
         "pin: status reports disabled with reason, not ready");
-    Check(pinMgr.GetStatus().Detail.Contains("已停用"), "pin: overview status shows the disabled detail");
+    Check(pinMgr.GetStatus().Detail.Contains("Disabled"), "pin: overview status shows the disabled detail");
     Check(Assert(() => pinMgr.SignHash(pinThumb, hash, "SHA256")) is { JustDisabled: false }, "pin: later sign requests fail fast");
     Check(token.Calls == 1, "pin: fail-fast request does not touch the eToken");
 
-    Check(pinLog.GetRecentLogs().Count(l => l.Level == "ERROR" && l.Message.Contains("已停用")) == 1,
+    Check(pinLog.GetRecentLogs().Count(l => l.Level == "ERROR" && l.Message.Contains("disabled")) == 1,
         "pin: activity log has exactly one disable Error");
     for (var i = 0; i < 50 && notified.IsEmpty; i++) await Task.Delay(20);
-    Check(notified.Count == 1 && notified.Single().Body.Contains("PIN 探针证书") && notified.Single().Body.Contains("PIN 错误"),
+    Check(notified.Count == 1 && notified.Single().Body.Contains("PIN 探针证书") && notified.Single().Body.Contains("PIN saved by RemoteKSP is wrong"),
         "pin: exactly one Windows message sent with certificate name and reason");
-    Check(notified.Single().Title.StartsWith("RemoteKSP") && notified.Single().Body.Contains("Windows 服务名：RemoteKSP") &&
-          notified.Single().Body.Contains("「验证 PIN」"),
+    Check(notified.Single().Title.StartsWith("RemoteKSP") && notified.Single().Body.Contains("Windows service name: RemoteKSP") &&
+          notified.Single().Body.Contains("\"Verify PIN\""),
         "pin: Windows message names RemoteKSP as the source and explains where to fix it");
 
     var persisted = JsonSerializer.Deserialize<JsonElement>(File.ReadAllText(certsJson)).GetProperty("Certificates")[0];
@@ -633,7 +637,7 @@ try
     token.Locked = true;
     var locked = Assert(() => pinMgr.SignHash(pinThumb, hash, "SHA256"));
     Check(locked is { JustDisabled: true, Failure.Kind: PinFailureKind.Locked } &&
-          pinMgr.GetCertificateStatuses().Single().DisabledReason!.Contains("已锁定"),
+          pinMgr.GetCertificateStatuses().Single().DisabledReason!.Contains("locked"),
         "pin: locked eToken disables certificate with locked reason");
     token.Locked = false;
 
@@ -645,6 +649,7 @@ try
     pinBuilder.Logging.ClearProviders();
     pinBuilder.WebHost.ConfigureKestrel(k => k.Listen(IPAddress.Loopback, 0, o => o.UseHttps(certificate)));
     await using var pinApp = pinBuilder.Build();
+    pinApp.UseRequestLanguage();
     pinApp.MapSigningEndpoints(endpointClients, new PairingManager(), pinMgr, pinLog);
     await pinApp.StartAsync();
     var pinAddress = pinApp.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();
@@ -655,24 +660,33 @@ try
         Check(signResponse.StatusCode == HttpStatusCode.ServiceUnavailable &&
               signResponse.Headers.GetValues(Protocol.HeaderError).Single() == Protocol.ErrorPinLocked &&
               signBody.GetProperty("title").GetString() == "PIN Locked" &&
-              signBody.GetProperty("detail").GetString()!.Contains("已停用"),
+              signBody.GetProperty("detail").GetString()!.Contains("is disabled"),
             "pin endpoint: /sign returns 503 with pin-locked code and readable detail");
         Check(token.Calls == 5, "pin endpoint: rejected HTTP request does not touch the eToken");
 
         var remoteCerts = await api.GetCertificatesAsync();
-        Check(remoteCerts.Single().DisabledReason?.Contains("已锁定") == true, "pin endpoint: /certs exposes the disabled reason");
+        Check(remoteCerts.Single().DisabledReason?.Contains("locked") == true, "pin endpoint: /certs exposes the disabled reason");
+    }
+    // 服务端按客户端界面语言（Accept-Language）返回说明，与服务进程自己的语言无关
+    UiLanguage.Apply(UiLanguage.ChineseSimplified);
+    using (var zhApi = new ServerApi(pinAddress, "pin-client", "pin-secret", certificate.Thumbprint))
+    {
+        UiLanguage.Apply(UiLanguage.English);
+        var zhCerts = await zhApi.GetCertificatesAsync();
+        Check(zhCerts.Single().DisabledReason?.Contains("已锁定") == true,
+            "localization: the server answers in the language the client asks for");
     }
     var server = new ServerEntry("server-001", pinAddress, "PIN 服务端", "pin-client", "pin-secret", certificate.Thumbprint);
     var offline = new ServerEntry("server-002", "https://127.0.0.1:1", "离线服务端", "x", "y", certificate.Thumbprint);
     var disabledMap = await ServerManager.GetDisabledCertificatesAsync([server, offline], TimeSpan.FromSeconds(5));
-    Check(disabledMap.Count == 1 && disabledMap[("server-001", pinThumb)].Contains("已锁定"),
+    Check(disabledMap.Count == 1 && disabledMap[("server-001", pinThumb)].Contains("locked"),
         "pin client: disabled certificates collected per server, offline server skipped");
     var clientItem = new RemoteKSP.Client.ViewModels.ClientCertItem(
         new CertificateBinding(pinThumb, "server-001", "PIN 探针证书", DateTime.UtcNow, false), "PIN 服务端",
         disabledMap[("server-001", pinThumb)]);
-    Check(clientItem.StatusText == "服务端已停用" && clientItem.StatusKind == "Critical",
+    Check(clientItem.StatusText == "Disabled by server" && clientItem.StatusKind == "Critical",
         "pin client: certificate list shows server-disabled state");
-    Check(pinLog.GetRecentLogs().Any(l => l.Level == "ERROR" && l.Message.Contains("pin-host") && l.Message.Contains("已停用")),
+    Check(pinLog.GetRecentLogs().Any(l => l.Level == "ERROR" && l.Message.Contains("pin-host") && l.Message.Contains("disabled")),
         "pin endpoint: rejected client request logged as Error with client name");
     await pinApp.StopAsync();
     await alert.StopAsync(CancellationToken.None);
@@ -838,7 +852,7 @@ Console.WriteLine("\n--- Key and data safety ---");
     bool Rejected(string path)
     {
         try { SecureStorage.EnsureRestrictedDirectory(path); return false; }
-        catch (UnauthorizedAccessException ex) { return ex.Message.Contains("联接"); }
+        catch (UnauthorizedAccessException ex) { return ex.Message.Contains("junction"); }
     }
     string AclOf(string path) =>
         new DirectoryInfo(path).GetAccessControl().GetSecurityDescriptorSddlForm(AccessControlSections.Access);
@@ -1180,7 +1194,7 @@ Console.WriteLine("\n--- Key and data safety ---");
 
         // 启动时没插：照样加载（不再按容器枚举拦截），状态显示"未检测到"
         var startStatus = absentMgr.GetCertificateStatuses().Single();
-        Check(!startStatus.IsReady && startStatus.DisabledReason == null && startStatus.Detail.Contains("未检测到 eToken"),
+        Check(!startStatus.IsReady && startStatus.DisabledReason == null && startStatus.Detail.Contains("No eToken detected"),
             "etoken absent: loaded anyway, status says not detected (not disabled)");
         Check(Enumerable.Range(0, 5).All(_ => SignFailsRetryable()) && absentToken.PinChecks == 0,
             "etoken absent: 5 sign requests fail as retryable and never reach the PIN check");
@@ -1217,7 +1231,7 @@ Console.WriteLine("\n--- Key and data safety ---");
         var unknownReason = absentMgr.GetCertificateStatuses().Single().DisabledReason!;
         var (_, unknownMessage) = PinAlertService.BuildMessage(
             new PinRejectedEvent("cert-001", "未插入探针", absentThumb, unknown.Failure), @"C:\Program Files\RemoteKSP\RemoteKSP.Server.exe");
-        Check(unknownReason.Contains("无法识别") && unknownMessage.Contains("无法识别的错误") && unknownMessage.Contains("验证 PIN"),
+        Check(unknownReason.Contains("unrecognized") && unknownMessage.Contains("unrecognized error") && unknownMessage.Contains("Verify PIN"),
             "etoken unrecognized error: status and Windows message explain the reason and the fix");
     }
     finally
@@ -1459,6 +1473,36 @@ if (Environment.GetEnvironmentVariable("REMOTEKSP_SIGNTOOL_E2E") is { Length: > 
     Check(string.Equals(signer.GetCertHashString(), parts[1], StringComparison.OrdinalIgnoreCase),
         "E2E: target file is signed by the selected certificate");
 }
+
+Console.WriteLine("\n--- Localization ---");
+// 每个界面字符串都要有中文翻译，占位符一致；否则 string.Format 会在中文界面上抛异常或丢信息
+foreach (var (name, rm) in new[]
+{
+    ("Shared", SharedStrings.ResourceManager),
+    ("Server", RemoteKSP.Server.Localization.Strings.ResourceManager),
+    ("Client", RemoteKSP.Client.Localization.Strings.ResourceManager),
+})
+{
+    static Dictionary<string, string> Load(System.Resources.ResourceManager rm, string culture) =>
+        rm.GetResourceSet(System.Globalization.CultureInfo.GetCultureInfo(culture), true, false)!
+            .Cast<System.Collections.DictionaryEntry>()
+            .ToDictionary(e => (string)e.Key, e => (string)e.Value!);
+    static string Placeholders(string text) =>
+        string.Join(",", System.Text.RegularExpressions.Regex.Matches(text, @"\{\d+").Select(m => m.Value).Distinct().Order());
+
+    var english = Load(rm, "");
+    var chinese = Load(rm, UiLanguage.ChineseSimplified);
+    var missing = english.Keys.Except(chinese.Keys).ToList();
+    var extra = chinese.Keys.Except(english.Keys).ToList();
+    var mismatched = english.Keys.Intersect(chinese.Keys)
+        .Where(k => Placeholders(english[k]) != Placeholders(chinese[k])).ToList();
+    Check(english.Count > 0 && missing.Count == 0 && extra.Count == 0 && mismatched.Count == 0,
+        $"localization: {name} zh-Hans has every string with the same placeholders " +
+        $"(missing: {string.Join(" ", missing)}; extra: {string.Join(" ", extra)}; placeholders differ: {string.Join(" ", mismatched)})");
+}
+Check(UiLanguage.Normalize("zh-CN") == UiLanguage.ChineseSimplified && UiLanguage.Normalize("en-US") == UiLanguage.English &&
+      UiLanguage.Normalize("fr-FR") == null && UiLanguage.Normalize(null) == null,
+    "localization: culture names map to the supported languages");
 
 Console.WriteLine($"\nAll {passed} checks passed (including feature tests).");
 

@@ -16,7 +16,8 @@ public partial class ActivityLogViewModel : ViewModelBase
 
     [ObservableProperty] private ObservableCollection<LogEntry> _logEntries = [];
     [ObservableProperty] private bool _autoScroll = true;
-    [ObservableProperty] private string _filterLevel = "全部";
+    /// <summary>ALL / INFO / WARN / ERROR (the ComboBoxItem tags, not the displayed text)</summary>
+    [ObservableProperty] private string _filterLevel = "ALL";
 
     public ActivityLogViewModel(ActivityLogService logService)
     {
@@ -37,7 +38,7 @@ public partial class ActivityLogViewModel : ViewModelBase
         // 初始化完成后再订阅事件，避免重复添加
         _logService.LogAdded += OnLogAdded;
 
-        _logService.Info("系统", "活动日志已加载");
+        _logService.Info(Strings.LogCat_System, Strings.Log_Loaded);
         return Task.CompletedTask;
     }
 
@@ -61,7 +62,7 @@ public partial class ActivityLogViewModel : ViewModelBase
     {
         return FilterLevel switch
         {
-            "全部" => true,
+            "ALL" => true,
             "INFO" => evt.Level == "INFO",
             "WARN" => evt.Level == "WARN",
             "ERROR" => evt.Level == "ERROR",
@@ -115,9 +116,9 @@ public class LogEntry
     public string TimestampStr => Timestamp.ToString("HH:mm:ss");
     public string LevelDisplay => Level switch
     {
-        "INFO" => "ℹ️ 信息",
-        "WARN" => "⚠️ 警告",
-        "ERROR" => "❌ 错误",
+        "INFO" => Strings.Log_LevelInfo,
+        "WARN" => Strings.Log_LevelWarn,
+        "ERROR" => Strings.Log_LevelError,
         _ => Level
     };
 }

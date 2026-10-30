@@ -16,9 +16,9 @@ public record SyncResult(string ServerName, int Added, int Updated, int Removed,
     {
         get
         {
-            var text = $"新增 {Added}，更新 {Updated}，解绑 {Removed}";
+            var text = string.Format(Strings.Sync_Summary, Added, Updated, Removed);
             if (Skipped.Count > 0)
-                text += $"，跳过 {Skipped.Count}（{string.Join("、", Skipped)}）";
+                text += string.Format(Strings.Sync_Skipped, Skipped.Count, string.Join(Strings.List_Separator, Skipped));
             return text;
         }
     }
@@ -53,7 +53,7 @@ public static class ServerManager
         if (info.SupportsMultiCert)
             remote = await api.GetCertificatesAsync();
         else if (!string.IsNullOrEmpty(info.Thumbprint))
-            remote = [new RemoteCertificateInfo(info.Thumbprint, "签名证书", null, null, info.IsTestMode)];
+            remote = [new RemoteCertificateInfo(info.Thumbprint, Strings.Cert_DefaultName, null, null, info.IsTestMode)];
         else
             remote = [];
 
@@ -86,7 +86,7 @@ public static class ServerManager
             catch (CertificateNotManagedException)
             {
                 // 本机存储里已有这张证书且不归 Remote KSP 管（例如本机就是服务端）：不覆盖、不登记
-                skipped.Add($"{cert.Name}（本机已有同一张证书）");
+                skipped.Add(string.Format(Strings.Sync_AlreadyLocal, cert.Name));
                 continue;
             }
             ClientRegistry.SaveCertificate(new CertificateBinding(thumbprint, server.Id, cert.Name,

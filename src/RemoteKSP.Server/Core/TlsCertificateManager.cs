@@ -106,9 +106,7 @@ public static class TlsCertificateManager
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or CryptographicException)
             {
-                throw new InvalidOperationException(
-                    $"无法读取 TLS 证书 {pfxPath}（{ex.Message}）。没有自动生成新证书，因为换证书后所有客户端都要重新配对。" +
-                    "排除问题后重启服务；确实要换证书时，在服务端 GUI「设置」里点「重新生成 TLS 证书」，然后让各客户端重新配对", ex);
+                throw new InvalidOperationException(string.Format(Strings.Tls_ReadFailed, pfxPath, ex.Message), ex);
             }
         }
 

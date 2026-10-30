@@ -80,9 +80,9 @@ internal static class DialogContent
                 Appearance = ControlAppearance.Transparent,
                 Margin = new Thickness(4, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Top,
-                ToolTip = "复制"
+                ToolTip = SharedStrings.Dialog_Copy
             };
-            AutomationNameFor(copy, "复制" + field.Label);
+            AutomationNameFor(copy, string.Format(SharedStrings.Dialog_CopyField, field.Label));
             copy.Click += (_, _) => Clipboard.SetText(field.Value);
             Grid.SetColumn(copy, 1);
             row.Children.Add(copy);
@@ -112,11 +112,11 @@ internal static class DialogContent
                 Appearance = ControlAppearance.Transparent,
                 Margin = new Thickness(4, 0, 0, 0),
                 VerticalAlignment = VerticalAlignment.Top,
-                ToolTip = "复制",
+                ToolTip = SharedStrings.Dialog_Copy,
                 Width = 28,
                 Height = 28
             };
-            AutomationNameFor(copy, "复制" + field.Label);
+            AutomationNameFor(copy, string.Format(SharedStrings.Dialog_CopyField, field.Label));
             copy.Click += (_, _) => Clipboard.SetText(field.Value);
             Grid.SetColumn(copy, 1);
             row.Children.Add(copy);

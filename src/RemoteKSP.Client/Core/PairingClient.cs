@@ -31,13 +31,14 @@ public class PairingClient
             }
         };
         _http = new HttpClient(handler);
+        _http.DefaultRequestHeaders.AcceptLanguage.ParseAdd(RemoteKSP.Shared.Localization.UiLanguage.Current);
     }
 
     /// <summary>发起配对请求</summary>
     public async Task<PairingResponse> StartPairingAsync(string serverUrl, string machineName)
     {
         if (!Uri.TryCreate(serverUrl, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps)
-            throw new ArgumentException("配对必须使用 HTTPS。", nameof(serverUrl));
+            throw new ArgumentException(Strings.Pair_HttpsRequired, nameof(serverUrl));
         var clientNonce = Guid.NewGuid().ToString("N");
         var request = new { MachineName = machineName, ClientNonce = clientNonce };
 
@@ -78,7 +79,7 @@ public class PairingClient
         if (result.Status == "rejected")
             throw new InvalidOperationException("Pairing rejected by server");
         if (result.Status == "expired" || result.Status == "consumed")
-            throw new InvalidOperationException("配对请求已过期或凭据已领取，请重新发起配对。");
+            throw new InvalidOperationException(Strings.Pair_Expired);
 
         return null; // Still pending
     }

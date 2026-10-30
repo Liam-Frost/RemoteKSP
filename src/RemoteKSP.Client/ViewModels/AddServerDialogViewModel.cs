@@ -12,14 +12,14 @@ public partial class AddServerDialogViewModel : ObservableValidator
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "请输入服务器地址")]
+    [Required(ErrorMessageResourceType = typeof(Strings), ErrorMessageResourceName = nameof(Strings.Add_EnterAddress))]
     [CustomValidation(typeof(AddServerDialogViewModel), nameof(ValidateServerAddress))]
     private string _serverAddress = "";
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "请输入端口")]
-    [Range(1, 65535, ErrorMessage = "端口必须在 1 到 65535 之间")]
+    [Required(ErrorMessageResourceType = typeof(Strings), ErrorMessageResourceName = nameof(Strings.Add_EnterPort))]
+    [Range(1, 65535, ErrorMessageResourceType = typeof(Strings), ErrorMessageResourceName = nameof(Strings.Add_PortRange))]
     private string _port = "8443";
 
     [ObservableProperty]
@@ -45,13 +45,13 @@ public partial class AddServerDialogViewModel : ObservableValidator
     public static ValidationResult? ValidateServerAddress(string? address, ValidationContext context)
     {
         if (string.IsNullOrWhiteSpace(address))
-            return new ValidationResult("请输入服务器地址");
+            return new ValidationResult(Strings.Add_EnterAddress);
 
         var trimmed = address.Trim();
 
         // Check if it's a valid IPv4, IPv6, or hostname
         if (Uri.CheckHostName(trimmed) == UriHostNameType.Unknown)
-            return new ValidationResult("服务器地址格式无效");
+            return new ValidationResult(Strings.Add_InvalidAddress);
 
         return ValidationResult.Success;
     }
@@ -97,17 +97,17 @@ public partial class AddServerDialogViewModel : ObservableValidator
             var serverUrl = $"https://{ServerAddress.Trim()}:{PortNumber}";
             _pairingClient = new PairingClient();
 
-            PairingStatus = "正在连接服务端...";
+            PairingStatus = Strings.Pair_Connecting;
             var machineName = Environment.MachineName;
             var response = await _pairingClient.StartPairingAsync(serverUrl, machineName);
 
             // 计算验证码
             VerificationCode = RemoteKSP.Shared.Protocol.VerificationCode(
-                _pairingClient.LastServerTlsThumbprint ?? throw new InvalidOperationException("未取得服务端 TLS 证书"),
+                _pairingClient.LastServerTlsThumbprint ?? throw new InvalidOperationException(Strings.Pair_NoTlsThumbprint),
                 response.ClientNonce, response.ServerNonce);
 
             ShowVerificationCode = true;
-            PairingStatus = "等待服务端批准...";
+            PairingStatus = Strings.Pair_WaitingApproval;
 
             // 轮询配对状态（最多等待 2 分钟）
             var deadline = DateTime.UtcNow.AddMinutes(2);
@@ -130,17 +130,17 @@ public partial class AddServerDialogViewModel : ObservableValidator
                         result.Secret,
                         _pairingClient.LastServerTlsThumbprint
                     );
-                    PairingStatus = "配对成功";
+                    PairingStatus = Strings.Pair_Succeeded;
                     return true;
                 }
             }
 
-            PairingStatus = "配对超时";
+            PairingStatus = Strings.Pair_TimedOut;
             return false;
         }
         catch (Exception ex)
         {
-            PairingStatus = $"配对失败: {ex.Message}";
+            PairingStatus = string.Format(Strings.Pair_FailedWith, ex.Message);
             return false;
         }
         finally

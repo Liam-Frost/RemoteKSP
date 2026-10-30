@@ -57,9 +57,9 @@ public class KeySourceRetryService : BackgroundService
                 case RetryOutcome.AllRecovered:
                 case RetryOutcome.StillFailing when result.Recovered.Count > 0:
                     exhaustedLogged = false;
-                    var names = string.Join("、", result.Recovered);
+                    var names = string.Join(Strings.List_Separator, result.Recovered);
                     _logger.LogInformation("Key sources recovered on attempt {Attempt}: {Names}", result.Attempt, names);
-                    _activityLog.Info("证书", $"第 {result.Attempt} 次自动重试后恢复：{names}");
+                    _activityLog.Info(Strings.LogCat_Certificate, string.Format(Strings.Retry_Recovered, result.Attempt, names));
                     break;
 
                 case RetryOutcome.StillFailing:
@@ -71,8 +71,8 @@ public class KeySourceRetryService : BackgroundService
                     exhaustedLogged = true;
                     _logger.LogError("{Count} key source(s) still unavailable after {Max} retries; giving up until reload",
                         result.Remaining, _maxAttempts);
-                    _activityLog.Error("证书", $"{result.Remaining} 个证书在 {_maxAttempts} 次自动重试后仍不可用，已停止重试",
-                        "排除问题（如插入 eToken）后请重启服务，或在 GUI 中重新保存证书配置");
+                    _activityLog.Error(Strings.LogCat_Certificate, string.Format(Strings.Retry_Exhausted, result.Remaining, _maxAttempts),
+                        Strings.Retry_ExhaustedDetail);
                     break;
 
                 case RetryOutcome.NothingToRetry:

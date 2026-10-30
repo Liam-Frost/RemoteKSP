@@ -49,7 +49,7 @@ public partial class NetworkAddressesViewModel : ObservableObject, IDisposable
     public bool ShowsServerUrl => _getPort() != null;
 
     /// <summary>折叠按钮文字：N 是被隐藏的地址条数（不是网卡数）</summary>
-    public string ToggleText => ShowOther ? "收起其他网络地址" : $"其他网络地址（{HiddenCount}）";
+    public string ToggleText => ShowOther ? SharedStrings.Net_HideOther : string.Format(SharedStrings.Net_ShowOther, HiddenCount);
 
     /// <summary>页面加载时调用：刷新一次并开始监听网络变化</summary>
     public async Task ActivateAsync()
@@ -87,7 +87,7 @@ public partial class NetworkAddressesViewModel : ObservableObject, IDisposable
         catch (Exception ex)
         {
             // 保留上一次的结果，同时把真实错误显示出来，不当作「没有地址」
-            ErrorText = $"读取网络接口失败：{ex.Message}";
+            ErrorText = string.Format(SharedStrings.Net_ReadFailed, ex.Message);
         }
         finally
         {
@@ -102,8 +102,8 @@ public partial class NetworkAddressesViewModel : ObservableObject, IDisposable
         _items = addresses.Select(a => new NetworkAddressItem(a, port)).ToList();
         ErrorText = "";
         EmptyText = _items.Count == 0
-            ? "未检测到已启用的网络接口"
-            : "没有可供局域网访问的地址，仅有环回或链路本地地址";
+            ? SharedStrings.Net_NoInterfaces
+            : SharedStrings.Net_NoLanAddress;
         Rebuild();
         OnPropertyChanged(nameof(ShowsServerUrl));
     }
@@ -131,11 +131,11 @@ public partial class NetworkAddressesViewModel : ObservableObject, IDisposable
 
     [RelayCommand]
     private Task CopyAddressAsync(NetworkAddressItem? item) =>
-        item == null ? Task.CompletedTask : CopyAsync(item.Info.AddressText, "IP 地址");
+        item == null ? Task.CompletedTask : CopyAsync(item.Info.AddressText, SharedStrings.Net_IpAddress);
 
     [RelayCommand(CanExecute = nameof(CanCopyUrl))]
     private Task CopyUrlAsync(NetworkAddressItem? item) =>
-        item?.ServerUrl == null ? Task.CompletedTask : CopyAsync(item.ServerUrl, "连接地址");
+        item?.ServerUrl == null ? Task.CompletedTask : CopyAsync(item.ServerUrl, SharedStrings.Net_ConnectionUrl);
 
     private static bool CanCopyUrl(NetworkAddressItem? item) => item?.CanCopyServerUrl == true;
 
@@ -148,10 +148,11 @@ public partial class NetworkAddressesViewModel : ObservableObject, IDisposable
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("复制失败", $"无法写入剪贴板：{ex.Message}");
+            await _dialogService.ErrorAsync(SharedStrings.Copy_FailedTitle, string.Format(SharedStrings.Copy_FailedMessage, ex.Message));
             return;
         }
-        await _dialogService.SuccessAsync("复制成功", $"{what}已复制到剪贴板。", new DialogField(what, text));
+        await _dialogService.SuccessAsync(SharedStrings.Copy_SuccessTitle, string.Format(SharedStrings.Copy_SuccessMessage, what),
+            new DialogField(what, text));
     }
 
     public void Dispose()
@@ -198,7 +199,7 @@ public sealed class NetworkAddressItem
     public string MetaText => string.Join(" · ", new[]
     {
         Info.FamilyText,
-        Info.IsLoopback ? "环回，仅本机" : Info.IsLinkLocal ? "链路本地" : "",
+        Info.IsLoopback ? SharedStrings.Net_LoopbackLocalOnly : Info.IsLinkLocal ? SharedStrings.Net_LinkLocal : "",
         Info.IsDhcpAssigned ? "DHCP" : ""
     }.Where(s => s.Length > 0));
 
@@ -212,8 +213,8 @@ public sealed class NetworkAddressItem
 
     /// <summary>「复制连接地址」按钮的提示：可复制时显示 URL，不可复制时说明原因</summary>
     public string ServerUrlToolTip => !HasServerUrl ? ""
-        : !CanCopyServerUrl ? "链路本地地址带有本机接口编号，生成的 URL 在其他设备上无法直接使用，因此不提供复制"
-        : Info.IsLoopback ? $"{ServerUrl}\n环回地址只能在本机使用"
+        : !CanCopyServerUrl ? SharedStrings.Net_LinkLocalNoCopy
+        : Info.IsLoopback ? string.Format(SharedStrings.Net_LoopbackOnlyHere, ServerUrl)
         : ServerUrl!;
 
     /// <summary>悬停详情：完整地址；链路本地地址额外说明 Zone ID 的含义</summary>
@@ -224,7 +225,7 @@ public sealed class NetworkAddressItem
             var lines = new List<string> { Info.Address.ToString() };
             // ScopeId 只对 IPv6 有效，IPv4 地址读取会抛 SocketException
             if (Info.IsIPv6 && Info.Address.ScopeId != 0)
-                lines.Add($"链路本地地址只在同一网段有效；%{Info.Address.ScopeId} 是本机接口编号，其他机器需使用自己的编号");
+                lines.Add(string.Format(SharedStrings.Net_LinkLocalDetail, Info.Address.ScopeId));
             return string.Join("\n", lines);
         }
     }

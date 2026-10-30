@@ -27,7 +27,7 @@ public partial class CertificatesViewModel : ViewModelBase
     [ObservableProperty] private bool _isLoading = true;
     [ObservableProperty] private bool _hasCertificates;
     [ObservableProperty] private bool _serviceAvailable = true;
-    [ObservableProperty] private string _emptyText = "暂无证书";
+    [ObservableProperty] private string _emptyText = Strings.Certs_Empty;
 
     public CertificatesViewModel(PipeClient pipeClient, DialogService dialogService)
     {
@@ -48,13 +48,13 @@ public partial class CertificatesViewModel : ViewModelBase
             Certificates = new ObservableCollection<CertificateItem>(statuses.Select(s => new CertificateItem(s)));
             SelectedCertificate = Certificates.FirstOrDefault(c => c.Id == selectedId);
             ServiceAvailable = true;
-            EmptyText = "暂无证书";
+            EmptyText = Strings.Certs_Empty;
         }
         catch
         {
             Certificates.Clear();
             ServiceAvailable = false;
-            EmptyText = "服务未运行，无法加载证书列表";
+            EmptyText = Strings.Certs_ServiceNotRunning;
         }
         finally
         {
@@ -82,8 +82,8 @@ public partial class CertificatesViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("重新加载失败", "无法让服务重新加载密钥源。",
-                new DialogField("错误信息", ex.Message, Monospace: false));
+            await _dialogService.ErrorAsync(Strings.Certs_ReloadFailedTitle, Strings.Certs_ReloadFailed,
+                new DialogField(Strings.Common_ErrorMessage, ex.Message, Monospace: false));
             return;
         }
         finally
@@ -96,10 +96,10 @@ public partial class CertificatesViewModel : ViewModelBase
             .Where(c => !c.IsReady && !c.Status.NeedsPin && c.Status.SourceType != "test")
             .ToList();
         if (failed.Count == 0)
-            await _dialogService.SuccessAsync("重新加载完成", $"已重新加载 {Certificates.Count} 个证书的密钥源。");
+            await _dialogService.SuccessAsync(Strings.Certs_ReloadedTitle, string.Format(Strings.Certs_Reloaded, Certificates.Count));
         else
-            await _dialogService.WarningAsync("部分证书仍不可用",
-                $"已重新加载 {Certificates.Count} 个证书，{failed.Count} 个仍不可用。",
+            await _dialogService.WarningAsync(Strings.Certs_PartlyUnavailableTitle,
+                string.Format(Strings.Certs_PartlyUnavailable, Certificates.Count, failed.Count),
                 failed.Select(c => new DialogField(c.Name, c.Detail, Monospace: false)).ToArray());
     }
 
@@ -109,7 +109,7 @@ public partial class CertificatesViewModel : ViewModelBase
     private async Task AddAsync()
     {
         var form = new AddCertificateForm(new AddCertificateViewModel(_pipeClient));
-        if (await _dialogService.ShowFormAsync("添加证书", form, "添加", form.ViewModel.SubmitAsync, maxWidth: 640))
+        if (await _dialogService.ShowFormAsync(Strings.Certs_AddTitle, form, Strings.Common_Add, form.ViewModel.SubmitAsync, maxWidth: 640))
             await RefreshAsync();
     }
 
@@ -118,10 +118,10 @@ public partial class CertificatesViewModel : ViewModelBase
     {
         var cert = SelectedCertificate!;
         var form = new EditCertificateForm(cert.Name, cert.IsShared);
-        var saved = await _dialogService.ShowFormAsync("编辑证书", form, "保存", async () =>
+        var saved = await _dialogService.ShowFormAsync(Strings.Certs_EditTitle, form, Strings.Common_Save, async () =>
         {
             if (string.IsNullOrWhiteSpace(form.Model.Name))
-                return "名称不能为空";
+                return Strings.Certs_NameRequired;
             await _pipeClient.SendCommandAsync<object>("UpdateCertificate",
                 new { cert.Id, form.Model.Name, form.Model.IsShared });
             return null;
@@ -134,22 +134,22 @@ public partial class CertificatesViewModel : ViewModelBase
     private async Task SetPinAsync()
     {
         var cert = SelectedCertificate!;
-        var message = $"输入证书「{cert.Name}」所在 eToken 的 PIN。连续失败 {PinAttemptLimiter.MaxFailures} 次后需等待 " +
-                      $"{PinAttemptLimiter.LockoutDuration.TotalMinutes:0} 分钟才能再试。";
+        var message = string.Format(Strings.Certs_PinPrompt, cert.Name, PinAttemptLimiter.MaxFailures,
+            PinAttemptLimiter.LockoutDuration.TotalMinutes.ToString("0"));
         if (cert.IsDisabled)
             message = $"{cert.Detail}\n\n{message}";
         var form = new PinForm(message);
-        var saved = await _dialogService.ShowFormAsync("验证 PIN", form, "验证并保存", async () =>
+        var saved = await _dialogService.ShowFormAsync(Strings.Certs_VerifyPinTitle, form, Strings.Certs_VerifyAndSave, async () =>
         {
             if (string.IsNullOrEmpty(form.Pin))
-                return "请输入 PIN";
+                return Strings.Certs_EnterPin;
             await _pipeClient.SendCommandAsync<object>("SetCertificatePin", new { cert.Id, form.Pin });
             return null;
         });
         if (saved)
         {
             await RefreshAsync();
-            await _dialogService.SuccessAsync("PIN 已保存", "测试签名成功，PIN 已加密保存，签名服务立即生效。");
+            await _dialogService.SuccessAsync(Strings.Certs_PinSavedTitle, Strings.Certs_PinSaved);
         }
     }
 
@@ -163,7 +163,7 @@ public partial class CertificatesViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("设置失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_SetFailed, ex.Message);
         }
     }
 
@@ -172,12 +172,12 @@ public partial class CertificatesViewModel : ViewModelBase
     {
         var cert = SelectedCertificate!;
         var confirmed = await _dialogService.ConfirmAsync(
-            "删除证书",
-            "确定要从服务端删除这张证书吗？\n\n删除后客户端将无法再用它签名，下次更新证书时会自动解绑。证书本身（eToken、证书存储中的原件）不会被删除。",
-            "删除",
+            Strings.Certs_DeleteTitle,
+            Strings.Certs_DeleteMessage,
+            Strings.Common_Delete,
             destructive: true,
-            new DialogField("名称", cert.Name, Monospace: false),
-            new DialogField("指纹", cert.Thumbprint));
+            new DialogField(Strings.Common_Name, cert.Name, Monospace: false),
+            new DialogField(Strings.Common_Thumbprint, cert.Thumbprint));
         if (!confirmed)
             return;
 
@@ -188,7 +188,7 @@ public partial class CertificatesViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            await _dialogService.ErrorAsync("删除失败", ex.Message);
+            await _dialogService.ErrorAsync(Strings.Common_DeleteFailed, ex.Message);
         }
     }
 

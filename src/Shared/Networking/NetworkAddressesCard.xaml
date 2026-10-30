@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:net="clr-namespace:RemoteKSP.Shared.Networking"
+             xmlns:loc="clr-namespace:RemoteKSP.Shared.Localization"
              x:Name="Root">
     <UserControl.Resources>
         <!-- 一行地址：地址 + 属性在左（可省略），复制按钮在右。按钮列用 SharedSizeGroup，所有行的按钮右对齐成一列 -->
@@ -20,11 +21,11 @@
                 </TextBlock>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right"
                             Margin="12,0,0,0">
-                    <ui:Button Content="复制 IP" Icon="{ui:SymbolIcon Copy20}" Style="{StaticResource SubtleButtonStyle}"
+                    <ui:Button Content="{x:Static loc:SharedStrings.Net_CopyIp}" Icon="{ui:SymbolIcon Copy20}" Style="{StaticResource SubtleButtonStyle}"
                                ToolTip="{Binding AddressText}"
                                Command="{Binding DataContext.CopyAddressCommand, ElementName=Root}"
                                CommandParameter="{Binding}"/>
-                    <ui:Button Content="复制连接地址" Icon="{ui:SymbolIcon Link20}" Style="{StaticResource SubtleButtonStyle}"
+                    <ui:Button Content="{x:Static loc:SharedStrings.Net_CopyUrl}" Icon="{ui:SymbolIcon Link20}" Style="{StaticResource SubtleButtonStyle}"
                                Margin="4,0,0,0"
                                ToolTipService.ShowOnDisabled="True"
                                ToolTip="{Binding ServerUrlToolTip}"
@@ -68,7 +69,7 @@
                         <!-- 透明背景让整个 20×20 区域都能悬停；可获得键盘焦点，焦点时同样显示说明 -->
                         <Border Width="20" Height="20" Margin="4,0,0,0" VerticalAlignment="Center"
                                 Background="Transparent" Focusable="True" CornerRadius="4"
-                                AutomationProperties.Name="网络说明"
+                                AutomationProperties.Name="{x:Static loc:SharedStrings.Net_InfoName}"
                                 AutomationProperties.HelpText="{Binding FootnoteDetail}"
                                 ToolTipService.InitialShowDelay="200" ToolTipService.ShowDuration="30000">
                             <Border.ToolTip>
@@ -82,7 +83,7 @@
                     </StackPanel>
                     <TextBlock Text="{Binding Footnote}" Style="{StaticResource MetricDetailTextStyle}" Margin="0,2,0,0"/>
                 </StackPanel>
-                <ui:Button Grid.Column="1" Content="刷新" Icon="{ui:SymbolIcon ArrowSync20}"
+                <ui:Button Grid.Column="1" Content="{x:Static loc:SharedStrings.Net_Refresh}" Icon="{ui:SymbolIcon ArrowSync20}"
                            VerticalAlignment="Center" Margin="12,0,0,0"
                            Command="{Binding RefreshCommand}"/>
             </Grid>

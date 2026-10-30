@@ -63,7 +63,7 @@ public static class ClientRegistry
     public static void SaveServer(ServerEntry server)
     {
         using var key = Registry.LocalMachine.CreateSubKey($@"{ServersPath}\{server.Id}", true)
-            ?? throw new InvalidOperationException("无法写入注册表（需要管理员权限）");
+            ?? throw new InvalidOperationException(Strings.Reg_WriteFailed);
         key.SetValue("ServerUrl", server.ServerUrl, RegistryValueKind.String);
         key.SetValue("ServerName", server.ServerName, RegistryValueKind.String);
         key.SetValue("ClientId", server.ClientId, RegistryValueKind.String);
@@ -75,7 +75,7 @@ public static class ClientRegistry
     public static void RenameServer(string id, string name)
     {
         using var key = Registry.LocalMachine.OpenSubKey($@"{ServersPath}\{id}", true)
-            ?? throw new InvalidOperationException("服务端不存在");
+            ?? throw new InvalidOperationException(Strings.Reg_ServerNotFound);
         key.SetValue("ServerName", name, RegistryValueKind.String);
     }
 
@@ -122,7 +122,7 @@ public static class ClientRegistry
     public static void SaveCertificate(CertificateBinding binding)
     {
         using var key = Registry.LocalMachine.CreateSubKey($@"{CertificatesPath}\{Normalize(binding.Thumbprint)}", true)
-            ?? throw new InvalidOperationException("无法写入注册表（需要管理员权限）");
+            ?? throw new InvalidOperationException(Strings.Reg_WriteFailed);
         key.SetValue("ServerId", binding.ServerId, RegistryValueKind.String);
         key.SetValue("Name", binding.Name, RegistryValueKind.String);
         key.SetValue("AddedAt", binding.AddedAt.ToUniversalTime().ToString("o"), RegistryValueKind.String);
@@ -162,7 +162,7 @@ public static class ClientRegistry
         // 先建 Certificates 键：Native KSP 看到它存在就不再走旧版逻辑
         using (Registry.LocalMachine.CreateSubKey(CertificatesPath, true)) { }
         if (root.GetValue("Thumbprint") is string thumbprint && !string.IsNullOrEmpty(thumbprint))
-            SaveCertificate(new CertificateBinding(thumbprint, "server-001", "签名证书", DateTime.UtcNow, false));
+            SaveCertificate(new CertificateBinding(thumbprint, "server-001", Strings.Cert_DefaultName, DateTime.UtcNow, false));
         return true;
     }
 

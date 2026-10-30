@@ -40,41 +40,23 @@ public class PinAlertService : IHostedService
         var f = e.Failure;
         var problem = f.Kind switch
         {
-            PinFailureKind.Locked => "eToken 已锁定（PIN 重试次数已用完）",
-            PinFailureKind.Wrong => "RemoteKSP 保存的 eToken PIN 错误（可能有人修改过 eToken 的 PIN）",
-            _ => "eToken 插着，但签名返回了无法识别的错误（可能是 PIN 错误）"
+            PinFailureKind.Locked => Strings.Alert_ProblemLocked,
+            PinFailureKind.Wrong => Strings.Alert_ProblemWrong,
+            _ => Strings.Alert_ProblemUnrecognized
         };
         var open = string.IsNullOrEmpty(serverExePath)
-            ? "以管理员身份打开「RemoteKSP 服务端」程序"
-            : $"以管理员身份打开「RemoteKSP 服务端」程序：\n    {serverExePath}";
-        var steps = f.Kind switch
+            ? Strings.Alert_Open
+            : string.Format(Strings.Alert_OpenPath, serverExePath);
+        var steps = string.Format(f.Kind switch
         {
-            PinFailureKind.Locked =>
-                $"1. 用 SafeNet Authentication Client 解锁这个 eToken\n" +
-                $"2. {open}\n" +
-                $"3. 进入「证书管理」，选中这张证书，点击「验证 PIN」，输入正确的 PIN",
-            PinFailureKind.Wrong =>
-                $"1. {open}\n" +
-                $"2. 进入「证书管理」，选中这张证书，点击「验证 PIN」，输入正确的 PIN",
-            _ =>
-                $"1. 用 SafeNet Authentication Client 确认这个 eToken 能正常登录\n" +
-                $"2. {open}，在「活动日志」里查看原始错误\n" +
-                $"3. 进入「证书管理」，选中这张证书，点击「验证 PIN」，输入正确的 PIN"
-        };
+            PinFailureKind.Locked => Strings.Alert_StepsLocked,
+            PinFailureKind.Wrong => Strings.Alert_StepsWrong,
+            _ => Strings.Alert_StepsUnrecognized
+        }, open);
 
-        var title = "RemoteKSP 远程签名服务：eToken 证书已停用";
-        var message =
-            "这条消息来自本机的 RemoteKSP 远程签名服务（Windows 服务名：RemoteKSP）。" +
-            "它使用插在本机上的 eToken，为其他电脑提供代码签名。\n\n" +
-            $"问题：{problem}\n" +
-            $"证书：{e.CertificateName}\n" +
-            $"指纹：{e.Thumbprint}\n" +
-            $"时间：{f.OccurredAt.ToLocalTime():yyyy-MM-dd HH:mm:ss}\n\n" +
-            "为避免耗尽 eToken 的 PIN 重试次数，RemoteKSP 已停用这张证书并删除保存的 PIN，" +
-
-            "不会再用它访问 eToken。处理之前，其他电脑通过 RemoteKSP 签名都会失败。\n\n" +
-            $"处理方法：\n{steps}\n\n" +
-            "如果您不负责 RemoteKSP，请把这条消息转给负责代码签名的同事。";
+        var title = Strings.Alert_Title;
+        var message = string.Format(Strings.Alert_Message, problem, e.CertificateName, e.Thumbprint,
+            f.OccurredAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"), steps);
         return (title, message);
     }
 
@@ -96,8 +78,8 @@ public class PinAlertService : IHostedService
         var f = e.Failure;
         _logger.LogError("Certificate {Name} ({Thumbprint}) disabled: eToken rejected PIN ({Kind})",
             e.CertificateName, e.Thumbprint, f.Kind);
-        _activityLog.Error("证书", $"证书「{e.CertificateName}」已停用：{f.Reason}",
-            $"已删除保存的 PIN，后续签名请求直接拒绝、不再访问 eToken。{f.Action}");
+        _activityLog.Error(Strings.LogCat_Certificate, string.Format(Strings.Alert_LogDisabled, e.CertificateName, f.Reason),
+            string.Format(Strings.Alert_LogDisabledDetail, f.Action));
 
         var (title, message) = BuildMessage(e, _serverExePath);
         _ = Task.Run(() =>
