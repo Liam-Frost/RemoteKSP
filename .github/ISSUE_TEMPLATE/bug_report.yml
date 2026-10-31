@@ -1,0 +1,78 @@
+name: Bug report
+description: Something doesn't work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. **Security vulnerabilities must not be reported here** —
+        use [Report a vulnerability](../security/advisories/new) instead (see SECURITY.md).
+
+        Please check that the problem still happens on the [latest release](../releases/latest).
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Where does the problem show up?
+      multiple: true
+      options:
+        - Server (GUI or Windows service)
+        - Client (GUI)
+        - KSP DLL / signing (signtool, etc.)
+        - Pairing
+        - Installer / upgrade
+        - Documentation
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: RemoteKSP version
+      description: Shown on the Settings page of the Server and the Client.
+      placeholder: "2.2.1"
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      description: Run `winver`. Mention both machines if Server and Client differ.
+      placeholder: "Windows 11 24H2 (Server), Windows 10 22H2 (Client)"
+    validations:
+      required: true
+
+  - type: input
+    id: token
+    attributes:
+      label: Certificate / token
+      description: Token model or key storage, if relevant (e.g. SafeNet eToken 5110, software certificate).
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and error messages
+      description: |
+        Server activity log, signtool output, Event Viewer entries. **Remove thumbprints, hostnames,
+        IP addresses and anything else you consider sensitive.** Never paste PINs or API keys.
+      render: text
