@@ -38,6 +38,21 @@ eToken · 证书存储 · PFX                  （真正的私钥）
 
 网络上只传哈希值；签名结果返回后，先在本地用证书公钥验证，再交给调用程序。
 
+## 截图
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/server-overview.png" alt="RemoteKSP 服务端概览：服务状态、签名密钥来源、已授权客户端和网络地址"></td>
+    <td width="50%"><img src="docs/images/client-overview.png" alt="RemoteKSP 客户端概览：KSP 安装状态、已配对服务器和绑定的证书"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>服务端</b>：运行在插着 token 的签名机上</td>
+    <td align="center"><b>客户端</b>：运行在构建机和工作站上</td>
+  </tr>
+</table>
+
+界面语言默认跟随 Windows 显示语言，也可以在设置里切换为简体中文或英文。
+
 ## 功能
 
 **服务端**（`RemoteKSP.Server.exe`，以 Windows 服务运行）
