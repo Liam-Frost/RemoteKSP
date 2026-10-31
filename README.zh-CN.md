@@ -12,6 +12,7 @@
   <a href="../../actions/workflows/ci.yml"><img src="../../actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="../../releases/latest"><img src="https://img.shields.io/github/v/release/Liam-Frost/RemoteKSP" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/Liam-Frost/RemoteKSP"><img src="https://api.scorecard.dev/projects/github.com/Liam-Frost/RemoteKSP/badge" alt="OpenSSF Scorecard"></a>
 </p>
 
 <p align="center"><a href="README.md">English</a> · <b>简体中文</b></p>
@@ -161,7 +162,8 @@ RemoteKSP 面向**受信任的内部网络**设计，不要把服务端端口暴
 
 ## 参与贡献
 
-欢迎提交 Issue 和 Pull Request。提交 PR 前请运行 `.\publish-all.ps1 -Test`；
+欢迎提交 Issue 和 Pull Request，流程见 [CONTRIBUTING.md](CONTRIBUTING.md)，
+参与时请遵守[行为准则](CODE_OF_CONDUCT.md)。提交 PR 前请运行 `.\publish-all.ps1 -Test`；
 涉及认证、配对或密钥处理的行为改动，请在 `tests/SecurityRegression` 补充回归检查。
 安全问题请按 [SECURITY.md](SECURITY.md) 私下报告，不要公开提 Issue。
 界面文字和翻译的说明见 [docs/BUILD.md](docs/BUILD.md#translations)。

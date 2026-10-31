@@ -12,6 +12,7 @@
   <a href="../../actions/workflows/ci.yml"><img src="../../actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="../../releases/latest"><img src="https://img.shields.io/github/v/release/Liam-Frost/RemoteKSP" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/Liam-Frost/RemoteKSP"><img src="https://api.scorecard.dev/projects/github.com/Liam-Frost/RemoteKSP/badge" alt="OpenSSF Scorecard"></a>
 </p>
 
 <p align="center"><b>English</b> · <a href="README.zh-CN.md">简体中文</a></p>
@@ -175,7 +176,8 @@ for details, the project layout and how releases are made.
 
 ## Contributing
 
-Issues and pull requests are welcome. Please run `.\publish-all.ps1 -Test` before
+Issues and pull requests are welcome; [CONTRIBUTING.md](CONTRIBUTING.md) explains the
+workflow and the [Code of Conduct](CODE_OF_CONDUCT.md) applies. Please run `.\publish-all.ps1 -Test` before
 opening a pull request, and add a regression check to `tests/SecurityRegression`
 for any behavior change in authentication, pairing or key handling. Security issues
 go through [SECURITY.md](SECURITY.md), not public issues.
