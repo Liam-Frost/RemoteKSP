@@ -41,6 +41,19 @@ eToken · certificate store · PFX         (the real private key)
 Only the hash travels over the network; the signature comes back and is verified
 locally against the certificate's public key before it is returned.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/server-overview.png" alt="RemoteKSP Server overview: service status, signing key source, authorized clients and network addresses"></td>
+    <td width="50%"><img src="docs/images/client-overview.png" alt="RemoteKSP Client overview: KSP installation, paired servers and bound certificates"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Server</b> — on the machine with the token</td>
+    <td align="center"><b>Client</b> — on build agents and workstations</td>
+  </tr>
+</table>
+
 ## Features
 
 **Server** (`RemoteKSP.Server.exe`, runs as a Windows service)

@@ -120,7 +120,9 @@ public static class OverviewProbe
     {
         var running = new RemoteKSP.Server.Services.ServiceState(RemoteKSP.Server.Services.ServiceStatusKind.Running, null);
         var ready = new RemoteKSP.Server.Core.KeySourceStatus("production", "abc",
-            "共 2 个证书，2 个已分享。默认证书「Contoso 代码签名」：就绪");
+            string.Format(RemoteKSP.Server.Localization.Strings.KeySrc_DefaultCert,
+                string.Format(RemoteKSP.Server.Localization.Strings.KeySrc_Summary, 2, 2),
+                "Contoso Code Signing", RemoteKSP.Server.Localization.Strings.KeySrc_Ready));
         return name switch
         {
             "stopped" => new(new(RemoteKSP.Server.Services.ServiceStatusKind.Stopped, null),
