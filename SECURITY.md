@@ -19,7 +19,7 @@ latest release before reporting.
 
 Report it privately through GitHub:
 **Security → Report a vulnerability** on this repository
-([direct link](../../security/advisories/new)).
+([direct link](https://github.com/Liam-Frost/RemoteKSP/security/advisories/new)).
 
 Please include:
 
